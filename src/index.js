@@ -7,6 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import './index.css';
 import { ThemeProvider } from '@mui/material/styles';
 import { stylesTheme, colorsTheme } from 'mui/theme.js';
+import { BrowserRouter } from 'react-router-dom';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
@@ -14,11 +15,13 @@ const root = createRoot(container);
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ThemeProvider theme={stylesTheme}>
-        <ThemeProvider theme={colorsTheme}>
-          <App />
+      <BrowserRouter>
+        <ThemeProvider theme={stylesTheme}>
+          <ThemeProvider theme={colorsTheme}>
+            <App />
+          </ThemeProvider>
         </ThemeProvider>
-      </ThemeProvider>
+      </BrowserRouter>
     </Provider>
   </React.StrictMode>
 );
