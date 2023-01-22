@@ -1,10 +1,13 @@
 import React from 'react';
+import { Button } from '@mui/material';
+import { getAllHoldings, createHolding } from 'database/holding.js'
 
 const Portfolio = () => {
+  getAllHoldings()
   return (
-    <>
-      Portfolio
-    </>
+    <Button onClick={() => createHolding('AAPL', 5, 140)}>
+      Add Holding
+    </Button>
   );
 }
 

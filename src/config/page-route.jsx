@@ -1,7 +1,7 @@
 import React from 'react';
 import {Redirect} from 'react-router';
 import { WebUrl } from 'util/Constants.js';
-import { Portfolio } from 'Stocks';
+import { Portfolio } from 'stocks';
 
 export const _ROUTES = [
     {
