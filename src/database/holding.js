@@ -1,7 +1,7 @@
 import PouchDB from 'pouchdb';
 import PouchDBAdapterIdb from 'pouchdb-adapter-idb';
 import PouchDBFind from 'pouchdb-find';
-
+import { fetchHoldings } from 'services/holdingSlice';
 PouchDB.plugin(PouchDBFind);
 PouchDB.plugin(PouchDBAdapterIdb);
 
@@ -16,31 +16,34 @@ const getDb = () => {
 
 const holdingsDb = getDb();
 
-export const getAllHoldings = async () => {
+export const getAllHoldings = async (dispatch) => {
     try {
       const response = await holdingsDb.find({
         selector: {
           type: 'holding'
         }
       });
-      console.log(response.docs);
+      dispatch(fetchHoldings({payload: response.docs}))
     } catch (error) {
-      console.error(error);
+      console.log(error);
+      throw error;
     }
 };
   
 // Create a new holding
-export const createHolding = async (ticker, shares, cost) => {
+export const createHoldings = async (objectArray, dispatch) => {
     try {
-        const response = await holdingsDb.post({
-        _id: new Date().toISOString(),
-        type: 'holding',
-        ticker: ticker,
-        shares: shares,
-        cost: cost,
-        createdAt: new Date().toISOString()
-        });
-        console.log(response);
+        objectArray.map(async (holding) => {
+                return await holdingsDb.post({
+                    _id: new Date().toISOString(),
+                    type: 'holding',
+                    ticker: holding.ticker,
+                    shares: holding.shares,
+                    cost: holding.cost,
+                    createdAt: new Date().toISOString()
+                })
+            })
+        await getAllHoldings(dispatch)
     } catch (error) {
         console.error(error);
     }

@@ -24,13 +24,7 @@ export const colorsTheme = createTheme({
 
 export const stylesTheme = createTheme({
     components: {
-        MuiCollapse: {
-            styleOverrides: {
-                root: {
-                    width:'100%',
-                },
-            }
-        }
+       
     }
 });
   
