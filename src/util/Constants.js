@@ -11,3 +11,8 @@ export class ApiKey {
     static _API_GET = "GET";
     static _API_DELETE = "DELETE";
 }
+
+export class InputTypesEnum {
+    static _TEXT = "text";
+    static _NUMBER = "number";
+}
