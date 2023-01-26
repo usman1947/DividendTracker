@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import './App.css';
-import Header from 'common-components/Header';
-import SideBar from 'common-components/SideBar';
-import Content from 'common-components/Content';
+import Header from 'common-components/Layout/Header';
+import SideBar from 'common-components/Layout/SideBar';
+import Content from 'common-components/Layout/Content';
 import { PageSettings } from 'config/page-settings.js';
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 
