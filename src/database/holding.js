@@ -23,7 +23,7 @@ export const getAllHoldings = async (dispatch) => {
           type: 'holding'
         }
       });
-      dispatch(fetchHoldings({payload: response.docs}))
+      dispatch(fetchHoldings(response.docs))
     } catch (error) {
       console.log(error);
       throw error;
