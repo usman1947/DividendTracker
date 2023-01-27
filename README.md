@@ -1,1 +1,2 @@
 # DividendTracker
+ApiKeyForAlphaAdvantage: 3QM6WMRKQS9705V4

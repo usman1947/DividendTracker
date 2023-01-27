@@ -14,6 +14,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
+    "lodash": "^4.17.21",
     "pouchdb": "^8.0.0",
     "pouchdb-adapter-idb": "^8.0.0",
     "pouchdb-find": "^8.0.0",
