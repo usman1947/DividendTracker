@@ -77,14 +77,14 @@ const Content = ({ history }) => {
 	return (
         <PageSettings.Consumer>
 			{() => (
-				<div>
+				<Box className='content'>
                     <Switch>
                         {_ROUTES.map((route, index) => (
                             <PrivateRoute key={index} {...route} />
                         ))}
                         <Route path="" render={() => <Box>404</Box>} />
                     </Switch>
-				</div>
+				</Box>
 			)}
 		</PageSettings.Consumer>
 	)

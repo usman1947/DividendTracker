@@ -12,19 +12,52 @@ function getShades(hex){
 export const colorsTheme = createTheme({
     palette: {
         primary: {
-            main: "#FF4C29",
-            shades: getShades("#FF4C29")
+            main: "#810CA8",
+            shades: getShades("#810CA8")
         },
         secondary: {
-            main: '#082032',
-            shades: getShades("#082032")
+            main: '#2D033B',
+            shades: getShades("#2D033B")
         },
     },
 });
 
 export const stylesTheme = createTheme({
     components: {
-       
+        MuiDataGrid : {
+            styleOverrides:{
+                root: {
+                    border: 'none',
+                    outline: 'none',
+                },
+                cell: {
+                    borderBottom: `1px solid ${colorsTheme.palette.secondary.shades['12p']}`,
+                    "&:focus": {
+                        outline: 'none',
+                    },
+                },
+                columnHeader: {
+                    fontSize: '16px',
+                    "&:focus": {
+                        outline: 'none',
+                    },
+                },
+                columnSeparator: {
+                    display: 'none'
+                },
+                footerContainer: {
+                    border: 'none'
+                },
+               
+            }
+        },
+        MuiButton: {
+            styleOverrides:{
+                root: {
+                    height: 'fit-content'
+                }
+            }
+        }
     }
 });
   
