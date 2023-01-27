@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './App.css';
+import 'scss/site.scss'
 import Header from 'common-components/Layout/Header';
 import SideBar from 'common-components/Layout/SideBar';
 import Content from 'common-components/Layout/Content';
