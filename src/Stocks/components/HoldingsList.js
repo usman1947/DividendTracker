@@ -25,14 +25,14 @@ const HoldingsList = (props) => {
     const { holdings } = props;
 
     return (
-        <DataGrid
-        rows={holdings}
-        columns={columns}
-        autoPageSize
-        disableSelectionOnClick
-        disableVirtualization
-        getRowId={(row) => row._id}
-        />
+      <DataGrid
+      rows={holdings}
+      columns={columns}
+      autoPageSize
+      disableSelectionOnClick
+      disableVirtualization
+      getRowId={(row) => row._id}
+      />
     );
 }
 

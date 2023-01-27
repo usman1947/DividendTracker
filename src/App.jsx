@@ -4,7 +4,7 @@ import Header from 'common-components/Layout/Header';
 import SideBar from 'common-components/Layout/SideBar';
 import Content from 'common-components/Layout/Content';
 import { PageSettings } from 'config/page-settings.js';
-import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { Box, useMediaQuery, useTheme, Toolbar } from "@mui/material";
 
 function App() {
 
@@ -56,8 +56,13 @@ function App() {
     <PageSettings.Provider value={pageOptions}>
       <Box sx={{width:'100%', height:'100%'}}>
         <Header/>
-        <SideBar/>
-        <Content/>
+        <Box sx={{width:'100%', height:'100%', display:'flex'}}>
+          <SideBar/>
+          <Box display='flex' flexDirection='column' flex={1}>
+            <Toolbar/>
+            <Content/>
+          </Box>
+        </Box>
       </Box>
     </PageSettings.Provider>
   )

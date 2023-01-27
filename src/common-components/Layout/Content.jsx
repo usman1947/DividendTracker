@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { Route, withRouter, Switch } from 'react-router-dom';
 import { _ROUTES } from 'config/page-route.jsx';
 import { PageSettings } from 'config/page-settings.js';
-import { useTheme, useMediaQuery, Box } from '@mui/material';
+import { useTheme, useMediaQuery, Box, Paper } from '@mui/material';
 
 const compareRoutes = (routePath, path) => {
 	const splitRoutePath = routePath.split('/').slice(1);
@@ -77,14 +77,14 @@ const Content = ({ history }) => {
 	return (
         <PageSettings.Consumer>
 			{() => (
-				<Box className='content'>
+				<Paper variant='content'>
                     <Switch>
                         {_ROUTES.map((route, index) => (
                             <PrivateRoute key={index} {...route} />
                         ))}
                         <Route path="" render={() => <Box>404</Box>} />
                     </Switch>
-				</Box>
+				</Paper>
 			)}
 		</PageSettings.Consumer>
 	)
