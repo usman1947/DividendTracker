@@ -71,7 +71,7 @@ const AddHoldingDialog = () => {
             <Button variant="outlined" onClick={() => setOpen(true)}>
                 + Add
             </Button>
-            <Dialog open={open} onClose={() => setOpen(false)} sx={{position: 'relative', height: '80vh', overflow:'auto'}}>
+            <Dialog open={open} onClose={() => setOpen(false)} sx={{ height: '80vh', overflow:'auto'}}>
             <DialogTitle>Add Holding</DialogTitle>
             <DialogContent>
                 <form onSubmit={submitHoldings} id='holdings'>

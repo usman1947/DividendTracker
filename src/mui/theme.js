@@ -75,7 +75,10 @@ export const stylesTheme = createTheme({
                 {
                     props: { variant: 'app-bar' },
                     style: {
-                        height: '64px'
+                        height: '64px',
+                        display: 'flex',
+                        width: '100%',
+                        justifyContent: 'space-between'
                     },
                 },
             ],
@@ -91,6 +94,33 @@ export const stylesTheme = createTheme({
                         boxSizing: 'border-box',
                         backgroundColor: colorsTheme.palette.primary.shades['4p'],
                         borderRadius: 0
+                    },
+                },
+            ],
+        },
+        MuiAutocomplete: {
+            variants: [
+                {
+                    props: { variant: 'search-stocks' },
+                    style: {
+                        backgroundColor: colorsTheme.palette.colors.white,
+                        borderRadius: '4px',
+                    },
+                },
+            ],
+        },
+        MuiInput: {
+            variants: [
+                {
+                    props: { type: 'search-stocks' },
+                    style: {
+                        "&:before": {
+                            borderBottom: 'none !important'
+                        },
+                        "&:after": {
+                            borderBottom: 'none !important'
+                        },
+                        paddingLeft: '8px'
                     },
                 },
             ],
