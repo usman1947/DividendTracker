@@ -9,7 +9,10 @@ const Header = () => {
                 <Typography variant="h6">
                     Dividend Tracker
                 </Typography>
-                <SearchStocks/>
+                <SearchStocks
+                width='500px'
+                onChange={() => undefined}
+                />
                 <Box/>
             </Toolbar>
         </AppBar>

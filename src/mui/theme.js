@@ -16,13 +16,19 @@ export const colorsTheme = createTheme({
             shades: getShades("#333333")
         },
         secondary: {
-            main: '#9932CC',
-            shades: getShades("#9932CC")
+            main: '#757575',
+            shades: getShades("#757575")
         },
         colors: {
-            white: '#FFFFFF'
+            white: '#FFFFFF',
         }
     },
+    font: {
+        size: {
+            h7: '16px',
+            h8: '14px',
+        }
+    }
 });
 
 export const stylesTheme = createTheme({
@@ -54,6 +60,34 @@ export const stylesTheme = createTheme({
                 },
                
             }
+        },
+        MuiTypography : {
+            styleOverrides:{
+                root: {
+                    fontFamily: '"Roboto","Helvetica","Arial",sans-serif;'
+                }
+            },
+            variants: [
+                {
+                    props: { variant: 'h7' },
+                    style: {
+                        fontSize: colorsTheme.font.size.h7
+                    },
+                },
+                {
+                    props: { variant: 'h8' },
+                    style: {
+                        fontSize: colorsTheme.font.size.h8
+                    },
+                },
+                {
+                    props: { variant: 'h8-secondary' },
+                    style: {
+                        fontSize: colorsTheme.font.size.h8,
+                        color: colorsTheme.palette.secondary.main
+                    },
+                },
+            ],
         },
         MuiButton: {
             styleOverrides:{

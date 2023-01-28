@@ -18,7 +18,8 @@ const ControlledTextField = (props) => {
     return (
         <TextField
         value={input[id]}
-        variant='outlined'
+        variant='standard'
+        size='small'
         onChange={onChange}
         {...rest}
         >
