@@ -38,6 +38,7 @@ export const stylesTheme = createTheme({
                 root: {
                     border: 'none',
                     outline: 'none',
+                    padding: '0 16px 0 16px',
                     backgroundColor: colorsTheme.palette.colors.white
                 },
                 cell: {
