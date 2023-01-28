@@ -4,8 +4,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import { useLazyGetSearchStockQuery } from 'services/alphaAdvantage'
 import { isNullOrEmpty } from 'util/Utility'
 
-export const SearchStocks = () => {
+export const SearchStocks = (props) => {
 
+    const { width, onChange } = props
     const data = useLazyGetSearchStockQuery()
     const [trigger, lastArg] = data
     const [inputText, setInputText] = useState("")
@@ -24,8 +25,12 @@ export const SearchStocks = () => {
     <Autocomplete
         id="search-stocks"
         variant='search-stocks'
+        value={null}
+        blurOnSelect
         noOptionsText='Please enter a valid stock symbol'
         getOptionLabel={(option) => option.name}
+        clearOnBlur
+        selectOnFocus
         renderOption={(props, option) => {
             return (
                 <li {...props} key={option.symbol}>
@@ -47,13 +52,15 @@ export const SearchStocks = () => {
                 setInputText(inputText)
             }
         }}
+        //on value selected from list
+        onChange={onChange}
         renderInput={(params) => (
         <TextField
             {...params}
             placeholder='Search Stocks'
             variant='standard'
             sx={{
-            width: '500px',
+            width: width,
             }}
             type='search-stocks'
             InputProps={{
