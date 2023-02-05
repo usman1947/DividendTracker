@@ -6,7 +6,7 @@ import { v4 as uuid } from 'uuid';
 import { createHoldings } from 'database/holding.js'
 import { useDispatch } from 'react-redux';
 import SearchStocks from 'stocks/components/SearchStocks'
-import { isNullOrEmpty } from 'util/Utility';
+import { isNullOrEmpty, updateObjectInMapByKey } from 'util/Utility';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const AddHoldingInputConfig = [
@@ -71,7 +71,7 @@ const AddHoldingDialog = () => {
 
     return (
         <>
-            <Button variant="outlined" onClick={() => setOpen(true)}>
+            <Button onClick={() => setOpen(true)}>
                 + Add
             </Button>
             <Dialog 
@@ -131,11 +131,9 @@ const AddHoldingDialog = () => {
                                             <GetInputComponent
                                             key={`input-${key}-${input.id}`}
                                             getInput={holdings.get(key)}
-                                            setInput={(newValue) => {
-                                                let newMap = new Map(holdings)
-                                                newMap.set(key, newValue)
-                                                setHoldings(new Map(newMap))
-                                            }}
+                                            setInput={(newValue) => setHoldings(
+                                                updateObjectInMapByKey(holdings, key, newValue)
+                                            )}
                                             input={input}
                                             />
                                         )
