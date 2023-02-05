@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, IconButton, Box, Typography, Divider } from '@mui/material';
 import GetInputComponent from 'common-components/input/GetInputComponent'
 import { InputTypesEnum } from 'util/Constants'
-import { deleteHolding, updateHolding } from 'database/holding.js'
+import { deleteHolding, updateHolding } from 'database/db.js'
 import { useDispatch, useSelector } from 'react-redux';
 import { updateObjectInArrayById } from 'util/Utility';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -60,7 +60,7 @@ const EditHoldingDialog = () => {
         } else {
             //sets the local state when items are deleted
             setHoldingsState(
-                holdingsState.filter(x => holdings.some(y => y._id === x._id))
+                holdingsState.filter(x => holdings.some(y => y.id === x.id))
             )
         }
     }
@@ -99,7 +99,7 @@ const EditHoldingDialog = () => {
                         </Typography>
                     </Stack>
                     {holdingsState?.map((holding) => {
-                        const id = holding._id
+                        const id = holding.id
                         return (
                             <Box key={`main-container-${id}`}>
                                 <Stack direction="row" justifyContent="space-between" alignItems='center' key={`stack-${id}`} sx={{my: '8px', position: 'relative', pr: '35px' }}>
@@ -112,10 +112,10 @@ const EditHoldingDialog = () => {
                                         {EditHoldingInputConfig.map((input) => {
                                             return (
                                                 <GetInputComponent
-                                                key={`input-${holding._id}-${input.id}`}
+                                                key={`input-${holding.id}-${input.id}`}
                                                 getInput={holding}
                                                 setInput={(newValue) => setHoldingsState(
-                                                    updateObjectInArrayById(holdingsState, (obj => obj._id === id), newValue)
+                                                    updateObjectInArrayById(holdingsState, (obj => obj.id === id), newValue)
                                                 )}
                                                 input={input}
                                                 />
@@ -123,7 +123,7 @@ const EditHoldingDialog = () => {
                                         })}
                                     </Box>
                                     <IconButton 
-                                    onClick={() => onDeleteHolding(id)}
+                                    onClick={() => onDeleteHolding(holding._id)}
                                     sx={{position: 'absolute', top: 'calc(50% - 20px)', right: '0px'}}>
                                         <DeleteIcon/>
                                     </IconButton>

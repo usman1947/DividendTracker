@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import { Box, Stack } from '@mui/material';
+import { Box, Skeleton, Stack } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectHoldings } from 'services/holdingSlice';
 import AddHoldingDialog from 'stocks/components/AddHoldingDialog'
 import EditHoldingDialog from 'stocks/components/EditHoldingDialog'
 import HoldingsList from 'stocks/components/HoldingsList'
-import { getAllHoldings } from 'database/holding';
+import { getAllHoldings } from 'database/db';
+import { isNullOrEmpty } from 'util/Utility';
 
 const Portfolio = () => {
   const dispatch = useDispatch();
@@ -28,7 +29,8 @@ const Portfolio = () => {
           <AddHoldingDialog/>
         </Stack>
       </Box>
-      {holdings.length > 0 &&
+      {isNullOrEmpty(holdings) ?
+      <Skeleton/> : 
       <HoldingsList 
       sx={{flex: 1}}
       holdings={holdings}

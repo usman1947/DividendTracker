@@ -3,7 +3,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, IconB
 import GetInputComponent from 'common-components/input/GetInputComponent'
 import { InputTypesEnum } from 'util/Constants'
 import { v4 as uuid } from 'uuid';
-import { createHoldings } from 'database/holding.js'
+import { createHoldings } from 'database/db.js'
 import { useDispatch } from 'react-redux';
 import SearchStocks from 'stocks/components/SearchStocks'
 import { isNullOrEmpty, updateObjectInMapByKey } from 'util/Utility';
