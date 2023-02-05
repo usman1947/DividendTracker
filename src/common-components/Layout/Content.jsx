@@ -3,6 +3,11 @@ import { Route, withRouter, Switch } from 'react-router-dom';
 import { _ROUTES } from 'config/page-route.jsx';
 import { PageSettings } from 'config/page-settings.js';
 import { useTheme, useMediaQuery, Box, Paper } from '@mui/material';
+import { useLazyGetStockMarketDataQuery } from 'services/api'
+import { getLastBusinessDay } from 'util/Utility';
+import { getMarketData } from 'database/db'
+import { addMarketData } from 'services/marketDataSlice'
+import { useDispatch } from 'react-redux';
 
 const compareRoutes = (routePath, path) => {
 	const splitRoutePath = routePath.split('/').slice(1);
@@ -43,6 +48,9 @@ const PrivateRoute = (props) => {
 const Content = ({ history }) => {
 	const theme = useTheme()
 	const _context = useContext(PageSettings);
+	const dispatch = useDispatch();
+	const [trigger] = useLazyGetStockMarketDataQuery()
+	const lastBusinessDay = getLastBusinessDay()
 	
 	useEffect(() => {
 		var routes = _ROUTES;
@@ -73,7 +81,27 @@ const Content = ({ history }) => {
         isLgDevices,
         isXlDevices,
     ]);
-	
+
+	async function updateMarketData(){
+		//TODO update this logic to be used with api calls
+		//RTK query should always have the data
+		//Currently only when user come to website first time, RTK query cache will have data
+		//as the data is stored on the indexedDB, 
+		//Once updated this trigger can be called directly and through out app use the query cache instead of slice
+		await getMarketData().then((response) => {
+			if (response?.createdDate !== lastBusinessDay){
+				trigger(lastBusinessDay, _context)
+			} else {
+				dispatch(addMarketData(response.data))
+			}
+		})
+	}
+
+	useEffect(() => {
+		updateMarketData()
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	},[])
+
 	return (
         <PageSettings.Consumer>
 			{() => (
