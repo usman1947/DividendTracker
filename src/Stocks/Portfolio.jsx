@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
-import { Box } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectHoldings } from 'services/holdingSlice';
 import AddHoldingDialog from 'stocks/components/AddHoldingDialog'
+import EditHoldingDialog from 'stocks/components/EditHoldingDialog'
 import HoldingsList from 'stocks/components/HoldingsList'
 import { getAllHoldings } from 'database/holding';
 
@@ -22,7 +23,10 @@ const Portfolio = () => {
   return (
     <Box sx={{height: '100%', width: '100%', display: 'flex', flexDirection: 'column'}}>
       <Box sx={{height: '50px', width: '100%', display: 'flex', justifyContent: 'flex-end'}}>
-        <AddHoldingDialog/>
+        <Stack direction='row' spacing={1} alignItems="center">
+          <EditHoldingDialog/>
+          <AddHoldingDialog/>
+        </Stack>
       </Box>
       {holdings.length > 0 &&
       <HoldingsList 
