@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { TextField, Autocomplete, CircularProgress, Typography, Divider } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { useLazyGetSearchStockQuery } from 'services/alphaAdvantage'
+import { useLazyGetSearchStockQuery } from 'services/api'
 import { isNullOrEmpty } from 'util/Utility'
 
 export const SearchStocks = (props) => {

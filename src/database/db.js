@@ -2,23 +2,23 @@ import PouchDB from 'pouchdb';
 import PouchDBAdapterIdb from 'pouchdb-adapter-idb';
 import PouchDBFind from 'pouchdb-find';
 import { fetchHoldings, updateHoldings } from 'services/holdingSlice';
+import { v4 as uuid } from 'uuid';
+
 PouchDB.plugin(PouchDBFind);
 PouchDB.plugin(PouchDBAdapterIdb);
-
-let db;
-
+let database;
 const getDb = () => {
-    if (!db) {
-        db = new PouchDB('holdings', {adapter: 'idb'});
+    if (!database) {
+        database = new PouchDB('dividendTrackerDb', {adapter: 'idb'});
     }
-    return db;
+    return database;
 }
 
-const holdingsDb = getDb();
+const db = getDb();
 
 export const getAllHoldings = async (dispatch) => {
     try {
-      const response = await holdingsDb.find({
+      const response = await db.find({
         selector: {
           type: 'holding'
         }
@@ -34,13 +34,13 @@ export const getAllHoldings = async (dispatch) => {
 export const createHoldings = async (objectArray, dispatch) => {
     try {
         objectArray.map(async (holding) => {
-                return await holdingsDb.post({
-                    _id: new Date().toISOString(),
+                return await db.post({
+                    id: uuid(),
                     type: 'holding',
                     ticker: holding.ticker,
                     shares: holding.shares,
                     cost: holding.cost,
-                    createdAt: new Date().toISOString()
+                    createdDate: new Date().toISOString()
                 })
             })
         await getAllHoldings(dispatch)
@@ -52,7 +52,7 @@ export const createHoldings = async (objectArray, dispatch) => {
 // Read a holding
 export const readHolding = async (id) => {
     try {
-        const response = await holdingsDb.get(id);
+        const response = await db.get(id);
         console.log(response);
     } catch (error) {
         console.error(error);
@@ -62,10 +62,10 @@ export const readHolding = async (id) => {
 // Update a holding
 export const updateHolding = async (id, shares, cost, dispatch) => {
     try {
-        const holding = await holdingsDb.get(id);
+        const holding = await db.get(id);
         holding.shares = shares;
         holding.cost = cost;
-        const response = await holdingsDb.put(holding);
+        const response = await db.put(holding);
         dispatch(updateHoldings(
             {
                 id: id,
@@ -81,8 +81,8 @@ export const updateHolding = async (id, shares, cost, dispatch) => {
 // Delete a holding
 export const deleteHolding = async (id, dispatch) => {
     try {
-        const holding = await holdingsDb.get(id);
-        const response = await holdingsDb.remove(holding);
+        const holding = await db.get(id);
+        const response = await db.remove(holding);
         console.log(response);
         await getAllHoldings(dispatch)
 
@@ -90,3 +90,29 @@ export const deleteHolding = async (id, dispatch) => {
         console.error(error);
     }
 };
+
+export const getMarketData = async () => {
+    try {
+        const response = await db.find({
+          selector: {
+            type: 'marketData'
+          }
+        });
+        return response.docs[0]
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+export const saveMarketData = async (data) => {
+    try {
+        await db.post({
+            id: uuid(),
+            type: 'marketData',
+            ...data,
+        })
+    } catch (error) {
+        console.error(error);
+    }
+}

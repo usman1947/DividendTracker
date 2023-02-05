@@ -48,7 +48,7 @@ export const stylesTheme = createTheme({
                     },
                 },
                 columnHeader: {
-                    fontSize: '16px',
+                    fontSize: '14px',
                     "&:focus": {
                         outline: 'none',
                     },
@@ -59,7 +59,6 @@ export const stylesTheme = createTheme({
                 footerContainer: {
                     border: 'none'
                 },
-               
             }
         },
         MuiTypography : {
