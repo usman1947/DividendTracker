@@ -11,10 +11,14 @@ export const holdingSlice = createSlice({
     fetchHoldings: (state, action) => {
       state.value = action.payload
     },
+    updateHoldings: (state, action) => {
+      let updatedObj = state.value.find(o => o._id === action.payload.id)
+      Object.assign(updatedObj, action.payload.updatedObject)
+    },
   },
 });
 
-export const { fetchHoldings } = holdingSlice.actions;
+export const { fetchHoldings, updateHoldings } = holdingSlice.actions;
 
 export const selectHoldings = (state) => state.holdings.value;
 

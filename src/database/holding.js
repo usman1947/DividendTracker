@@ -1,7 +1,7 @@
 import PouchDB from 'pouchdb';
 import PouchDBAdapterIdb from 'pouchdb-adapter-idb';
 import PouchDBFind from 'pouchdb-find';
-import { fetchHoldings } from 'services/holdingSlice';
+import { fetchHoldings, updateHoldings } from 'services/holdingSlice';
 PouchDB.plugin(PouchDBFind);
 PouchDB.plugin(PouchDBAdapterIdb);
 
@@ -60,13 +60,18 @@ export const readHolding = async (id) => {
 };
   
 // Update a holding
-export const updateHolding = async (id, ticker, shares, cost) => {
+export const updateHolding = async (id, shares, cost, dispatch) => {
     try {
         const holding = await holdingsDb.get(id);
-        holding.ticker = ticker;
         holding.shares = shares;
         holding.cost = cost;
         const response = await holdingsDb.put(holding);
+        dispatch(updateHoldings(
+            {
+                id: id,
+                updatedObject: holding
+            },
+        ))
         console.log(response);
     } catch (error) {
         console.error(error);
@@ -74,11 +79,13 @@ export const updateHolding = async (id, ticker, shares, cost) => {
 };
   
 // Delete a holding
-export const deleteHolding = async (id) => {
+export const deleteHolding = async (id, dispatch) => {
     try {
         const holding = await holdingsDb.get(id);
         const response = await holdingsDb.remove(holding);
         console.log(response);
+        await getAllHoldings(dispatch)
+
     } catch (error) {
         console.error(error);
     }
