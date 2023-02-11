@@ -107,6 +107,12 @@ export const getMarketData = async () => {
 
 export const saveMarketData = async (data) => {
     try {
+        const existingMarketData = await db.find({
+            selector: { type: 'marketData' }
+        });
+        existingMarketData.docs.forEach(async element => {
+            await db.remove(element);
+        });
         await db.post({
             id: uuid(),
             type: 'marketData',
