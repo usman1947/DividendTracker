@@ -22,13 +22,13 @@ export function updateObjectInMapByKey(map, key, updatedValue){
     return newMap
 }
 
-export function getLastBusinessDay(minusDay = -1){
+export function getLastBusinessDay(minusDay = -2){
 	const bDays = businessDays({state: "pa"});
     const lastDay = DateTime.now().plus({days: minusDay})
     if (bDays.check(lastDay)){
         return lastDay.toFormat('yyyy-MM-dd')
     } else {
-        return getLastBusinessDay(minusDay - 1)
+        return getLastBusinessDay(minusDay - 2)
     }
 }
 
