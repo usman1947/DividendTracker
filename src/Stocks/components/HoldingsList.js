@@ -91,7 +91,7 @@ const HoldingsList = (props) => {
         return: formatNumber(value - cost)
       }
     })
-    console.log(holdings)
+
     return (
       <DataGrid
       rows={rowsData}
