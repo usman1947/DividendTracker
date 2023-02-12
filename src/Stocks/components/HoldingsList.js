@@ -83,7 +83,7 @@ const columns = [
 
 const HoldingsList = (props) => {
 
-    const { holdings } = props;
+    const { holdings, isFetching } = props;
     const taxRate = 30 
     const marketData = useSelector(selectMarketData)
     const stocksData = useSelector(selectStocksData)
@@ -139,6 +139,7 @@ const HoldingsList = (props) => {
       disableVirtualization
       getRowId={(row) => row.id}
       headerHeight={40}
+      loading={isFetching}
       />
     );
 }
