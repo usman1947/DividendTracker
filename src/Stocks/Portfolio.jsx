@@ -16,7 +16,7 @@ const Portfolio = () => {
       <Box sx={{height: '50px', width: '100%', display: 'flex', justifyContent: 'flex-end'}}>
         <Stack direction='row' spacing={1} alignItems="center">
           <EditHoldingDialog/>
-          <AddHoldingDialog/>
+          <AddHoldingDialog currentHoldings={holdings}/>
         </Stack>
       </Box>
       {isNullOrEmpty(holdings) ?
