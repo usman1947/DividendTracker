@@ -8,6 +8,8 @@ import { useDispatch } from 'react-redux';
 import SearchStocks from 'stocks/components/SearchStocks'
 import { isNullOrEmpty, updateObjectInMapByKey } from 'util/Utility';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useLazyGetStocksDataQuery } from 'services/api'
+import { uniq } from 'lodash'
 
 const AddHoldingInputConfig = [
     {
@@ -32,11 +34,13 @@ const AddHoldingInputConfig = [
     },
 ]
 
-const AddHoldingDialog = () => {
+const AddHoldingDialog = (props) => {
 
+    const { currentHoldings } = props;
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
     const [holdings, setHoldings] = useState(new Map());
+	const [triggerGetStocksData] = useLazyGetStocksDataQuery()
 
     function clearAndClose(){
         setOpen(false);
@@ -66,6 +70,11 @@ const AddHoldingDialog = () => {
     function submitHoldings(e){
         e.preventDefault();
         createHoldings(Array.from(holdings.values()), dispatch)
+        const stocks = uniq(isNullOrEmpty(currentHoldings) ? 
+                        Array.from(holdings.values()) : 
+                        [...currentHoldings, ...Array.from(holdings.values())])
+        const tickers = stocks.map(r => r.ticker).join(',')
+        triggerGetStocksData(tickers)
         clearAndClose()
     }
 
