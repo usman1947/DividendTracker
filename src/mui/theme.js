@@ -48,7 +48,8 @@ export const stylesTheme = createTheme({
                     },
                 },
                 columnHeader: {
-                    fontSize: '14px',
+                    fontSize: '12px',
+                    color: colorsTheme.palette.secondary.main,
                     "&:focus": {
                         outline: 'none',
                     },
@@ -69,21 +70,8 @@ export const stylesTheme = createTheme({
             },
             variants: [
                 {
-                    props: { variant: 'h7' },
+                    props: { type: 'secondary' },
                     style: {
-                        fontSize: colorsTheme.font.size.h7
-                    },
-                },
-                {
-                    props: { variant: 'h8' },
-                    style: {
-                        fontSize: colorsTheme.font.size.h8
-                    },
-                },
-                {
-                    props: { variant: 'h8-secondary' },
-                    style: {
-                        fontSize: colorsTheme.font.size.h8,
                         color: colorsTheme.palette.secondary.main
                     },
                 },
