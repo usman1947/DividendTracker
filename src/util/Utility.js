@@ -32,6 +32,10 @@ export function getLastBusinessDay(minusDay = -2){
     }
 }
 
+export function getCurrentMonthAndYear(){
+    return DateTime.now().toFormat('MM-yyyy')
+}
+
 export function getReturnPercentage(value, cost){
     return `${Math.round((((value - cost) / cost) * 100) * 100) / 100}%`
 }
