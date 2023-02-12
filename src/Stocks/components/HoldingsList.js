@@ -4,12 +4,20 @@ import { useSelector } from 'react-redux';
 import { selectMarketData } from 'services/marketDataSlice';
 import { selectStocksData } from 'services/stocksDataSlice';
 import { getReturnPercentage, formatCurrencyNumber, formatPercentage } from 'util/Utility'
+import { Sectors } from 'util/Constants';
+import { Stack, Typography } from '@mui/material';
+import NoRecordsImage from 'assets/no-records.png'
 
 const columns = [
   { 
     field: 'ticker', 
     headerName: 'Ticker', 
     width: 90 
+  },
+  { 
+    field: 'sector', 
+    headerName: 'Sector', 
+    width: 120 
   },
   {
     field: 'shares',
@@ -57,9 +65,9 @@ const columns = [
     width: 70,
   },
   {
-    field: 'growthRate',
+    field: 'fiveYearDividendGrowth',
     headerName: '5 Year Growth Rate %',
-    width: 50,
+    width: 70,
   },
   {
     field: 'annualIncome',
@@ -93,6 +101,8 @@ const HoldingsList = (props) => {
       const annualIncome = dividendAmount * shares
       const annualIncomeAfterTax = annualIncome * (100 - taxRate)/100
       const yieldOnCost = annualIncome / cost
+      const fiveYearDividendGrowth = holding.fiveYearDividendGrowth/100
+      const sector = Sectors[holding.sector]
       return {
         ...holding,
         cost: formatCurrencyNumber(cost),
@@ -105,6 +115,8 @@ const HoldingsList = (props) => {
         annualIncome: formatCurrencyNumber(annualIncome),
         yoc: formatPercentage(yieldOnCost),
         annualIncomeAfterTax: formatCurrencyNumber(annualIncomeAfterTax),
+        fiveYearDividendGrowth: formatPercentage(fiveYearDividendGrowth),
+        sector: sector
       }
     })
 
