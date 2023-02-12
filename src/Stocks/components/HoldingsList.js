@@ -2,7 +2,8 @@ import React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { useSelector } from 'react-redux';
 import { selectMarketData } from 'services/marketDataSlice';
-import { getReturnPercentage, formatNumber } from 'util/Utility'
+import { selectStocksData } from 'services/stocksDataSlice';
+import { getReturnPercentage, formatCurrencyNumber, formatPercentage } from 'util/Utility'
 
 const columns = [
   { 
@@ -33,7 +34,7 @@ const columns = [
   {
     field: 'value',
     headerName: 'Value',
-    width: 100,
+    width: 70,
   },
   {
     field: 'returnPercentage',
@@ -48,12 +49,12 @@ const columns = [
   {
     field: 'yoc',
     headerName: 'YOC',
-    width: 50,
+    width: 70,
   },
   {
     field: 'yield',
     headerName: 'Yield',
-    width: 50,
+    width: 70,
   },
   {
     field: 'growthRate',
@@ -62,33 +63,48 @@ const columns = [
   },
   {
     field: 'annualIncome',
-    headerName: 'Annual Income',
-    width: 80,
+    headerName: 'AI',
+    width: 70,
   },
   {
     field: 'annualIncomeAfterTax',
-    headerName: 'Annual Income After Tax',
-    width: 80,
+    headerName: 'AIT',
+    width: 70,
   },
 ];
 
 const HoldingsList = (props) => {
 
     const { holdings } = props;
+    const taxRate = 30 
     const marketData = useSelector(selectMarketData)
+    const stocksData = useSelector(selectStocksData)
     const holdingsData = marketData.filter(d => holdings.findIndex(h => d.T === h.ticker) !== -1)
+    
     const rowsData = holdings.map(holding => {
       const priceData = holdingsData.find(d => d.T === holding.ticker)
-      const price = priceData?.c
-      const cost = holding.shares * holding.cost
-      const value = holding.shares * price
+      const stockDetailData = stocksData.find(d => d.symbol === holding.ticker)
+      const price = priceData?.c ?? stockDetailData?.regularMarketPrice
+      const shares = holding.shares
+      const cost = shares* holding.cost
+      const value = shares * price
+      const annualYield = stockDetailData?.trailingAnnualDividendYield
+      const dividendAmount = stockDetailData?.trailingAnnualDividendRate
+      const annualIncome = dividendAmount * shares
+      const annualIncomeAfterTax = annualIncome * (100 - taxRate)/100
+      const yieldOnCost = annualIncome / cost
       return {
         ...holding,
-        price: formatNumber(price),
-        totalCost: formatNumber(cost),
-        value: formatNumber(value),
+        cost: formatCurrencyNumber(cost),
+        price: formatCurrencyNumber(price),
+        totalCost: formatCurrencyNumber(cost),
+        value: formatCurrencyNumber(value),
         returnPercentage: getReturnPercentage(value, cost),
-        return: formatNumber(value - cost)
+        return: formatCurrencyNumber(value - cost),
+        yield: formatPercentage(annualYield),
+        annualIncome: formatCurrencyNumber(annualIncome),
+        yoc: formatPercentage(yieldOnCost),
+        annualIncomeAfterTax: formatCurrencyNumber(annualIncomeAfterTax),
       }
     })
 

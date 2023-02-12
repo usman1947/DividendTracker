@@ -37,9 +37,13 @@ export function getCurrentMonthAndYear(){
 }
 
 export function getReturnPercentage(value, cost){
-    return `${Math.round((((value - cost) / cost) * 100) * 100) / 100}%`
+    return formatPercentage((value - cost) / cost)
 }
 
-export function formatNumber(number){
-    return new Intl.NumberFormat('en-GB', { style: 'decimal', currency: 'USD', maximumFractionDigits: 0 }).format(number)
+export function formatCurrencyNumber(number){
+    return new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'USD', currencyDisplay: 'narrowSymbol', maximumFractionDigits: 0 }).format(number)
+}
+
+export function formatPercentage(percentage){
+    return new Intl.NumberFormat('en-GB', { style: 'percent', maximumFractionDigits: 2 }).format(percentage)
 }
