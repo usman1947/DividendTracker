@@ -115,7 +115,7 @@ const AddHoldingDialog = (props) => {
             scroll='paper' 
             sx={{ height: '100vh'}}
             PaperProps={{
-                sx : { height : '100%'}
+                sx : { height : '100%', width:'600px'}
             }}>
             <DialogTitle>Add Holding</DialogTitle>
             <DialogContent>
@@ -146,7 +146,7 @@ const AddHoldingDialog = (props) => {
                         const stock = holdings.get(key)
                         return (
                             <Stack direction="row" justifyContent="space-between" key={`stack-${key}`} sx={{my: '8px', position: 'relative', pr: '35px' }}>
-                                <Box key={`container-${key}`} display='flex' flexDirection='column' sx={{maxWidth: '45%'}}>
+                                <Box key={`container-${key}`} display='flex' flexDirection='column' sx={{maxWidth: '30%', width: '30%'}}>
                                     <Typography variant='h6'>
                                         {stock.ticker}
                                     </Typography>
