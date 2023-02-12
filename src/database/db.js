@@ -41,6 +41,8 @@ export const createHoldings = async (objectArray, dispatch) => {
                     ticker: holding.ticker,
                     shares: holding.shares,
                     cost: holding.cost,
+                    sector: holding.sector,
+                    fiveYearDividendGrowth: holding.fiveYearDividendGrowth,
                     createdDate: new Date().toISOString()
                 })
             })
