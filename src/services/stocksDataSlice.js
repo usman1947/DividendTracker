@@ -16,6 +16,6 @@ export const stocksDataSlice = createSlice({
 
 export const { addStocksData } = stocksDataSlice.actions;
 
-export const selectMarketData = (state) => state.stocksData.value;
+export const selectStocksData = (state) => state.stocksData.value;
 
 export default stocksDataSlice.reducer;
