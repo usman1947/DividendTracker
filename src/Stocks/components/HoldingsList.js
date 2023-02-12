@@ -7,12 +7,13 @@ import { getReturnPercentage, formatCurrencyNumber, formatPercentage } from 'uti
 import { Sectors } from 'util/Constants';
 import { Stack, Typography } from '@mui/material';
 import NoRecordsImage from 'assets/no-records.png'
+import Price52WeeksRange from 'stocks/components/Price52WeeksRange.jsx'
 
 const columns = [
   { 
     field: 'ticker', 
     headerName: 'Ticker', 
-    width: 90 
+    width: 70 
   },
   { 
     field: 'sector', 
@@ -33,6 +34,14 @@ const columns = [
     field: 'price',
     headerName: 'Price',
     width: 80,
+  },
+  {
+    field: 'range',
+    headerName: '52 Weeks Range',
+    width: 120,
+    renderCell: (params) => (
+      params.value
+    )
   },
   {
     field: 'value',
@@ -105,6 +114,9 @@ const HoldingsList = (props) => {
       const yieldOnCost = annualIncome / cost
       const fiveYearDividendGrowth = holding.fiveYearDividendGrowth/100
       const sector = Sectors[holding.sector]
+      const fiftyTwoWeekHigh = stockDetailData?.fiftyTwoWeekHigh
+      const fiftyTwoWeekLow = stockDetailData?.fiftyTwoWeekLow
+      const range = <Price52WeeksRange low={fiftyTwoWeekLow} high={fiftyTwoWeekHigh} price={price}/>
       return {
         ...holding,
         cost: formatCurrencyNumber(cost),
@@ -118,7 +130,8 @@ const HoldingsList = (props) => {
         yoc: formatPercentage(yieldOnCost),
         annualIncomeAfterTax: formatCurrencyNumber(annualIncomeAfterTax),
         fiveYearDividendGrowth: formatPercentage(fiveYearDividendGrowth),
-        sector: sector
+        sector: sector,
+        range: range
       }
     })
 

@@ -21,6 +21,7 @@ export const colorsTheme = createTheme({
         },
         colors: {
             white: '#FFFFFF',
+            black: 'black'
         }
     },
     font: {
@@ -146,6 +147,30 @@ export const stylesTheme = createTheme({
                     },
                 },
             ],
+        },
+        MuiSlider: {
+            variants: [
+                {
+                    props: { variant: '52-week-range' },
+                    style:  {
+                        '& .MuiSlider-markLabel': {
+                            color: colorsTheme.palette.colors.black,
+                        },
+                        '& .MuiSlider-rail': {
+                            top: '70%'
+                        },
+                        '& .MuiSlider-track': {
+                            top: '70%'
+                        },
+                        '& .MuiSlider-thumb': {
+                            top: '70%'
+                        },
+                        '& .MuiSlider-mark': {
+                            display: 'none'
+                        }
+                    }
+                },
+            ]
         }
     }
 });
