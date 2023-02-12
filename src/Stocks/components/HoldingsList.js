@@ -35,11 +35,6 @@ const columns = [
     width: 80,
   },
   {
-    field: 'totalCost',
-    headerName: 'Total Cost',
-    width: 100,
-  },
-  {
     field: 'value',
     headerName: 'Value',
     width: 70,
@@ -52,7 +47,12 @@ const columns = [
   {
     field: 'return',
     headerName: 'Return',
-    width: 80,
+    width: 60,
+  },
+  {
+    field: 'weight',
+    headerName: 'Weight',
+    width: 70,
   },
   {
     field: 'yoc',
@@ -88,14 +88,16 @@ const HoldingsList = (props) => {
     const marketData = useSelector(selectMarketData)
     const stocksData = useSelector(selectStocksData)
     const holdingsData = marketData.filter(d => holdings.findIndex(h => d.T === h.ticker) !== -1)
+    let totalValue = 0
     
-    const rowsData = holdings.map(holding => {
+    let rowsData = holdings.map(holding => {
       const priceData = holdingsData.find(d => d.T === holding.ticker)
       const stockDetailData = stocksData.find(d => d.symbol === holding.ticker)
       const price = priceData?.c ?? stockDetailData?.regularMarketPrice
       const shares = holding.shares
       const cost = shares* holding.cost
       const value = shares * price
+      totalValue += value
       const annualYield = stockDetailData?.trailingAnnualDividendYield
       const dividendAmount = stockDetailData?.trailingAnnualDividendRate
       const annualIncome = dividendAmount * shares
@@ -107,7 +109,7 @@ const HoldingsList = (props) => {
         ...holding,
         cost: formatCurrencyNumber(cost),
         price: formatCurrencyNumber(price),
-        totalCost: formatCurrencyNumber(cost),
+        unformattedValue: value,
         value: formatCurrencyNumber(value),
         returnPercentage: getReturnPercentage(value, cost),
         return: formatCurrencyNumber(value - cost),
@@ -118,6 +120,11 @@ const HoldingsList = (props) => {
         fiveYearDividendGrowth: formatPercentage(fiveYearDividendGrowth),
         sector: sector
       }
+    })
+
+    //push after mapping values
+    rowsData.forEach(r => {
+      r.weight = formatPercentage(r.unformattedValue / totalValue)
     })
 
     return (
