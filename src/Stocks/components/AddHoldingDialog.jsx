@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, IconButton, Box, Typography, Divider } from '@mui/material';
 import GetInputComponent from 'common-components/input/GetInputComponent'
-import { InputTypesEnum } from 'util/Constants'
+import { InputTypesEnum, Sectors } from 'util/Constants'
 import { v4 as uuid } from 'uuid';
 import { createHoldings } from 'database/db.js'
 import { useDispatch } from 'react-redux';
@@ -13,13 +13,21 @@ import { uniq } from 'lodash'
 
 const AddHoldingInputConfig = [
     {
+        id: 'sector',
+        required: true,
+        label: 'Sector',
+        type: InputTypesEnum._SELECT,
+        sx: {
+            width: '100px',
+        }
+    },
+    {
         id: 'shares',
         required: true,
         label: 'Shares',
         type: InputTypesEnum._NUMBER,
         sx: {
-            width: '100px',
-            marginRight: '8px'
+            width: '72px',
         }
     },
     {
@@ -28,8 +36,16 @@ const AddHoldingInputConfig = [
         label: 'Avg Cost',
         type: InputTypesEnum._NUMBER,
         sx: {
-            width: '100px',
-            marginRight: '8px'
+            width: '72px',
+        }
+    },
+    {
+        id: 'fiveYearDividendGrowth',
+        required: true,
+        label: '5 Year Dividend Growth %',
+        type: InputTypesEnum._NUMBER,
+        sx: {
+            width: '72px',
         }
     },
 ]
@@ -41,6 +57,14 @@ const AddHoldingDialog = (props) => {
     const [open, setOpen] = useState(false);
     const [holdings, setHoldings] = useState(new Map());
 	const [triggerGetStocksData] = useLazyGetStocksDataQuery()
+    const options = {
+        sector: Object.entries(Sectors).map(keyValuePair => (
+            {
+                label: keyValuePair[1],
+                value: keyValuePair[0]
+            }
+        ))
+    }
 
     function clearAndClose(){
         setOpen(false);
@@ -56,6 +80,8 @@ const AddHoldingDialog = (props) => {
                 region: stock.region,
                 shares: "",
                 cost: "",
+                sector: "",
+                fiveYearDividendGrowth: "",
             })
             setHoldings(new Map(newMap))
         }
@@ -89,7 +115,7 @@ const AddHoldingDialog = (props) => {
             scroll='paper' 
             sx={{ height: '100vh'}}
             PaperProps={{
-                sx : { height : '100%'}
+                sx : { height : '100%', width:'600px'}
             }}>
             <DialogTitle>Add Holding</DialogTitle>
             <DialogContent>
@@ -101,7 +127,7 @@ const AddHoldingDialog = (props) => {
                     boxSizing: 'border-box'
                 }}>
                     <SearchStocks 
-                    width='500px'
+                    width='550px'
                     onChange={(e, value, eventType) => {
                         if (eventType === 'selectOption'){
                             addHolding(value)
@@ -109,10 +135,10 @@ const AddHoldingDialog = (props) => {
                     }}
                     />
                 </Box>
-                <Typography variant='h7'>
+                <Typography variant='subtitle1'>
                     {`${isNullOrEmpty(holdings) ? 
                     'Choose symbols you would like to add:' : 
-                    'Declare the number of Shares and Avg Cost'
+                    'Declare the Sector, Shares, Avg Cost and 5 Year Avg Dividend Growth %'
                     }`}
                 </Typography>
                 <form onSubmit={submitHoldings} id='holdings' style={{marginTop: '16px'}}>
@@ -120,21 +146,22 @@ const AddHoldingDialog = (props) => {
                         const stock = holdings.get(key)
                         return (
                             <Stack direction="row" justifyContent="space-between" key={`stack-${key}`} sx={{my: '8px', position: 'relative', pr: '35px' }}>
-                                <Box key={`container-${key}`} display='flex' flexDirection='column' mr='16px' sx={{maxWidth: '45%'}}>
+                                <Box key={`container-${key}`} display='flex' flexDirection='column' sx={{maxWidth: '30%', width: '30%'}}>
                                     <Typography variant='h6'>
                                         {stock.ticker}
                                     </Typography>
                                     <Box display='flex'>
-                                        <Typography variant='h8-secondary' noWrap>
+                                        <Typography variant='subtitle2' type='secondary' noWrap>
                                             {stock.name}
                                         </Typography>
                                         <Divider orientation="vertical" variant="middle" sx={{m:'0 4px'}}/>
-                                        <Typography variant='h8-secondary' noWrap>
+                                        <Typography variant='subtitle2' type='secondary' noWrap>
                                             {stock.region}
                                         </Typography>
                                     </Box>
                                 </Box>
-                                <Box display='flex'>
+                                <Divider orientation="vertical" variant="middle" flexItem sx={{m:'0 8px'}}/>
+                                <Stack direction='row' spacing={1}>
                                     {AddHoldingInputConfig.map((input) => {
                                         return (
                                             <GetInputComponent
@@ -143,14 +170,15 @@ const AddHoldingDialog = (props) => {
                                             setInput={(newValue) => setHoldings(
                                                 updateObjectInMapByKey(holdings, key, newValue)
                                             )}
+                                            options={options[input.id]}
                                             input={input}
                                             />
                                         )
                                     })}
-                                </Box>
+                                </Stack>
                                 <IconButton 
                                 onClick={() => deleteHolding(key)}
-                                sx={{position: 'absolute', top: 'calc(50% - 20px)', right: '0px'}}>
+                                sx={{position: 'absolute', top: 'calc(50% - 20px)', right: '-16px'}}>
                                     <DeleteIcon/>
                                 </IconButton>
                             </Stack>

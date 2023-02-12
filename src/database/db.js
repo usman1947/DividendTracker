@@ -1,7 +1,7 @@
 import PouchDB from 'pouchdb';
 import PouchDBAdapterIdb from 'pouchdb-adapter-idb';
 import PouchDBFind from 'pouchdb-find';
-import { fetchHoldings, updateHoldings } from 'services/holdingSlice';
+import { fetchHoldings, updateHoldings, isFetching } from 'services/holdingSlice';
 import { v4 as uuid } from 'uuid';
 
 PouchDB.plugin(PouchDBFind);
@@ -17,6 +17,7 @@ const getDb = () => {
 const db = getDb();
 
 export const getAllHoldings = async (dispatch) => {
+    dispatch(isFetching(true))
     try {
       const response = await db.find({
         selector: {
@@ -24,6 +25,7 @@ export const getAllHoldings = async (dispatch) => {
         }
       });
       dispatch(fetchHoldings(response.docs))
+        dispatch(isFetching(false))
       return response.docs
     } catch (error) {
       console.log(error);
@@ -41,6 +43,8 @@ export const createHoldings = async (objectArray, dispatch) => {
                     ticker: holding.ticker,
                     shares: holding.shares,
                     cost: holding.cost,
+                    sector: holding.sector,
+                    fiveYearDividendGrowth: holding.fiveYearDividendGrowth,
                     createdDate: new Date().toISOString()
                 })
             })

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Box, Skeleton, Stack } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { selectHoldings } from 'services/holdingSlice';
+import { selectHoldings, isFetchingHoldings } from 'services/holdingSlice';
 import AddHoldingDialog from 'stocks/components/AddHoldingDialog'
 import EditHoldingDialog from 'stocks/components/EditHoldingDialog'
 import OutdatedDataDisclaimer from 'stocks/components/OutdatedDataDisclaimer'
@@ -10,6 +10,7 @@ import { isNullOrEmpty } from 'util/Utility';
 
 const Portfolio = () => {
   const holdings = useSelector(selectHoldings)
+  const isFetching = useSelector(isFetchingHoldings)
 
   return (
     <Box sx={{height: '100%', width: '100%', display: 'flex', flexDirection: 'column'}}>
@@ -19,13 +20,12 @@ const Portfolio = () => {
           <AddHoldingDialog currentHoldings={holdings}/>
         </Stack>
       </Box>
-      {isNullOrEmpty(holdings) ?
-      <Skeleton/> : 
       <HoldingsList 
-      sx={{flex: 1}}
       holdings={holdings}
-      />}
-      <OutdatedDataDisclaimer sx={{marginBottom:'-16px'}} holdings={holdings}/>
+      isFetching={isFetching}
+      />
+      {!isNullOrEmpty(holdings) &&
+      <OutdatedDataDisclaimer sx={{marginBottom:'-16px'}} holdings={holdings}/>}
     </Box>
   );
 }

@@ -21,6 +21,7 @@ export const colorsTheme = createTheme({
         },
         colors: {
             white: '#FFFFFF',
+            black: 'black'
         }
     },
     font: {
@@ -48,7 +49,8 @@ export const stylesTheme = createTheme({
                     },
                 },
                 columnHeader: {
-                    fontSize: '14px',
+                    fontSize: '12px',
+                    color: colorsTheme.palette.secondary.main,
                     "&:focus": {
                         outline: 'none',
                     },
@@ -69,21 +71,8 @@ export const stylesTheme = createTheme({
             },
             variants: [
                 {
-                    props: { variant: 'h7' },
+                    props: { type: 'secondary' },
                     style: {
-                        fontSize: colorsTheme.font.size.h7
-                    },
-                },
-                {
-                    props: { variant: 'h8' },
-                    style: {
-                        fontSize: colorsTheme.font.size.h8
-                    },
-                },
-                {
-                    props: { variant: 'h8-secondary' },
-                    style: {
-                        fontSize: colorsTheme.font.size.h8,
                         color: colorsTheme.palette.secondary.main
                     },
                 },
@@ -158,6 +147,30 @@ export const stylesTheme = createTheme({
                     },
                 },
             ],
+        },
+        MuiSlider: {
+            variants: [
+                {
+                    props: { variant: '52-week-range' },
+                    style:  {
+                        '& .MuiSlider-markLabel': {
+                            color: colorsTheme.palette.colors.black,
+                        },
+                        '& .MuiSlider-rail': {
+                            top: '70%'
+                        },
+                        '& .MuiSlider-track': {
+                            top: '70%'
+                        },
+                        '& .MuiSlider-thumb': {
+                            top: '70%'
+                        },
+                        '& .MuiSlider-mark': {
+                            display: 'none'
+                        }
+                    }
+                },
+            ]
         }
     }
 });

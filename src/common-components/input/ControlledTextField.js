@@ -17,7 +17,7 @@ const ControlledTextField = (props) => {
 
     return (
         <TextField
-        value={input[id]}
+        value={input[id] ?? ''}
         variant='standard'
         size='small'
         onChange={onChange}
