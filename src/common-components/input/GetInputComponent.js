@@ -1,5 +1,6 @@
 import React from 'react';
 import ControlledTextField from 'common-components/input/ControlledTextField'
+import ControlledSelectField from 'common-components/input/ControlledSelectField'
 import { InputTypesEnum } from 'util/Constants'
 
 export const GetInputComponent = (props) => {
@@ -20,6 +21,13 @@ export const GetInputComponent = (props) => {
             />
         case InputTypesEnum._NUMBER:
             return <ControlledTextField
+            {...rest}
+            {...input}
+            setInput={setInput}
+            input={getInput}
+            />
+        case InputTypesEnum._SELECT:
+            return <ControlledSelectField
             {...rest}
             {...input}
             setInput={setInput}
