@@ -15,4 +15,19 @@ export class ApiKey {
 export class InputTypesEnum {
     static _TEXT = "text";
     static _NUMBER = "number";
+    static _SELECT = "select";
+}
+
+export const Sectors = {
+    _communications: "Communications",
+    _discretionary: "Discretionary",
+    _energy: "Energy",
+    _financials: "Financials",
+    _healthCare: "Healthcare",
+    _industrials: "Industrials",
+    _materials: "Materials",
+    _realEstate: "Real Estate",
+    _staples: "Staples",
+    _technology: "Technology",
+    _utilities: "Utilities",
 }
