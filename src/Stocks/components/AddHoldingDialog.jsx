@@ -177,7 +177,7 @@ const AddHoldingDialog = (props) => {
                                     })}
                                 </Stack>
                                 <IconButton 
-                                onClick={() => deleteHolding(key)} disableRipple
+                                onClick={() => deleteHolding(key)}
                                 sx={{position: 'absolute', top: 'calc(50% - 20px)', right: '-16px'}}>
                                     <DeleteIcon/>
                                 </IconButton>
