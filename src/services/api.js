@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { getLastBusinessDay } from 'util/Utility'
-import { saveMarketData } from 'database/db';
+import { getLastBusinessDay, getCurrentMonthAndYear } from 'util/Utility'
+import { saveMarketData, saveStocksData } from 'database/db';
 import { addMarketData } from 'services/marketDataSlice'
+import { addStocksData } from 'services/stocksDataSlice'
 
 //ALPHA ADVANTAGE
 const _ALPHA_ADVANTAGE_ENDPOINT = 'https://www.alphavantage.co/query';
@@ -60,11 +61,34 @@ export const api = createApi({
                     //TODO error management
                 }
             },
+        }),
+        getStocksData: builder.query({
+            //uses All origins pass through proxy to access yahoo finance api
+            query: (tickers) => ({
+                url: `https://api.allorigins.win/get?url=${encodeURIComponent(`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${tickers}`)}`,
+                providesTags:['StocksData']
+            }),
+            transformResponse: (response) => {
+                return {
+                    data: JSON.parse(response.contents).quoteResponse.result, 
+                    fetchedMonthAndYear: getCurrentMonthAndYear()
+                }
+            },
+            async onQueryStarted({tickers}, { queryFulfilled }) {
+                try {
+                    const { data: response } = await queryFulfilled
+                    await saveStocksData(response)
+				    addStocksData(response.data)
+                } catch {
+                    //TODO error management
+                }
+            },
         })
     }),
 })
 
 export const { 
     useLazyGetSearchStockQuery,
-    useLazyGetStockMarketDataQuery
+    useLazyGetStockMarketDataQuery,
+    useLazyGetStocksDataQuery
 } = api;

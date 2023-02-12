@@ -24,6 +24,7 @@ export const getAllHoldings = async (dispatch) => {
         }
       });
       dispatch(fetchHoldings(response.docs))
+      return response.docs
     } catch (error) {
       console.log(error);
       throw error;
@@ -116,6 +117,38 @@ export const saveMarketData = async (data) => {
         await db.post({
             id: uuid(),
             type: 'marketData',
+            ...data,
+        })
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export const getStocksData = async () => {
+    try {
+        const response = await db.find({
+          selector: {
+            type: 'stocksData'
+          }
+        });
+        return response.docs[0]
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+export const saveStocksData = async (data) => {
+    try {
+        const existingMarketData = await db.find({
+            selector: { type: 'stocksData' }
+        });
+        existingMarketData.docs.forEach(async element => {
+            await db.remove(element);
+        });
+        await db.post({
+            id: uuid(),
+            type: 'stocksData',
             ...data,
         })
     } catch (error) {
