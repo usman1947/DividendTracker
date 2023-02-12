@@ -125,11 +125,26 @@ const HoldingsList = (props) => {
       rows={rowsData}
       columns={columns}
       autoPageSize
+      components={{
+        NoRowsOverlay: CustomNoRowsOverlay,
+      }}
       disableSelectionOnClick
       disableVirtualization
       getRowId={(row) => row.id}
+      headerHeight={40}
       />
     );
+}
+
+const CustomNoRowsOverlay = () => {
+  return (
+    <Stack with='100%' height='100%' alignItems='center' justifyContent='center'>
+      <img src={NoRecordsImage} alt=""/>
+      <Typography variant='subtitle1'>
+        No holdings added, Please click +ADD to add holdings
+      </Typography>
+    </Stack>
+  );
 }
 
 export default HoldingsList

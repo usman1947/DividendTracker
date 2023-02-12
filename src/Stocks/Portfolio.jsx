@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Skeleton, Stack } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { selectHoldings } from 'services/holdingSlice';
 import AddHoldingDialog from 'stocks/components/AddHoldingDialog'
@@ -19,13 +19,12 @@ const Portfolio = () => {
           <AddHoldingDialog currentHoldings={holdings}/>
         </Stack>
       </Box>
-      {isNullOrEmpty(holdings) ?
-      <Skeleton/> : 
       <HoldingsList 
       sx={{flex: 1}}
       holdings={holdings}
-      />}
-      <OutdatedDataDisclaimer sx={{marginBottom:'-16px'}} holdings={holdings}/>
+      />
+      {!isNullOrEmpty(holdings) &&
+      <OutdatedDataDisclaimer sx={{marginBottom:'-16px'}} holdings={holdings}/>}
     </Box>
   );
 }
