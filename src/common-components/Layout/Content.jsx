@@ -3,12 +3,8 @@ import { Route, withRouter, Switch } from 'react-router-dom';
 import { _ROUTES } from 'config/page-route.jsx';
 import { PageSettings } from 'config/page-settings.js';
 import { useTheme, useMediaQuery, Box, Paper } from '@mui/material';
-import { useLazyGetStockMarketDataQuery, useLazyGetStocksDataQuery } from 'services/api'
-import { getLastBusinessDay, isNullOrEmpty, getCurrentMonthAndYear } from 'util/Utility';
-import { getMarketData, getAllHoldings, getStocksData } from 'database/db'
-import { addMarketData } from 'services/marketDataSlice'
-import { addStocksData } from 'services/stocksDataSlice'
-import { useDispatch } from 'react-redux';
+import { useLazyGetStocksDataQuery, useGetAllHoldingsQuery } from 'services/api'
+import { isNullOrEmpty } from 'util/Utility';
 
 const compareRoutes = (routePath, path) => {
 	const splitRoutePath = routePath.split('/').slice(1);
@@ -49,11 +45,9 @@ const PrivateRoute = (props) => {
 const Content = ({ history }) => {
 	const theme = useTheme()
 	const _context = useContext(PageSettings);
-	const dispatch = useDispatch();
-	const [triggerGetMarketData] = useLazyGetStockMarketDataQuery()
 	const [triggerGetStocksData] = useLazyGetStocksDataQuery()
-	const lastBusinessDay = getLastBusinessDay()
-	
+	const holdingsApi = useGetAllHoldingsQuery()
+
 	useEffect(() => {
 		var routes = _ROUTES;
 		setTitle(history.location.pathname, routes);
@@ -84,40 +78,13 @@ const Content = ({ history }) => {
         isXlDevices,
     ]);
 
-	async function updateMarketData(){
-		//gets the market data stored in db
-		//if no data in db makes api call to get
-		//pushes data in redux slice
-		await getMarketData().then((response) => {
-			if (isNullOrEmpty(response.data)){
-				triggerGetMarketData(lastBusinessDay)
-			} else {
-				dispatch(addMarketData(response.data))
-			}
-		})
-	}
-
-	async function fetchHoldings(){
-		await getAllHoldings(dispatch).then(async (holdings) => {
-			await getStocksData().then((stocksData) => {
-				//gets the stocks data stored in db
-				//updates stocks data monthly or if no data
-				//pushes data in redux slice
-				if (stocksData?.fetchedMonthAndYear !== getCurrentMonthAndYear()){
-					const tickers = holdings.map(r => r.ticker).join(',')
-					triggerGetStocksData(tickers)
-				} else {
-					dispatch(addStocksData(stocksData.data))
-				}
-			})
-		});
-	};
-
 	useEffect(() => {
-		updateMarketData()
-		fetchHoldings();
+		if (!isNullOrEmpty(holdingsApi.data)) {
+			const tickers = holdingsApi.data.map(r => r.ticker).join(',')
+			triggerGetStocksData(tickers)
+		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	},[])
+	},[holdingsApi.data])
 
 	return (
         <PageSettings.Consumer>
