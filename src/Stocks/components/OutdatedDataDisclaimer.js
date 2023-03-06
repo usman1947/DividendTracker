@@ -15,7 +15,7 @@ const OutdatedDataDisclaimer = ({sx}) => {
 
   return (
       <Stack direction='row' width='100%' spacing={1} alignItems='center' justifyContent='flex-end' sx={sx}>
-        <Typography variant='subtitle2' type='secondary'>
+        <Typography variant='subtitle2' color='secondary.main'>
           *Disclaimer* Market data is not updated periodically, To get latest market data please click refresh
         </Typography>
         <IconButton disableRipple size='small' onClick={updateMarketData}

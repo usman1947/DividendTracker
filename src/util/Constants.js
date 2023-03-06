@@ -31,3 +31,5 @@ export const Sectors = {
     _technology: "Technology",
     _utilities: "Utilities",
 }
+
+export const TaxRate = 30 

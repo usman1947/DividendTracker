@@ -23,12 +23,6 @@ export const colorsTheme = createTheme({
             white: '#FFFFFF',
             black: 'black'
         }
-    },
-    font: {
-        size: {
-            h7: '16px',
-            h8: '14px',
-        }
     }
 });
 
@@ -71,11 +65,17 @@ export const stylesTheme = createTheme({
             },
             variants: [
                 {
-                    props: { type: 'secondary' },
+                    props: { type: 'bold' },
                     style: {
-                        color: colorsTheme.palette.secondary.main
+                        fontWeight: 'bold'
                     },
                 },
+                {
+                    props: { variant: 'subtitle3' },
+                    style: {
+                        fontSize: '12px'
+                    }
+                }
             ],
         },
         MuiButton: {
