@@ -69,9 +69,8 @@ const AddHoldingDialog = () => {
 
     async function submitHoldings(e){
         e.preventDefault();
-        for (let [, value] of holdings) {
-            await saveHolding(value)
-        }
+        const payload = Array.from(holdings.values())
+        await saveHolding(payload)
         clearAndClose()
     }
 

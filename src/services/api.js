@@ -7,7 +7,7 @@ export const api = createApi({
     reducerPath: 'api',
     tagTypes: ['StocksData', 'Holdings'],
     baseQuery: fetchBaseQuery({ 
-        baseUrl: API_URL,
+        baseUrl: '',
     }),
     endpoints: (builder) => ({
         getSearchStock: builder.query({
@@ -20,10 +20,10 @@ export const api = createApi({
         getStocksData: builder.query({
             //uses All origins pass through proxy to access yahoo finance api
             query: (tickers) => ({
-                url: `https://api.allorigins.win/get?url=${encodeURIComponent(`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${tickers}`)}`,
+                url: `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${tickers}`)}`,
                 providesTags:['StocksData']
             }),
-            transformResponse: (response) => JSON.parse(response.contents).quoteResponse.result,
+            transformResponse: (response) => response.quoteResponse.result,
             async onQueryStarted({tickers}, { dispatch, queryFulfilled }) {
                 try {
                     const { data: response } = await queryFulfilled
@@ -40,10 +40,10 @@ export const api = createApi({
             providesTags:['Holdings']
         }),
         addHolding: builder.mutation({
-            query: (stock) => ({
-                url: `${API_URL}/addHolding`,
+            query: (stocks) => ({
+                url: `${API_URL}/addHoldings`,
                 method: 'POST',
-                body: stock,
+                body: stocks,
             }),
             invalidatesTags: ['Holdings']
         })
