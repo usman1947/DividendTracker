@@ -47,3 +47,7 @@ export function formatCurrencyNumber(number){
 export function formatPercentage(percentage){
     return new Intl.NumberFormat('en-GB', { style: 'percent', maximumFractionDigits: 2 }).format(percentage)
 }
+
+export function unFormatNumber(inputString){
+    return parseFloat(inputString.replace(/[,%$]/g, ""));
+}

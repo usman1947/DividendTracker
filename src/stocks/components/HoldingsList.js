@@ -3,6 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { Stack, Typography } from '@mui/material';
 import NoRecordsImage from 'assets/no-records.png'
 import { useGetAllHoldingsQuery } from 'services/api'
+import { unFormatNumber } from 'util/Utility'
 
 const columns = [
   { 
@@ -52,11 +53,29 @@ const columns = [
     field: 'returnPercentage',
     headerName: 'Return %',
     width: 70,
+    renderCell: (params) => {
+      const value = unFormatNumber(params.value)
+      return(
+      <Typography variant='subtitle2'
+      sx={{color : value < 0 ? 'red' : 'green'}}>
+        {params.value}
+      </Typography>
+      )
+    }
   },
   {
     field: 'return',
     headerName: 'Return',
     width: 60,
+    renderCell: (params) => {
+      const value = unFormatNumber(params.value)
+      return(
+      <Typography variant='subtitle2'
+      sx={{color : value < 0 ? 'red' : 'green'}}>
+        {params.value}
+      </Typography>
+      )
+    }
   },
   {
     field: 'weight',
