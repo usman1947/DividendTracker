@@ -2,32 +2,19 @@ import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, IconButton, Box, Typography, Divider } from '@mui/material';
 import GetInputComponent from 'common-components/input/GetInputComponent'
 import { InputTypesEnum, Sectors } from 'util/Constants'
-import { v4 as uuid } from 'uuid';
-import { createHoldings } from 'database/db.js'
-import { useDispatch } from 'react-redux';
 import SearchStocks from 'stocks/components/SearchStocks'
 import { isNullOrEmpty, updateObjectInMapByKey } from 'util/Utility';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useLazyGetStocksDataQuery } from 'services/api'
-import { uniq } from 'lodash'
+import { useAddHoldingMutation } from 'services/api'
 
 const AddHoldingInputConfig = [
-    {
-        id: 'sector',
-        required: true,
-        label: 'Sector',
-        type: InputTypesEnum._SELECT,
-        sx: {
-            width: '100px',
-        }
-    },
     {
         id: 'shares',
         required: true,
         label: 'Shares',
         type: InputTypesEnum._NUMBER,
         sx: {
-            width: '72px',
+            width: '100px',
         }
     },
     {
@@ -36,27 +23,16 @@ const AddHoldingInputConfig = [
         label: 'Avg Cost',
         type: InputTypesEnum._NUMBER,
         sx: {
-            width: '72px',
-        }
-    },
-    {
-        id: 'fiveYearDividendGrowth',
-        required: true,
-        label: '5 Year Dividend Growth %',
-        type: InputTypesEnum._NUMBER,
-        sx: {
-            width: '72px',
+            width: '100px',
         }
     },
 ]
 
-const AddHoldingDialog = (props) => {
+const AddHoldingDialog = () => {
 
-    const { currentHoldings } = props;
-    const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
     const [holdings, setHoldings] = useState(new Map());
-	const [triggerGetStocksData] = useLazyGetStocksDataQuery()
+    const [saveHolding] = useAddHoldingMutation();
     const options = {
         sector: Object.entries(Sectors).map(keyValuePair => (
             {
@@ -74,14 +50,12 @@ const AddHoldingDialog = (props) => {
     function addHolding(stock){
         if (!holdings.has(stock.symbol)){
             let newMap = new Map(holdings);
-            newMap.set(uuid(), {
+            newMap.set(stock.symbol, {
                 ticker: stock.symbol,
-                name: stock.name,
-                region: stock.region,
+                longname: stock.longname,
+                sector: stock.sector,
                 shares: "",
                 cost: "",
-                sector: "",
-                fiveYearDividendGrowth: "",
             })
             setHoldings(new Map(newMap))
         }
@@ -93,14 +67,11 @@ const AddHoldingDialog = (props) => {
         setHoldings(new Map(newMap))
     }
 
-    function submitHoldings(e){
+    async function submitHoldings(e){
         e.preventDefault();
-        createHoldings(Array.from(holdings.values()), dispatch)
-        const stocks = uniq(isNullOrEmpty(currentHoldings) ? 
-                        Array.from(holdings.values()) : 
-                        [...currentHoldings, ...Array.from(holdings.values())])
-        const tickers = stocks.map(r => r.ticker).join(',')
-        triggerGetStocksData(tickers)
+        for (let [, value] of holdings) {
+            await saveHolding(value)
+        }
         clearAndClose()
     }
 
@@ -138,7 +109,7 @@ const AddHoldingDialog = (props) => {
                 <Typography variant='subtitle1'>
                     {`${isNullOrEmpty(holdings) ? 
                     'Choose symbols you would like to add:' : 
-                    'Declare the Sector, Shares, Avg Cost and 5 Year Avg Dividend Growth %'
+                    'Declare the Shares and Avg Cost of each stock you would like to add'
                     }`}
                 </Typography>
                 <form onSubmit={submitHoldings} id='holdings' style={{marginTop: '16px'}}>
@@ -146,17 +117,17 @@ const AddHoldingDialog = (props) => {
                         const stock = holdings.get(key)
                         return (
                             <Stack direction="row" justifyContent="space-between" key={`stack-${key}`} sx={{my: '8px', position: 'relative', pr: '35px' }}>
-                                <Box key={`container-${key}`} display='flex' flexDirection='column' sx={{maxWidth: '30%', width: '30%'}}>
+                                <Box key={`container-${key}`} display='flex' flexDirection='column'>
                                     <Typography variant='h6'>
                                         {stock.ticker}
                                     </Typography>
                                     <Box display='flex'>
                                         <Typography variant='subtitle2' type='secondary' noWrap>
-                                            {stock.name}
+                                            {stock.longname}
                                         </Typography>
                                         <Divider orientation="vertical" variant="middle" sx={{m:'0 4px'}}/>
                                         <Typography variant='subtitle2' type='secondary' noWrap>
-                                            {stock.region}
+                                            {stock.sector}
                                         </Typography>
                                     </Box>
                                 </Box>

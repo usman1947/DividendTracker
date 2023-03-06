@@ -7,14 +7,14 @@ export const api = createApi({
     reducerPath: 'api',
     tagTypes: ['StocksData', 'Holdings'],
     baseQuery: fetchBaseQuery({ 
-        baseUrl: '',
+        baseUrl: API_URL,
     }),
     endpoints: (builder) => ({
         getSearchStock: builder.query({
             query: (searchString) => ({
                 url: `${API_URL}/search?symbol=${searchString}`,
-                providesTags:['Stocks']
             }),
+            providesTags:['Stocks'],
             transformResponse: (response) => response.quotes
         }),
         getStocksData: builder.query({
@@ -36,8 +36,16 @@ export const api = createApi({
         getAllHoldings: builder.query({
             query: () => ({
                 url: `${API_URL}/holdings`,
-                providesTags:['Holdings']
             }),
+            providesTags:['Holdings']
+        }),
+        addHolding: builder.mutation({
+            query: (stock) => ({
+                url: `${API_URL}/addHolding`,
+                method: 'POST',
+                body: stock,
+            }),
+            invalidatesTags: ['Holdings']
         })
     }),
 })
@@ -45,5 +53,6 @@ export const api = createApi({
 export const { 
     useLazyGetSearchStockQuery,
     useLazyGetStocksDataQuery,
-    useGetAllHoldingsQuery
+    useGetAllHoldingsQuery,
+    useAddHoldingMutation
 } = api;
