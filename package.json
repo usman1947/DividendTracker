@@ -13,6 +13,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
     "business-days-js": "^2.1.2",
+    "env-cmd": "^10.1.0",
     "lodash": "^4.17.21",
     "luxon": "^3.2.1",
     "pouchdb": "^8.0.0",
