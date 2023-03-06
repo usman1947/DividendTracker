@@ -1,18 +1,15 @@
 import React from 'react';
 import { IconButton, Stack, Typography } from '@mui/material';
-import { useLazyGetStockMarketDataQuery, useLazyGetStocksDataQuery } from 'services/api'
-import { getLastBusinessDay } from 'util/Utility';
+import { useLazyGetStocksDataQuery, useGetAllHoldingsQuery } from 'services/api'
 import AutoRenewIcon from '@mui/icons-material/Autorenew';
 
-const OutdatedDataDisclaimer = ({sx, holdings}) => {
+const OutdatedDataDisclaimer = ({sx}) => {
 
-  const [triggerGetMarketData, {isFetching: isFetchingMarketData}] = useLazyGetStockMarketDataQuery()
+  const holdingApi = useGetAllHoldingsQuery()
 	const [triggerGetStocksData, {isFetching: isFetchingStocksData}] = useLazyGetStocksDataQuery()
 
   async function updateMarketData(){
-    const lastBusinessDay = getLastBusinessDay()
-    const tickers = holdings.map(r => r.ticker).join(',')
-    triggerGetMarketData(lastBusinessDay)
+    const tickers = holdingApi.data.map(r => r.ticker).join(',')
     triggerGetStocksData(tickers)
 	}
 
@@ -22,7 +19,7 @@ const OutdatedDataDisclaimer = ({sx, holdings}) => {
           *Disclaimer* Market data is not updated periodically, To get latest market data please click refresh
         </Typography>
         <IconButton disableRipple size='small' onClick={updateMarketData}
-        disabled={isFetchingMarketData || isFetchingStocksData}>
+        disabled={isFetchingStocksData}>
           <AutoRenewIcon fontSize="small"/>
         </IconButton>
       </Stack>

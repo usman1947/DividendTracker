@@ -1,85 +1,100 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { getLastBusinessDay, getCurrentMonthAndYear } from 'util/Utility'
-import { saveMarketData, saveStocksData } from 'database/db';
-import { addMarketData } from 'services/marketDataSlice'
 import { addStocksData } from 'services/stocksDataSlice'
+import { findIndex } from 'lodash'
 
-//ALPHA ADVANTAGE
-const _ALPHA_ADVANTAGE_ENDPOINT = 'https://www.alphavantage.co/query';
-const _ALPHA_ADVANTAGE_API_KEY = 'apikey=3QM6WMRKQS9705V4'
-
-//POLYGON
-const _POLYGON_IO_ENDPOINT = 'https://api.polygon.io/v2/aggs'
-const _POLYGON_IO_API_KEY = 'e4UHMBeGB8re8bomNWQRLla_9mYulTF2'
-
-
-function getAlphaAdvantageUrl(functionName, urlParam){
-    return `${_ALPHA_ADVANTAGE_ENDPOINT}?function=${functionName}&${urlParam}&${_ALPHA_ADVANTAGE_API_KEY}`
-}
-
-// by default keys of objects from alpha advantage api look something like
-// "1. open": "136.35",
-// this functions remove 1. and updates all the given example key to something like
-// open: "136.35",
-function updateArrayKeys(arr) {
-    return arr.map(obj => {
-      const newObj = {};
-      for (const key in obj) {
-        newObj[key.replace(/^\d+\.\s/, "")] = obj[key];
-      }
-      return newObj;
-    });
-}
+const API_URL = process.env.REACT_APP_API_URL
 
 export const api = createApi({
     reducerPath: 'api',
-    tagTypes: ['Stocks', 'MarketData'],
+    tagTypes: ['StocksData', 'Holdings'],
     baseQuery: fetchBaseQuery({ 
         baseUrl: '',
     }),
     endpoints: (builder) => ({
         getSearchStock: builder.query({
             query: (searchString) => ({
-                url: getAlphaAdvantageUrl('SYMBOL_SEARCH', `keywords=${searchString}`),
-                providesTags:['Stocks']
+                url: `${API_URL}/search?symbol=${searchString}`,
             }),
-            transformResponse: (response) => updateArrayKeys(response.bestMatches)
+            providesTags:['Stocks'],
+            transformResponse: (response) => response.quotes
         }),
-        getStockMarketData: builder.query({
-            // date in YYYY-MM-DD
-            query: (date) => ({
-                url: `${_POLYGON_IO_ENDPOINT}/grouped/locale/us/market/stocks/${date}?adjusted=true&apiKey=${_POLYGON_IO_API_KEY}`,
-                providesTags:['MarketData']
+        getStocksData: builder.query({
+            //uses All origins pass through proxy to access yahoo finance api
+            query: (tickers) => ({
+                url: `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${tickers}`)}`,
+                providesTags:['StocksData']
             }),
-            transformResponse: (response) => {return {data: response.results, createdDate: getLastBusinessDay()}},
-            async onQueryStarted({date}, { queryFulfilled }) {
+            transformResponse: (response) => response.quoteResponse.result,
+            async onQueryStarted({tickers}, { dispatch, queryFulfilled }) {
                 try {
                     const { data: response } = await queryFulfilled
-                    await saveMarketData(response)
-				    addMarketData(response.data)
+				    dispatch(addStocksData(response))
                 } catch {
                     //TODO error management
                 }
             },
         }),
-        getStocksData: builder.query({
-            //uses All origins pass through proxy to access yahoo finance api
-            query: (tickers) => ({
-                url: `https://api.allorigins.win/get?url=${encodeURIComponent(`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${tickers}`)}`,
-                providesTags:['StocksData']
-            }),
-            transformResponse: (response) => {
-                return {
-                    data: JSON.parse(response.contents).quoteResponse.result, 
-                    fetchedMonthAndYear: getCurrentMonthAndYear()
+        getAllHoldings: builder.query({
+            query: () => `${API_URL}/holdings`,
+            providesTags: ['Holdings'],
+            async onQueryStarted({id}, { dispatch, queryFulfilled }) {
+                try {
+                    const response = await queryFulfilled
+                    const tickers = response.data.map(r => r.ticker).join(',')
+                    dispatch(
+                        api.endpoints.getStocksData(tickers)
+                    )
+                } 
+                catch {
+                    //TODO error management
                 }
             },
-            async onQueryStarted({tickers}, { queryFulfilled }) {
+        }),
+        addHolding: builder.mutation({
+            query: (stocks) => ({
+                url: `${API_URL}/addHoldings`,
+                method: 'POST',
+                body: stocks,
+            }),
+            invalidatesTags: ['Holdings']
+        }),
+        deleteHolding: builder.mutation({
+            query: (id) => ({
+                url: `${API_URL}/holding/${id}`,
+                method: 'DELETE',
+            }),
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
+                let patchResult = dispatch(
+                    api.util.updateQueryData('getAllHoldings', undefined, (draft) => {
+                        const index = findIndex(draft, { _id: id });
+                        draft.splice(index, 1);
+                    })
+                )
                 try {
-                    const { data: response } = await queryFulfilled
-                    await saveStocksData(response)
-				    addStocksData(response.data)
-                } catch {
+                    await queryFulfilled
+                } 
+                catch {
+                    patchResult.undo()
+                }
+            },
+        }),
+        updateHolding: builder.mutation({
+            query: ({id, body}) => ({
+                url: `${API_URL}/holding/${id}`,
+                method: 'PUT',
+                body: body
+            }),
+            async onQueryStarted({id}, { dispatch, queryFulfilled }) {
+                try {
+                    const response = await queryFulfilled
+                    dispatch(
+                        api.util.updateQueryData('getAllHoldings', undefined, (draft) => {
+                            let oldHolding = draft.find(d => d._id === id)
+                            Object.assign(oldHolding, response.data)
+                        })
+                    )
+                } 
+                catch {
                     //TODO error management
                 }
             },
@@ -89,6 +104,9 @@ export const api = createApi({
 
 export const { 
     useLazyGetSearchStockQuery,
-    useLazyGetStockMarketDataQuery,
-    useLazyGetStocksDataQuery
+    useLazyGetStocksDataQuery,
+    useGetAllHoldingsQuery,
+    useAddHoldingMutation,
+    useDeleteHoldingMutation,
+    useUpdateHoldingMutation
 } = api;
