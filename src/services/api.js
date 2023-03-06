@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { addStocksData } from 'services/stocksDataSlice'
+import { findIndex } from 'lodash'
 
 const API_URL = process.env.REACT_APP_API_URL
 
@@ -34,10 +35,20 @@ export const api = createApi({
             },
         }),
         getAllHoldings: builder.query({
-            query: () => ({
-                url: `${API_URL}/holdings`,
-            }),
-            providesTags:['Holdings']
+            query: () => `${API_URL}/holdings`,
+            providesTags: ['Holdings'],
+            async onQueryStarted({id}, { dispatch, queryFulfilled }) {
+                try {
+                    const response = await queryFulfilled
+                    const tickers = response.data.map(r => r.ticker).join(',')
+                    dispatch(
+                        api.endpoints.getStocksData(tickers)
+                    )
+                } 
+                catch {
+                    //TODO error management
+                }
+            },
         }),
         addHolding: builder.mutation({
             query: (stocks) => ({
@@ -46,6 +57,47 @@ export const api = createApi({
                 body: stocks,
             }),
             invalidatesTags: ['Holdings']
+        }),
+        deleteHolding: builder.mutation({
+            query: (id) => ({
+                url: `${API_URL}/holding/${id}`,
+                method: 'DELETE',
+            }),
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
+                let patchResult = dispatch(
+                    api.util.updateQueryData('getAllHoldings', undefined, (draft) => {
+                        const index = findIndex(draft, { _id: id });
+                        draft.splice(index, 1);
+                    })
+                )
+                try {
+                    await queryFulfilled
+                } 
+                catch {
+                    patchResult.undo()
+                }
+            },
+        }),
+        updateHolding: builder.mutation({
+            query: ({id, body}) => ({
+                url: `${API_URL}/holding/${id}`,
+                method: 'PUT',
+                body: body
+            }),
+            async onQueryStarted({id}, { dispatch, queryFulfilled }) {
+                try {
+                    const response = await queryFulfilled
+                    dispatch(
+                        api.util.updateQueryData('getAllHoldings', undefined, (draft) => {
+                            let oldHolding = draft.find(d => d._id === id)
+                            Object.assign(oldHolding, response.data)
+                        })
+                    )
+                } 
+                catch {
+                    //TODO error management
+                }
+            },
         })
     }),
 })
@@ -54,5 +106,7 @@ export const {
     useLazyGetSearchStockQuery,
     useLazyGetStocksDataQuery,
     useGetAllHoldingsQuery,
-    useAddHoldingMutation
+    useAddHoldingMutation,
+    useDeleteHoldingMutation,
+    useUpdateHoldingMutation
 } = api;
