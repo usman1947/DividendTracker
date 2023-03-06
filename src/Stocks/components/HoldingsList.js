@@ -1,13 +1,12 @@
 import React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { useSelector } from 'react-redux';
-import { selectMarketData } from 'services/marketDataSlice';
 import { selectStocksData } from 'services/stocksDataSlice';
 import { getReturnPercentage, formatCurrencyNumber, formatPercentage } from 'util/Utility'
-import { Sectors } from 'util/Constants';
 import { Stack, Typography } from '@mui/material';
 import NoRecordsImage from 'assets/no-records.png'
 import Price52WeeksRange from 'stocks/components/Price52WeeksRange.jsx'
+import { useGetAllHoldingsQuery } from 'services/api'
 
 const columns = [
   { 
@@ -92,15 +91,12 @@ const columns = [
 
 const HoldingsList = (props) => {
 
-    const { holdings, isFetching } = props;
+    const holdingsApi = useGetAllHoldingsQuery()
     const taxRate = 30 
-    const marketData = useSelector(selectMarketData)
     const stocksData = useSelector(selectStocksData)
-    const holdingsData = marketData.filter(d => holdings.findIndex(h => d.T === h.ticker) !== -1)
     let totalValue = 0
-    
-    let rowsData = holdings.map(holding => {
-      const priceData = holdingsData.find(d => d.T === holding.ticker)
+    let rowsData = holdingsApi.data?.map(holding => {
+      const priceData = stocksData.find(d => d.T === holding.ticker)
       const stockDetailData = stocksData.find(d => d.symbol === holding.ticker)
       const price = priceData?.c ?? stockDetailData?.regularMarketPrice
       const shares = holding.shares
@@ -112,8 +108,8 @@ const HoldingsList = (props) => {
       const annualIncome = dividendAmount * shares
       const annualIncomeAfterTax = annualIncome * (100 - taxRate)/100
       const yieldOnCost = annualIncome / cost
-      const fiveYearDividendGrowth = holding.fiveYearDividendGrowth/100
-      const sector = Sectors[holding.sector]
+      const fiveYearDividendGrowth = holding.fiveYearCAGR/100
+      const sector = holding.sector
       const fiftyTwoWeekHigh = stockDetailData?.fiftyTwoWeekHigh
       const fiftyTwoWeekLow = stockDetailData?.fiftyTwoWeekLow
       const range = <Price52WeeksRange low={fiftyTwoWeekLow} high={fiftyTwoWeekHigh} price={price}/>
@@ -136,13 +132,13 @@ const HoldingsList = (props) => {
     })
 
     //push after mapping values
-    rowsData.forEach(r => {
+    rowsData?.forEach(r => {
       r.weight = formatPercentage(r.unformattedValue / totalValue)
     })
 
     return (
       <DataGrid
-      rows={rowsData}
+      rows={rowsData ?? []}
       columns={columns}
       autoPageSize
       components={{
@@ -150,9 +146,9 @@ const HoldingsList = (props) => {
       }}
       disableSelectionOnClick
       disableVirtualization
-      getRowId={(row) => row.id}
+      getRowId={(row) => row._id}
       headerHeight={40}
-      loading={isFetching}
+      loading={holdingsApi.isFetching}
       />
     );
 }

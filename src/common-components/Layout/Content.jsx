@@ -84,7 +84,7 @@ const Content = ({ history }) => {
 			triggerGetStocksData(tickers)
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	},[holdingsApi.data])
+	},[holdingsApi.status])
 
 	return (
         <PageSettings.Consumer>

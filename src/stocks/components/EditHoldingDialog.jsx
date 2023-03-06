@@ -2,13 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, IconButton, Box, Typography, Divider } from '@mui/material';
 import GetInputComponent from 'common-components/input/GetInputComponent'
 import { InputTypesEnum } from 'util/Constants'
-import { deleteHolding, updateHolding } from 'database/db.js'
-import { useDispatch, useSelector } from 'react-redux';
 import { updateObjectInArrayById } from 'util/Utility';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { selectHoldings } from 'services/holdingSlice';
 import EditIcon from '@mui/icons-material/Edit';
-import { isEqual } from 'lodash'
+import { useGetAllHoldingsQuery, useDeleteHoldingMutation, useUpdateHoldingMutation } from 'services/api'
 
 const EditHoldingInputConfig = [
     {
@@ -35,32 +32,34 @@ const EditHoldingInputConfig = [
 
 const EditHoldingDialog = () => {
 
-    const dispatch = useDispatch();
-    const holdings = useSelector(selectHoldings)
+    const holdingsApi = useGetAllHoldingsQuery()
+    const [deleteHolding] = useDeleteHoldingMutation()
+    const [updateHoldingCall] = useUpdateHoldingMutation()
     const [holdingsState, setHoldingsState] = useState([])
     const [open, setOpen] = useState(false);
 
     async function onDeleteHolding(id){
-        await deleteHolding(id, dispatch)
+        await deleteHolding(id)
+    }
+    
+    async function updateHolding(id){
+        const holding = holdingsState.find(h => h._id === id)
+        updateHoldingCall({id, body:holding})
     }
 
     function submitHoldings(e){
         e.preventDefault()
-        let editedHoldings = holdingsState.filter((obj, i) => !isEqual(obj, holdings[i]));
-        editedHoldings.forEach(async (h) => {
-            await updateHolding(h._id, h.shares, h.cost, dispatch)
-        })
         setOpen(false)
     }
 
     function onHoldingsChanged(){
         //sets the local state as when newly loaded or added new holdings
-        if (holdingsState.length < holdings.length){
-            setHoldingsState([...holdings])
+        if (holdingsState.length < holdingsApi.data?.length){
+            setHoldingsState([...holdingsApi.data])
         } else {
             //sets the local state when items are deleted
             setHoldingsState(
-                holdingsState.filter(x => holdings.some(y => y.id === x.id))
+                holdingsState.filter(x => holdingsApi.data.some(y => y._id === x._id))
             )
         }
     }
@@ -68,7 +67,7 @@ const EditHoldingDialog = () => {
     useEffect(() => {
         onHoldingsChanged()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[holdings])
+    },[holdingsApi.data])
 
     return (
         <>
@@ -99,7 +98,7 @@ const EditHoldingDialog = () => {
                         </Typography>
                     </Stack>
                     {holdingsState?.map((holding) => {
-                        const id = holding.id
+                        const id = holding._id
                         return (
                             <Box key={`main-container-${id}`}>
                                 <Stack direction="row" justifyContent="space-between" alignItems='center' key={`stack-${id}`} sx={{my: '8px', position: 'relative', pr: '35px' }}>
@@ -115,8 +114,9 @@ const EditHoldingDialog = () => {
                                                 key={`input-${holding.id}-${input.id}`}
                                                 getInput={holding}
                                                 setInput={(newValue) => setHoldingsState(
-                                                    updateObjectInArrayById(holdingsState, (obj => obj.id === id), newValue)
+                                                    updateObjectInArrayById(holdingsState, (obj => obj._id === id), newValue)
                                                 )}
+                                                onBlur={() => updateHolding(id)}
                                                 input={input}
                                                 />
                                             )
@@ -135,9 +135,6 @@ const EditHoldingDialog = () => {
                 </form>
             </DialogContent>
             <DialogActions>
-                <Button onClick={() => setOpen(false)}>
-                    Cancel
-                </Button>
                 <Button variant="outlined" type='submit' form='holdings'>Update</Button>
             </DialogActions>
             </Dialog>
