@@ -34,17 +34,17 @@ export const SearchStocks = (props) => {
         renderOption={(props, option) => {
             return (
                 <li {...props} key={option.symbol}>
-                    <Typography type="h6">
+                    <Typography variant="h6">
                         {option.symbol}
                     </Typography>
                     <Divider orientation="vertical" variant="middle" flexItem sx={{mx:'8px'}}/>
-                    <Typography type="h6">
-                        {option.name}
+                    <Typography variant="h6">
+                        {option.longname}
                     </Typography>
                 </li>
             );
         }}
-        options={lastArg.currentData ?? []}
+        options={lastArg.data ?? []}
         loading={loading}
         onInputChange={(e, inputText, eventType) => {
             //onkey stroke
