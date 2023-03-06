@@ -121,11 +121,11 @@ const AddHoldingDialog = () => {
                                         {stock.ticker}
                                     </Typography>
                                     <Box display='flex'>
-                                        <Typography variant='subtitle2' type='secondary' noWrap>
+                                        <Typography variant='subtitle2' color='secondary.main' noWrap>
                                             {stock.longname}
                                         </Typography>
                                         <Divider orientation="vertical" variant="middle" sx={{m:'0 4px'}}/>
-                                        <Typography variant='subtitle2' type='secondary' noWrap>
+                                        <Typography variant='subtitle2' color='secondary.main' noWrap>
                                             {stock.sector}
                                         </Typography>
                                     </Box>

@@ -1,23 +1,19 @@
 import React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { useSelector } from 'react-redux';
-import { selectStocksData } from 'services/stocksDataSlice';
-import { getReturnPercentage, formatCurrencyNumber, formatPercentage } from 'util/Utility'
 import { Stack, Typography } from '@mui/material';
 import NoRecordsImage from 'assets/no-records.png'
-import Price52WeeksRange from 'stocks/components/Price52WeeksRange.jsx'
 import { useGetAllHoldingsQuery } from 'services/api'
 
 const columns = [
   { 
     field: 'ticker', 
     headerName: 'Ticker', 
-    width: 70 
+    width: 65 
   },
   { 
     field: 'sector', 
     headerName: 'Sector', 
-    width: 120 
+    width: 100 
   },
   {
     field: 'shares',
@@ -25,9 +21,14 @@ const columns = [
     width: 50,
   },
   {
+    field: 'buyPrice',
+    headerName: 'Buy Price',
+    width: 50,
+  },
+  {
     field: 'cost',
     headerName: 'Cost',
-    width: 80,
+    width: 70,
   },
   {
     field: 'price',
@@ -45,7 +46,7 @@ const columns = [
   {
     field: 'value',
     headerName: 'Value',
-    width: 70,
+    width: 80,
   },
   {
     field: 'returnPercentage',
@@ -80,65 +81,23 @@ const columns = [
   {
     field: 'annualIncome',
     headerName: 'AI',
-    width: 70,
+    width: 60,
   },
   {
     field: 'annualIncomeAfterTax',
     headerName: 'AIT',
-    width: 70,
+    width: 60,
   },
 ];
 
 const HoldingsList = (props) => {
 
     const holdingsApi = useGetAllHoldingsQuery()
-    const taxRate = 30 
-    const stocksData = useSelector(selectStocksData)
-    let totalValue = 0
-    let rowsData = holdingsApi.data?.map(holding => {
-      const priceData = stocksData.find(d => d.T === holding.ticker)
-      const stockDetailData = stocksData.find(d => d.symbol === holding.ticker)
-      const price = priceData?.c ?? stockDetailData?.regularMarketPrice
-      const shares = holding.shares
-      const cost = shares* holding.cost
-      const value = shares * price
-      totalValue += value
-      const annualYield = stockDetailData?.trailingAnnualDividendYield
-      const dividendAmount = stockDetailData?.trailingAnnualDividendRate
-      const annualIncome = dividendAmount * shares
-      const annualIncomeAfterTax = annualIncome * (100 - taxRate)/100
-      const yieldOnCost = annualIncome / cost
-      const fiveYearDividendGrowth = holding.fiveYearCAGR/100
-      const sector = holding.sector
-      const fiftyTwoWeekHigh = stockDetailData?.fiftyTwoWeekHigh
-      const fiftyTwoWeekLow = stockDetailData?.fiftyTwoWeekLow
-      const range = <Price52WeeksRange low={fiftyTwoWeekLow} high={fiftyTwoWeekHigh} price={price}/>
-      return {
-        ...holding,
-        cost: formatCurrencyNumber(cost),
-        price: formatCurrencyNumber(price),
-        unformattedValue: value,
-        value: formatCurrencyNumber(value),
-        returnPercentage: getReturnPercentage(value, cost),
-        return: formatCurrencyNumber(value - cost),
-        yield: formatPercentage(annualYield),
-        annualIncome: formatCurrencyNumber(annualIncome),
-        yoc: formatPercentage(yieldOnCost),
-        annualIncomeAfterTax: formatCurrencyNumber(annualIncomeAfterTax),
-        fiveYearDividendGrowth: formatPercentage(fiveYearDividendGrowth),
-        sector: sector,
-        range: range
-      }
-    })
-
-    //push after mapping values
-    rowsData?.forEach(r => {
-      r.weight = formatPercentage(r.unformattedValue / totalValue)
-    })
+    const { rows } = props
 
     return (
       <DataGrid
-      rows={rowsData ?? []}
+      rows={rows ?? []}
       columns={columns}
       autoPageSize
       components={{
