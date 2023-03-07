@@ -4,19 +4,19 @@ import ShowChartIcon from '@mui/icons-material/ShowChart';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import WatchLaterIcon from '@mui/icons-material/WatchLater';
 import { useHistory, useLocation } from 'react-router-dom';
+import { WebUrl } from 'util/Constants.js';
 
 const drawerWidth = 220;
 
 const SideBarListItems = [
     {
         label: 'Dashboard',
-        url: 'dashboard',
+        url: WebUrl._DASHBOARD,
         icon: DashboardIcon,
-        disabled: true
     },
     {
         label: 'Portfolio',
-        url: 'portfolio',
+        url: WebUrl._PORTFOLIO,
         icon: ShowChartIcon
     },
     {

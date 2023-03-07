@@ -81,7 +81,7 @@ const Content = ({ history }) => {
 	useEffect(() => {
 		if (!isNullOrEmpty(holdingsApi.data)) {
 			const tickers = holdingsApi.data.map(r => r.ticker).join(',')
-			triggerGetStocksData(tickers)
+			// triggerGetStocksData(tickers)
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	},[holdingsApi.status])

@@ -37,18 +37,6 @@ export const api = createApi({
         getAllHoldings: builder.query({
             query: () => `${API_URL}/holdings`,
             providesTags: ['Holdings'],
-            async onQueryStarted({id}, { dispatch, queryFulfilled }) {
-                try {
-                    const response = await queryFulfilled
-                    const tickers = response.data.map(r => r.ticker).join(',')
-                    dispatch(
-                        api.endpoints.getStocksData(tickers)
-                    )
-                } 
-                catch {
-                    //TODO error management
-                }
-            },
         }),
         addHolding: builder.mutation({
             query: (stocks) => ({

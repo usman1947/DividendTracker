@@ -16,7 +16,6 @@ const container = document.getElementById('root');
 const root = createRoot(container);
 
 root.render(
-  <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
           <ThemeProvider theme={theme}>
@@ -24,7 +23,6 @@ root.render(
           </ThemeProvider>
       </BrowserRouter>
     </Provider>
-  </React.StrictMode>
 );
 
 reportWebVitals();
