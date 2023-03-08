@@ -5,6 +5,9 @@ import { PageSettings } from 'config/page-settings.js';
 import { useTheme, useMediaQuery, Box, Paper } from '@mui/material';
 import { useLazyGetStocksDataQuery, useGetAllHoldingsQuery } from 'services/api'
 import { isNullOrEmpty } from 'util/Utility';
+import { GenerateHoldingsData } from 'stocks/HelperFunctions.js'
+import { addHoldingsData } from 'services/holdingSlice'
+import { useDispatch } from 'react-redux';
 
 const compareRoutes = (routePath, path) => {
 	const splitRoutePath = routePath.split('/').slice(1);
@@ -45,8 +48,9 @@ const PrivateRoute = (props) => {
 const Content = ({ history }) => {
 	const theme = useTheme()
 	const _context = useContext(PageSettings);
-	const [triggerGetStocksData] = useLazyGetStocksDataQuery()
+	const [triggerGetStocksData, stocksApi] = useLazyGetStocksDataQuery()
 	const holdingsApi = useGetAllHoldingsQuery()
+	const dispatch = useDispatch()
 
 	useEffect(() => {
 		var routes = _ROUTES;
@@ -81,10 +85,18 @@ const Content = ({ history }) => {
 	useEffect(() => {
 		if (!isNullOrEmpty(holdingsApi.data)) {
 			const tickers = holdingsApi.data.map(r => r.ticker).join(',')
-			// triggerGetStocksData(tickers)
+			triggerGetStocksData(tickers)
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	},[holdingsApi.status])
+
+	useEffect(() => {
+		if (!isNullOrEmpty(stocksApi.data)) {
+			const data = GenerateHoldingsData(holdingsApi.data, stocksApi.data);
+			dispatch(addHoldingsData(data))
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	},[stocksApi.isSuccess])
 
 	return (
         <PageSettings.Consumer>
