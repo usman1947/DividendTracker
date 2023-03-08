@@ -42,7 +42,7 @@ const DashboardCards = () => {
           <InfoCard
           title='Balance & Performance'
           description='Your portfolio returns'
-          value={<Stack direction='row' spacing={1}>
+          content={<Stack direction='row' spacing={1}>
             <Typography variant='h6' type='bold'>
               {formatCurrencyNumber(returns)}
             </Typography>
@@ -78,7 +78,7 @@ const DashboardCards = () => {
           />
           <InfoCard
           title='Diversification'
-          description={
+          content={
           <Stack width='150px' height='140px'><DiversificationChart/></Stack>}
           />
         </Stack>
@@ -87,7 +87,7 @@ const DashboardCards = () => {
   );
 }
 
-const InfoCard = ({title, description, value, icon}) => {
+const InfoCard = ({title, description, value, content, icon}) => {
   const theme = useTheme()
   return (
     <Stack width='280px' height='200px' justifyContent='center' alignItems='center' px='16px'
@@ -98,9 +98,10 @@ const InfoCard = ({title, description, value, icon}) => {
       <Typography variant='body2'>
         {description}
       </Typography>
+      {content ? content :
       <Typography variant='h6' type='bold'>
         {value}
-      </Typography>
+      </Typography>}
       {icon}
     </Stack>
   )
