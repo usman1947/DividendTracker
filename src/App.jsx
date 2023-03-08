@@ -5,6 +5,7 @@ import SideBar from 'common-components/Layout/SideBar';
 import Content from 'common-components/Layout/Content';
 import { PageSettings } from 'config/page-settings.js';
 import { Box, useMediaQuery, useTheme, Toolbar } from "@mui/material";
+import { BrowserRouter } from 'react-router-dom';
 
 function App() {
 

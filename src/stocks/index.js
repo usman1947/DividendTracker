@@ -1,3 +1,4 @@
 import Portfolio from './Portfolio';
+import Dashboard from './Dashboard';
 
-export { Portfolio };
+export { Portfolio, Dashboard };

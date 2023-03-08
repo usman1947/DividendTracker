@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { addStocksData } from 'services/stocksDataSlice'
 import { findIndex } from 'lodash'
 
 const API_URL = process.env.REACT_APP_API_URL
@@ -25,30 +24,10 @@ export const api = createApi({
                 providesTags:['StocksData']
             }),
             transformResponse: (response) => response.quoteResponse.result,
-            async onQueryStarted({tickers}, { dispatch, queryFulfilled }) {
-                try {
-                    const { data: response } = await queryFulfilled
-				    dispatch(addStocksData(response))
-                } catch {
-                    //TODO error management
-                }
-            },
         }),
         getAllHoldings: builder.query({
             query: () => `${API_URL}/holdings`,
             providesTags: ['Holdings'],
-            async onQueryStarted({id}, { dispatch, queryFulfilled }) {
-                try {
-                    const response = await queryFulfilled
-                    const tickers = response.data.map(r => r.ticker).join(',')
-                    dispatch(
-                        api.endpoints.getStocksData(tickers)
-                    )
-                } 
-                catch {
-                    //TODO error management
-                }
-            },
         }),
         addHolding: builder.mutation({
             query: (stocks) => ({

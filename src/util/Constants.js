@@ -1,5 +1,6 @@
 export class WebUrl {
     static _PORTFOLIO = "/portfolio";
+    static _DASHBOARD = "/dashboard";
 }
 
 export class ApiUrl {
