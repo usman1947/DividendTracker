@@ -51,3 +51,15 @@ export function formatPercentage(percentage){
 export function unFormatNumber(inputString){
     return parseFloat(inputString.replace(/[,%$]/g, ""));
 }
+
+export function generateRandomColor() {
+    return '#' + Math.floor(Math.random() * 16777215).toString(16);
+}
+  
+export function generateUniqueRandomColors(numColors) {
+    let colors = new Set();
+    while (colors.size < numColors) {
+        colors.add(generateRandomColor());
+    }
+    return Array.from(colors);
+}

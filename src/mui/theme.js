@@ -19,9 +19,15 @@ export const colorsTheme = createTheme({
             main: '#757575',
             shades: getShades("#757575")
         },
+        info: {
+            main: '#4A6163',
+            shades: getShades("#4A6163")
+        },
         colors: {
             white: '#FFFFFF',
-            black: 'black'
+            black: 'black',
+            green: 'green',
+            red: 'red',
         }
     }
 });
@@ -44,7 +50,7 @@ export const stylesTheme = createTheme({
                 },
                 columnHeader: {
                     fontSize: '12px',
-                    color: colorsTheme.palette.secondary.main,
+                    color: colorsTheme.palette.info.main,
                     "&:focus": {
                         outline: 'none',
                     },

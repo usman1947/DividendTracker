@@ -4,6 +4,7 @@ import { Stack, Typography } from '@mui/material';
 import NoRecordsImage from 'assets/no-records.png'
 import { useGetAllHoldingsQuery } from 'services/api'
 import { unFormatNumber } from 'util/Utility'
+import Price52WeeksRange from 'stocks/components/Price52WeeksRange.jsx'
 
 const columns = [
   { 
@@ -40,9 +41,12 @@ const columns = [
     field: 'range',
     headerName: '52 Weeks Range',
     width: 120,
-    renderCell: (params) => (
-      params.value
-    )
+    renderCell: (params) => {
+      const fiftyTwoWeekHigh = params.row.fiftyTwoWeekHigh
+      const fiftyTwoWeekLow = params.row.fiftyTwoWeekLow 
+      const price = params.row.priceUnformatted
+      return <Price52WeeksRange low={fiftyTwoWeekLow} high={fiftyTwoWeekHigh} price={price}/>
+    }
   },
   {
     field: 'value',
@@ -57,7 +61,7 @@ const columns = [
       const value = unFormatNumber(params.value)
       return(
       <Typography variant='subtitle2'
-      sx={{color : value < 0 ? 'red' : 'green'}}>
+      sx={{color : value < 0 ? 'colors.red' : 'colors.green'}}>
         {params.value}
       </Typography>
       )
@@ -71,7 +75,7 @@ const columns = [
       const value = unFormatNumber(params.value)
       return(
       <Typography variant='subtitle2'
-      sx={{color : value < 0 ? 'red' : 'green'}}>
+      sx={{color : value < 0 ? 'colors.red' : 'colors.green'}}>
         {params.value}
       </Typography>
       )
