@@ -1,24 +1,30 @@
 import React from 'react';
-import { useTheme, Stack, Paper, Typography } from '@mui/material';
+import { useTheme, Stack, Paper, Typography, Box, List, ListItem, ListItemText } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { formatCurrencyNumber, formatPercentage } from 'util/Utility'
 import LeaderBoardIcon from '@mui/icons-material/Leaderboard';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
 import InsightsIcon from '@mui/icons-material/Insights';
-import DiversificationChart from 'stocks/components/DiversificationChart';
 import PriceChangeOutlinedIcon from '@mui/icons-material/PriceChangeOutlined';
 import { selectHoldingData } from 'services/holdingSlice';
+import PieChart from 'stocks/components/PieChart.jsx';
+import { sortBy } from 'lodash'
+
+const dashboardWidth = '942px'
 
 const Dashboard = () => {
   return (
-    <DashboardCards/>
+    <Stack width='100%' height='fit-content' justifyContent='center' alignItems='center' spacing={5}>
+      <DashboardCards/>
+      <TopDividendPayers/>
+    </Stack>
   );
 }
 
 const DashboardCards = () => {
   const holdingsData = useSelector(selectHoldingData)
   const {
-    totalValueUnformatted, totalAnnualIncome, 
+    data, totalValueUnformatted, totalAnnualIncome, 
     totalCostUnformatted, totalReturnUnformatted, 
     returnPercentage, totalDividendGrowth, 
     stocksWithDividendThisMonth=[]
@@ -28,9 +34,13 @@ const DashboardCards = () => {
   const annualIncome = totalAnnualIncome
   const annualYield = totalAnnualIncome / totalCostUnformatted
   const averageDividendGrowth = totalDividendGrowth
+  const sectors = data?.reduce((acc, { sector }) => {
+    acc[sector] = (acc[sector] || 0) + 1;
+    return acc;
+  }, {});
 
   return (
-    <Stack width='100%' height='100%' justifyContent='center' alignItems='center'>
+    <Stack width={dashboardWidth} height='100%' justifyContent='center' alignItems='center'>
       <Paper elevation={8}>
         <Stack direction='row'>
           <InfoCard
@@ -79,7 +89,16 @@ const DashboardCards = () => {
           <InfoCard
           title='Diversification'
           content={
-          <Stack width='150px' height='140px'><DiversificationChart/></Stack>}
+          <Stack width='150px' height='140px'>
+            {sectors &&
+            <PieChart 
+            values={Object.values(sectors)} 
+            labels={Object.keys(sectors)}
+            legendConfig={{
+              display: false,
+            }}
+            />}
+          </Stack>}
           />
         </Stack>
       </Paper>
@@ -115,6 +134,44 @@ const ThisMonthDividendText = ({stocks}) => {
   } else {
     return `${stocks.slice(0, 2).join(', ')} and ${stocks.slice(2).length} other in your portfolio will pay their dividends this month`
   }
+}
+
+const TopDividendPayers = () => {
+  const holdingsData = useSelector(selectHoldingData)
+  const {
+    data
+  } = holdingsData || {}
+
+  const stocks = data?.map((stock) => stock.ticker)
+  const sortedData = sortBy(data, (stock) => stock.annualIncomeAfterTaxUnformatted)
+  const annualIncome = sortedData?.map(stock => stock.annualIncomeAfterTaxUnformatted)
+  
+  return (
+    holdingsData?.data &&
+    <Paper sx={{width: dashboardWidth, height:'400px', display: 'flex'}}elevation={8}
+    direction='row' justifyContent='space-between'>
+      <Stack width='50%' height='100%'>
+        <Typography variant='h5' color='info.main'>
+          Top Dividend Payers
+        </Typography>
+        <List>
+          {sortedData.map((stock, i) => (
+            <ListItem key={i}>
+              <ListItemText primary={stock.displayName}/>
+              <ListItemText secondary={stock.annualIncome}/>
+            </ListItem>
+          ))}
+        </List>
+      </Stack>
+      <Box width='50%' height='100%' sx={{zIndex:6}}>
+        <PieChart 
+        values={annualIncome} 
+        labels={stocks}
+        legendConfig={{ position: 'right'}}
+        />
+      </Box>
+    </Paper>
+  );
 }
 
 export default Dashboard;
