@@ -83,7 +83,7 @@ const Content = ({ history }) => {
     ]);
 
 	useEffect(() => {
-		if (!isNullOrEmpty(holdingsApi.data)) {
+		if (!isNullOrEmpty(holdingsApi.data) && holdingsApi.status !== 'pending') {
 			const tickers = holdingsApi.data.map(r => r.ticker).join(',')
 			triggerGetStocksData(tickers)
 		}
@@ -91,12 +91,13 @@ const Content = ({ history }) => {
 	},[holdingsApi.status])
 
 	useEffect(() => {
-		if (!isNullOrEmpty(stocksApi.data)) {
+		if (!isNullOrEmpty(stocksApi.data) && 
+		holdingsApi.data?.length === stocksApi.data?.length) {
 			const data = GenerateHoldingsData(holdingsApi.data, stocksApi.data);
 			dispatch(addHoldingsData(data))
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	},[stocksApi.isSuccess])
+	},[stocksApi.status, stocksApi.data, holdingsApi.data])
 
 	return (
         <PageSettings.Consumer>

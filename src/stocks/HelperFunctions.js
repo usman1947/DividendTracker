@@ -27,6 +27,7 @@ export function GenerateHoldingsData(holdings, stocksData){
       const fiftyTwoWeekLow = stockDetailData?.fiftyTwoWeekLow
       return {
         ...holding,
+        ...stockDetailData,
         cost: formatCurrencyNumber(cost),
         price: formatCurrencyNumber(price),
         unformattedValue: value,
@@ -37,13 +38,14 @@ export function GenerateHoldingsData(holdings, stocksData){
         annualIncome: formatCurrencyNumber(annualIncome),
         yoc: formatPercentage(yieldOnCost),
         annualIncomeAfterTax: formatCurrencyNumber(annualIncomeAfterTax),
+        annualIncomeAfterTaxUnformatted: annualIncomeAfterTax,
         fiveYearDividendGrowth: formatPercentage(fiveYearDividendGrowth),
         fiveYearDividendGrowthUnformatted: fiveYearDividendGrowth,
         sector: sector,
         buyPrice: buyPrice,
         fiftyTwoWeekHigh: fiftyTwoWeekHigh,
         fiftyTwoWeekLow: fiftyTwoWeekLow,
-        priceUnformatted: price
+        priceUnformatted: price,
       }
     })
   
