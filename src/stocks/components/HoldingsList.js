@@ -10,7 +10,14 @@ const columns = [
   { 
     field: 'ticker', 
     headerName: 'Ticker', 
-    width: 65 
+    width: 65 ,
+    renderCell: (params) => {
+      return (
+        <Typography variant='sub1' color='info.main'>
+          {params.value}
+        </Typography>
+      )
+    }
   },
   { 
     field: 'sector', 
