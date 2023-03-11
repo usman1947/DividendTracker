@@ -118,6 +118,7 @@ export const stylesTheme = createTheme({
                     props: { variant: 'content' },
                     style: {
                         height: '100%',
+                        overflow: 'auto',
                         flex: 1,
                         padding: '16px',
                         boxSizing: 'border-box',

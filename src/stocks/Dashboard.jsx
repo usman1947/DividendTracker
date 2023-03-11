@@ -14,7 +14,8 @@ const dashboardWidth = '942px'
 
 const Dashboard = () => {
   return (
-    <Stack width='100%' height='100%' justifyContent='center' alignItems='center' spacing={5}>
+    <Stack width='100%' height='100%' justifyContent='center' 
+    alignItems='center' spacing={5} pt={10}>
       <DashboardCards/>
       <TopDividendPayers/>
     </Stack>
