@@ -42,6 +42,7 @@ export const api = createApi({
                 url: `${API_URL}/holding/${id}`,
                 method: 'DELETE',
             }),
+            invalidatesTags: ['Holdings'],
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 let patchResult = dispatch(
                     api.util.updateQueryData('getAllHoldings', undefined, (draft) => {
