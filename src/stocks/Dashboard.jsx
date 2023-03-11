@@ -104,6 +104,7 @@ const DashboardCards = () => {
           />
           <InfoCard
           title='Diversification'
+          description={`Sector diversification of your ${data?.length} stocks`}
           content={
           <Stack width='150px' height='140px'>
             {sectors &&
