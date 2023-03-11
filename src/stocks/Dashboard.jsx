@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTheme, Stack, Paper, Typography, Box, List, ListItem, ListItemText } from '@mui/material';
+import { useTheme, Stack, Paper, Typography, List } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { formatCurrencyNumber, formatPercentage } from 'util/Utility'
 import LeaderBoardIcon from '@mui/icons-material/Leaderboard';
@@ -8,13 +8,13 @@ import InsightsIcon from '@mui/icons-material/Insights';
 import PriceChangeOutlinedIcon from '@mui/icons-material/PriceChangeOutlined';
 import { selectHoldingData } from 'services/holdingSlice';
 import PieChart from 'stocks/components/PieChart.jsx';
-import { sortBy } from 'lodash'
+import { orderBy } from 'lodash'
 
 const dashboardWidth = '942px'
 
 const Dashboard = () => {
   return (
-    <Stack width='100%' height='fit-content' justifyContent='center' alignItems='center' spacing={5}>
+    <Stack width='100%' justifyContent='center' alignItems='center' spacing={5}>
       <DashboardCards/>
       <TopDividendPayers/>
     </Stack>
@@ -142,34 +142,39 @@ const TopDividendPayers = () => {
     data
   } = holdingsData || {}
 
-  const stocks = data?.map((stock) => stock.ticker)
-  const sortedData = sortBy(data, (stock) => stock.annualIncomeAfterTaxUnformatted)
+  const sortedData = orderBy(data, 'annualIncomeAfterTaxUnformatted', 'desc')
   const annualIncome = sortedData?.map(stock => stock.annualIncomeAfterTaxUnformatted)
+  const stocks = sortedData?.map((stock) => stock.ticker)
   
   return (
     holdingsData?.data &&
     <Paper sx={{width: dashboardWidth, height:'400px', display: 'flex'}}elevation={8}
     direction='row' justifyContent='space-between'>
-      <Stack width='50%' height='100%'>
-        <Typography variant='h5' color='info.main'>
+      <Stack width='40%' height='100%' spacing={3} sx={{p: '32px 32px 0 32px'}}>
+        <Typography variant='h4' color='info.main'>
           Top Dividend Payers
         </Typography>
         <List>
           {sortedData.map((stock, i) => (
-            <ListItem key={i}>
-              <ListItemText primary={stock.displayName}/>
-              <ListItemText secondary={stock.annualIncome}/>
-            </ListItem>
+            i < 7 &&
+            <Stack key={i} direction='row' justifyContent='space-between'>
+              <Typography variant='h6'>
+                {stock.displayName} ({stock.ticker})
+              </Typography>
+              <Typography variant='h6' type='bold'>
+                {formatCurrencyNumber(stock.annualIncomeAfterTaxUnformatted)}
+              </Typography>
+            </Stack>
           ))}
         </List>
       </Stack>
-      <Box width='50%' height='100%' sx={{zIndex:6}}>
+      <Stack width='60%' height='100%' pr='32px' sx={{zIndex:6}} alignItems='flex-end'>
         <PieChart 
         values={annualIncome} 
         labels={stocks}
         legendConfig={{ position: 'right'}}
         />
-      </Box>
+      </Stack>
     </Paper>
   );
 }
