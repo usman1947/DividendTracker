@@ -1,5 +1,5 @@
 import React from "react";
-import { AppBar, Toolbar, Typography, Stack } from "@mui/material";
+import { AppBar, Toolbar, Typography, Stack, useMediaQuery, useTheme } from "@mui/material";
 import SearchStocks from 'stocks/components/SearchStocks.js'
 
 const Header = () => {

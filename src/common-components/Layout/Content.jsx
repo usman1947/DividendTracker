@@ -1,8 +1,8 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Route, withRouter, Switch } from 'react-router-dom';
 import { _ROUTES } from 'config/page-route.jsx';
 import { PageSettings } from 'config/page-settings.js';
-import { useTheme, useMediaQuery, Box, Paper } from '@mui/material';
+import { Box, Paper } from '@mui/material';
 import { useLazyGetStocksDataQuery, useGetAllHoldingsQuery } from 'services/api'
 import { isNullOrEmpty } from 'util/Utility';
 import { GenerateHoldingsData } from 'stocks/HelperFunctions.js'
@@ -46,8 +46,6 @@ const PrivateRoute = (props) => {
 };
 
 const Content = ({ history }) => {
-	const theme = useTheme()
-	const _context = useContext(PageSettings);
 	const [triggerGetStocksData, stocksApi] = useLazyGetStocksDataQuery()
 	const holdingsApi = useGetAllHoldingsQuery()
 	const dispatch = useDispatch()
@@ -60,27 +58,6 @@ const Content = ({ history }) => {
 		});
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [history.location.pathname]);
-
-	const isXsDevices = useMediaQuery(theme.breakpoints.down('sm'));
-    const isSmDevices = useMediaQuery(theme.breakpoints.between('sm', 'md'));
-    const isMdDevices = useMediaQuery(theme.breakpoints.between('md', 'lg'));
-    const isLgDevices = useMediaQuery(theme.breakpoints.between('lg', 'xl'));
-    const isXlDevices = useMediaQuery(theme.breakpoints.up('xl'));
-
-	useEffect(() => {
-		_context.setOptions("isXsDevices", isXsDevices)
-		_context.setOptions("isSmDevices", isSmDevices)
-		_context.setOptions("isMdDevices", isMdDevices)
-		_context.setOptions("isLgDevices", isLgDevices)
-		_context.setOptions("isXlDevices", isXlDevices)
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [
-        isXsDevices,
-        isSmDevices,
-        isMdDevices,
-        isLgDevices,
-        isXlDevices,
-    ]);
 
 	useEffect(() => {
 		if (!isNullOrEmpty(holdingsApi.data) && holdingsApi.status !== 'pending') {
