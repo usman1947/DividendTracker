@@ -85,7 +85,7 @@ const AddHoldingDialog = () => {
             scroll='paper' 
             sx={{ height: '100vh'}}
             PaperProps={{
-                sx : { height : '100%', width:'600px'}
+                sx : { height : {xs:'70%',md:'100%'}, width:'600px'}
             }}>
             <DialogTitle>Add Holding</DialogTitle>
             <DialogContent>

@@ -81,7 +81,7 @@ const EditHoldingDialog = () => {
             scroll='paper' 
             sx={{ height: '100vh'}}
             PaperProps={{
-                sx : { height : '100%', width: '500px'}
+                sx : { height : {xs:'70%',md:'100%'}, width: '500px'}
             }}>
             <DialogTitle>Edit Holdings</DialogTitle>
             <DialogContent>
