@@ -116,7 +116,7 @@ const AddHoldingDialog = () => {
                         const stock = holdings.get(key)
                         return (
                             <Stack direction="row" justifyContent="space-between" key={`stack-${key}`} sx={{my: '8px', position: 'relative', pr: '35px' }}>
-                                <Box key={`container-${key}`} display='flex' flexDirection='column'>
+                                <Box key={`container-${key}`} display='flex' flexDirection='column' width='50%'>
                                     <Typography variant='h6'>
                                         {stock.ticker}
                                     </Typography>
