@@ -135,7 +135,9 @@ export const stylesTheme = createTheme({
                     style: {
                         backgroundColor: colorsTheme.palette.colors.white,
                         borderRadius: '4px',
-                        width: '100%',
+                        [colorsTheme.breakpoints.down('sm')]: {
+                            width: '100%',
+                        },
                     },
                 },
             ],
