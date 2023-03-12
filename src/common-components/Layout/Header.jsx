@@ -3,6 +3,8 @@ import { AppBar, Toolbar, Typography, Stack, useMediaQuery, useTheme } from "@mu
 import SearchStocks from 'stocks/components/SearchStocks.js'
 
 const Header = () => {
+    const theme = useTheme()
+    const isXsDevices = useMediaQuery(theme.breakpoints.down('sm'));
     return (
         <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
             <Toolbar variant="app-bar">
@@ -12,10 +14,11 @@ const Header = () => {
                         Dividend Tracker
                     </Typography>
                 </Stack>
+                {!isXsDevices &&
                 <SearchStocks
                 width='500px'
                 onChange={() => undefined}
-                />
+                />}
                 <Stack/>
             </Toolbar>
         </AppBar>
