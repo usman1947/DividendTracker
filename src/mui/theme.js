@@ -135,6 +135,7 @@ export const stylesTheme = createTheme({
                     style: {
                         backgroundColor: colorsTheme.palette.colors.white,
                         borderRadius: '4px',
+                        width: '100%',
                     },
                 },
             ],

@@ -14,7 +14,7 @@ const AddHoldingInputConfig = [
         label: 'Shares',
         type: InputTypesEnum._NUMBER,
         sx: {
-            width: '100px',
+            width: {xs:'50px',md:'150px'},
         }
     },
     {
@@ -23,7 +23,7 @@ const AddHoldingInputConfig = [
         label: 'Avg Cost',
         type: InputTypesEnum._NUMBER,
         sx: {
-            width: '100px',
+            width: {xs:'50px',md:'150px'},
         }
     },
 ]
@@ -97,7 +97,7 @@ const AddHoldingDialog = () => {
                     boxSizing: 'border-box'
                 }}>
                     <SearchStocks 
-                    width='550px'
+                    width={{xs:'100%',md:'550px'}}
                     onChange={(e, value, eventType) => {
                         if (eventType === 'selectOption'){
                             addHolding(value)
@@ -116,7 +116,7 @@ const AddHoldingDialog = () => {
                         const stock = holdings.get(key)
                         return (
                             <Stack direction="row" justifyContent="space-between" key={`stack-${key}`} sx={{my: '8px', position: 'relative', pr: '35px' }}>
-                                <Box key={`container-${key}`} display='flex' flexDirection='column'>
+                                <Box key={`container-${key}`} display='flex' flexDirection='column' width='50%'>
                                     <Typography variant='h6'>
                                         {stock.ticker}
                                     </Typography>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTheme, Stack, Paper, Typography } from '@mui/material';
+import { useTheme, Stack, Paper, Typography, useMediaQuery } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { formatCurrencyNumber, formatPercentage } from 'util/Utility'
 import LeaderBoardIcon from '@mui/icons-material/Leaderboard';
@@ -10,7 +10,7 @@ import { selectHoldingData } from 'services/holdingSlice';
 import PieChart from 'stocks/components/PieChart.jsx';
 import ChartWithListCard from 'stocks/components/ChartWithListCard.jsx';
 
-const dashboardWidth = '942px'
+const dashboardWidth = {xs: '100%' , md: '942px'}
 
 const Dashboard = () => {
 
@@ -18,8 +18,8 @@ const Dashboard = () => {
   const { data } = holdingsData || {}
 
   return (
-    <Stack width='100%' height='100vh' justifyContent='center' 
-    alignItems='center' spacing={5} mt={33}>
+    <Stack width='100%' justifyContent='center'
+    alignItems='center' spacing={5}>
       <DashboardCards/>
       {data &&
       <ChartWithListCard
@@ -58,7 +58,7 @@ const DashboardCards = () => {
   return (
     <Stack width={dashboardWidth} height='100%' justifyContent='center' alignItems='center'>
       <Paper elevation={8}>
-        <Stack direction='row'>
+        <Stack direction={{xs: 'column' , md: 'row'}}>
           <InfoCard
           title='Income'
           description='Your annual income after tax'
@@ -88,7 +88,7 @@ const DashboardCards = () => {
           </Typography>}
           />
         </Stack>
-        <Stack direction='row'>
+        <Stack direction={{xs: 'column' , md: 'row'}}>
           <InfoCard
           title='Total Value'
           description='Your portfolio`s total value today'
@@ -125,8 +125,9 @@ const DashboardCards = () => {
 
 const InfoCard = ({title, description, value, content, icon}) => {
   const theme = useTheme()
+  const isXsDevices = useMediaQuery(theme.breakpoints.down('sm'));
   return (
-    <Stack width='280px' height='200px' justifyContent='center' alignItems='center' px='16px'
+    <Stack width={{xs:'100%', md:'280px', boxSizing: isXsDevices && 'border-box'}} height='200px' justifyContent='center' alignItems='center' px='16px'
     sx={{border: `1px solid ${theme.palette.secondary.shades['12p']}`}}>
       <Typography variant='h5' color='info.main'>
         {title}
