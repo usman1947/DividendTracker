@@ -14,7 +14,7 @@ const EditHoldingInputConfig = [
         label: 'Shares',
         type: InputTypesEnum._NUMBER,
         sx: {
-            width: '150px',
+            width: {xs:'70px',md:'150px'},
             marginRight: '8px'
         }
     },
@@ -24,7 +24,7 @@ const EditHoldingInputConfig = [
         label: 'Avg Cost',
         type: InputTypesEnum._NUMBER,
         sx: {
-            width: '150px',
+            width: {xs:'70px',md:'150px'},
             marginRight: '8px'
         }
     },
@@ -87,13 +87,13 @@ const EditHoldingDialog = () => {
             <DialogContent>
                 <form onSubmit={submitHoldings} id='holdings' style={{marginTop: '16px'}}>
                     <Stack direction="row" alignItems='center'>
-                        <Typography variant='h6' sx={{width: '100px'}}>
+                        <Typography variant='h6' sx={{width: {xs:'85px',md:'100px'},}}>
                             Ticker
                         </Typography>
-                        <Typography variant='h6' sx={{width: '150px', mr:'8px'}}>
+                        <Typography variant='h6' sx={{width:  {xs:'70px',md:'150px'}, mr:'8px'}}>
                             Shares
                         </Typography>
-                        <Typography variant='h6' sx={{width: '150px'}}>
+                        <Typography variant='h6' sx={{width:  {xs:'100px',md:'150px'}}}>
                             Avg Cost
                         </Typography>
                     </Stack>
