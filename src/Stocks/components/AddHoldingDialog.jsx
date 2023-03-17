@@ -116,7 +116,7 @@ const AddHoldingDialog = () => {
                         const stock = holdings.get(key)
                         return (
                             <Stack direction="row" justifyContent="space-between" key={`stack-${key}`} sx={{my: '8px', position: 'relative', pr: '35px' }}>
-                                <Box key={`container-${key}`} display='flex' flexDirection='column' width='50%'>
+                                <Box key={`container-${key}`} display='flex' flexDirection='column' width='50%' sx={{maxWidth: '50%', minWidth: '50%'}}>
                                     <Typography variant='h6'>
                                         {stock.ticker}
                                     </Typography>
@@ -131,7 +131,7 @@ const AddHoldingDialog = () => {
                                     </Box>
                                 </Box>
                                 <Divider orientation="vertical" variant="middle" flexItem sx={{m:'0 8px'}}/>
-                                <Stack direction='row' spacing={1}>
+                                <Stack direction='row' spacing={1} width='calc(50% - 16px)'>
                                     {AddHoldingInputConfig.map((input) => {
                                         return (
                                             <GetInputComponent
@@ -148,7 +148,7 @@ const AddHoldingDialog = () => {
                                 </Stack>
                                 <IconButton 
                                 onClick={() => deleteHolding(key)}
-                                sx={{position: 'absolute', top: 'calc(50% - 20px)', right: '-16px'}}>
+                                sx={{position: 'absolute', top: 'calc(50% - 16px)', right: '-16px'}}>
                                     <DeleteIcon/>
                                 </IconButton>
                             </Stack>
