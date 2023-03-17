@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, IconButton, Box, Typography, Divider } from '@mui/material';
 import GetInputComponent from 'common-components/input/GetInputComponent'
-import { InputTypesEnum, Sectors } from 'util/Constants'
+import { InputTypesEnum } from 'util/Constants'
 import SearchStocks from 'stocks/components/SearchStocks'
 import { isNullOrEmpty, updateObjectInMapByKey } from 'util/Utility';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -33,14 +33,6 @@ const AddHoldingDialog = () => {
     const [open, setOpen] = useState(false);
     const [holdings, setHoldings] = useState(new Map());
     const [saveHolding] = useAddHoldingMutation();
-    const options = {
-        sector: Object.entries(Sectors).map(keyValuePair => (
-            {
-                label: keyValuePair[1],
-                value: keyValuePair[0]
-            }
-        ))
-    }
 
     function clearAndClose(){
         setOpen(false);
@@ -140,7 +132,6 @@ const AddHoldingDialog = () => {
                                             setInput={(newValue) => setHoldings(
                                                 updateObjectInMapByKey(holdings, key, newValue)
                                             )}
-                                            options={options[input.id]}
                                             input={input}
                                             />
                                         )

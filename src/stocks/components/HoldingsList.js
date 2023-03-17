@@ -5,8 +5,17 @@ import NoRecordsImage from 'assets/no-records.png'
 import { useGetAllHoldingsQuery } from 'services/api'
 import { unFormatNumber } from 'util/Utility'
 import Price52WeeksRange from 'stocks/components/Price52WeeksRange.jsx'
+import AddLogo from 'stocks/components/AddLogo.jsx'
 
 const columns = [
+  { 
+    field: 'logo', 
+    headerName: 'Logo', 
+    width: 80,
+    renderCell: (params) => {
+      return <AddLogo logo={params.value} id={params.row._id} width={50}/>
+    }
+  },
   { 
     field: 'ticker', 
     headerName: 'Ticker', 
