@@ -2,12 +2,13 @@ import React, { useEffect } from 'react';
 import { Route, withRouter, Switch } from 'react-router-dom';
 import { _ROUTES } from 'config/page-route.jsx';
 import { PageSettings } from 'config/page-settings.js';
-import { Box, Paper } from '@mui/material';
+import { Box, CircularProgress, Paper, Stack } from '@mui/material';
 import { useLazyGetStocksDataQuery, useGetAllHoldingsQuery } from 'services/api'
 import { isNullOrEmpty } from 'util/Utility';
 import { GenerateHoldingsData } from 'stocks/HelperFunctions.js'
 import { addHoldingsData } from 'services/holdingSlice'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { isLoading, setIsLoading } from 'services/appSlice';
 
 const compareRoutes = (routePath, path) => {
 	const splitRoutePath = routePath.split('/').slice(1);
@@ -49,6 +50,7 @@ const Content = ({ history }) => {
 	const [triggerGetStocksData, stocksApi] = useLazyGetStocksDataQuery()
 	const holdingsApi = useGetAllHoldingsQuery()
 	const dispatch = useDispatch()
+	const isAppLoading = useSelector(isLoading)
 
 	useEffect(() => {
 		var routes = _ROUTES;
@@ -70,6 +72,7 @@ const Content = ({ history }) => {
 	useEffect(() => {
 		if (!isNullOrEmpty(stocksApi.data) && 
 		holdingsApi.data?.length === stocksApi.data?.length) {
+			dispatch(setIsLoading(false))
 			const data = GenerateHoldingsData(holdingsApi.data, stocksApi.data);
 			dispatch(addHoldingsData(data))
 		}
@@ -77,6 +80,10 @@ const Content = ({ history }) => {
 	},[stocksApi.status, stocksApi.data, holdingsApi.data])
 
 	return (
+		isAppLoading ? 
+		<Stack width='100%' height='100%' justifyContent='center' alignItems='center'>
+			<CircularProgress/>
+		</Stack> :
         <PageSettings.Consumer>
 			{() => (
 				<Paper variant='content'>
