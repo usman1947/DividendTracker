@@ -1,11 +1,11 @@
 import React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Stack, Typography } from '@mui/material';
-import NoRecordsImage from 'assets/no-records.png'
+import { Typography } from '@mui/material';
 import { useGetAllHoldingsQuery } from 'services/api'
 import { unFormatNumber } from 'util/Utility'
 import Price52WeeksRange from 'stocks/components/Price52WeeksRange.jsx'
 import AddLogo from 'stocks/components/AddLogo.jsx'
+import NoDataOverlay from 'common-components/overlay/NoDataOverlay.jsx'
 
 const columns = [
   { 
@@ -140,7 +140,7 @@ const HoldingsList = (props) => {
       columns={columns}
       autoPageSize
       components={{
-        NoRowsOverlay: CustomNoRowsOverlay,
+        NoRowsOverlay: NoDataOverlay,
       }}
       disableSelectionOnClick
       disableVirtualization
@@ -149,17 +149,6 @@ const HoldingsList = (props) => {
       loading={holdingsApi.isFetching}
       />
     );
-}
-
-const CustomNoRowsOverlay = () => {
-  return (
-    <Stack with='100%' height='100%' alignItems='center' justifyContent='center'>
-      <img src={NoRecordsImage} alt=""/>
-      <Typography variant='subtitle1'>
-        No holdings added, Please click +ADD to add holdings
-      </Typography>
-    </Stack>
-  );
 }
 
 export default HoldingsList

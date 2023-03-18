@@ -1,7 +1,7 @@
 import React from 'react';
-import { useTheme, Stack, Paper, Typography, useMediaQuery } from '@mui/material';
+import { useTheme, Stack, Paper, Typography, useMediaQuery, Skeleton } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { formatCurrencyNumber, formatPercentage } from 'util/Utility'
+import { formatCurrencyNumber, formatPercentage, isNullOrEmpty } from 'util/Utility'
 import LeaderBoardIcon from '@mui/icons-material/Leaderboard';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
 import InsightsIcon from '@mui/icons-material/Insights';
@@ -9,6 +9,7 @@ import PriceChangeOutlinedIcon from '@mui/icons-material/PriceChangeOutlined';
 import { selectHoldingData } from 'services/holdingSlice';
 import PieChart from 'stocks/components/PieChart.jsx';
 import ChartWithListCard from 'stocks/components/ChartWithListCard.jsx';
+import NoDataOverlay from 'common-components/overlay/NoDataOverlay.jsx'
 
 const dashboardWidth = {xs: '100%' , md: '942px'}
 
@@ -18,6 +19,8 @@ const Dashboard = () => {
   const { data } = holdingsData || {}
 
   return (
+    isNullOrEmpty(data) ? 
+    <NoDataOverlay/> :
     <Stack width='100%' justifyContent='center'
     alignItems='center' spacing={5}>
       <DashboardCards/>
