@@ -33,10 +33,11 @@ const EditHoldingInputConfig = [
 const EditHoldingDialog = () => {
 
     const holdingsApi = useGetAllHoldingsQuery()
-    const [deleteHolding] = useDeleteHoldingMutation()
-    const [updateHoldingCall] = useUpdateHoldingMutation()
+    const [deleteHolding, deleteApi] = useDeleteHoldingMutation()
+    const [updateHoldingCall, editApi] = useUpdateHoldingMutation()
     const [holdingsState, setHoldingsState] = useState([])
     const [open, setOpen] = useState(false);
+    const isLoading = deleteApi.isLoading || editApi.isLoading
 
     async function onDeleteHolding(id){
         await deleteHolding(id)
@@ -118,6 +119,7 @@ const EditHoldingDialog = () => {
                                                 )}
                                                 onBlur={() => updateHolding(id)}
                                                 input={input}
+                                                disabled={isLoading}
                                                 />
                                             )
                                         })}
@@ -125,7 +127,7 @@ const EditHoldingDialog = () => {
                                     <IconButton 
                                     onClick={() => onDeleteHolding(holding._id)}
                                     sx={{position: 'absolute', top: 'calc(50% - 20px)', right: '0px'}}>
-                                        <DeleteIcon/>
+                                        <DeleteIcon disabled={isLoading}/>
                                     </IconButton>
                                 </Stack>
                                 <Divider key={`divider-${id}`}/>

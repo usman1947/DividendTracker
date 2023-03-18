@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTheme, Stack, Paper, Typography, useMediaQuery, Skeleton } from '@mui/material';
+import { useTheme, Stack, Paper, Typography, useMediaQuery } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { formatCurrencyNumber, formatPercentage, isNullOrEmpty } from 'util/Utility'
 import LeaderBoardIcon from '@mui/icons-material/Leaderboard';
