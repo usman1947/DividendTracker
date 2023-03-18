@@ -1,8 +1,6 @@
 import React from 'react'
-import 'scss/site.scss'
-import Header from 'common-components/Layout/Header'
-import SideBar from 'common-components/Layout/SideBar'
-import Content from 'common-components/Layout/Content'
+import 'styling/scss/site.scss'
+import { Header, Content, SideBar } from 'components/layout'
 import { Box, useMediaQuery, useTheme, Toolbar } from '@mui/material'
 
 function App() {

@@ -6,7 +6,7 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import './index.css'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
-import { stylesTheme, colorsTheme } from 'mui/theme.js'
+import { stylesTheme, colorsTheme } from 'styling'
 import { BrowserRouter } from 'react-router-dom'
 import { deepmerge } from '@mui/utils'
 

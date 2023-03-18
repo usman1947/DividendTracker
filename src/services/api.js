@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { findIndex } from 'lodash'
-import { setIsLoading } from 'services/appSlice'
+import { setIsLoading } from 'services/app-slice'
 
 const API_URL = process.env.REACT_APP_API_URL
 

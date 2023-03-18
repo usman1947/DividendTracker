@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/dist/query'
-import testReducer from 'services/testSlice.js'
-import holdingSlice from 'services/holdingSlice'
-import appSlice from 'services/appSlice'
+import testReducer from 'services/test-slice.js'
+import holdingSlice from 'services/holding-slice'
+import appSlice from 'services/app-slice'
 import { api } from 'services/api'
 
 export const store = configureStore({
