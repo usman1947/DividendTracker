@@ -19,17 +19,20 @@ const Portfolio = () => {
     <Box sx={{height: '100%', width: '100%', display: 'flex', flexDirection: 'column'}}>
       <Box sx={{height: '50px', width: '100%', display: 'flex', justifyContent: 'flex-end'}}>
         <Stack direction='row' spacing={1} alignItems="center" mb='4px'>
-          <LabelValue 
-          label="Total Return" 
-          value={`${totalReturn} (${returnPercentage})`} 
-          sx={{mr:'8px', color: totalReturnUnformatted > 0 ? 'colors.green' : 'colors.red'}}
-          />
-          <Divider orientation="vertical" variant="middle" flexItem sx={{mx:'8px'}}/>
-          <LabelValue 
-          label="Total Value" 
-          value={totalValue} 
-          sx={{paddingLeft:'8px', pr: '16px'}}
-          />
+          {data && 
+          <>
+            <LabelValue 
+            label="Total Return" 
+            value={`${totalReturn} (${returnPercentage})`} 
+            sx={{mr:'8px', color: totalReturnUnformatted > 0 ? 'colors.green' : 'colors.red'}}
+            />
+            <Divider orientation="vertical" variant="middle" flexItem sx={{mx:'8px'}}/>
+            <LabelValue 
+            label="Total Value" 
+            value={totalValue} 
+            sx={{paddingLeft:'8px', pr: '16px'}}
+            />
+          </>}
           <EditHoldingDialog/>
           <AddHoldingDialog/>
         </Stack>

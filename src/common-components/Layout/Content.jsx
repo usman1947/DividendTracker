@@ -65,6 +65,8 @@ const Content = ({ history }) => {
 		if (!isNullOrEmpty(holdingsApi.data) && holdingsApi.status !== 'pending') {
 			const tickers = holdingsApi.data.map(r => r.ticker).join(',')
 			triggerGetStocksData(tickers)
+		} else if (holdingsApi.status === 'fulfilled') {
+			dispatch(setIsLoading(false))
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	},[holdingsApi.status])

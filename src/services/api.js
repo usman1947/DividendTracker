@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { findIndex } from 'lodash'
+import { setIsLoading } from 'services/appSlice';
 
 const API_URL = process.env.REACT_APP_API_URL
 
@@ -35,7 +36,17 @@ export const api = createApi({
                 method: 'POST',
                 body: stocks,
             }),
-            invalidatesTags: ['Holdings']
+            invalidatesTags: ['Holdings'],
+            async onQueryStarted(query, { dispatch, queryFulfilled }) {
+                dispatch(setIsLoading(true))
+                try {
+                    await queryFulfilled
+                } catch (error) {
+                    console.log(error)
+                } finally {
+                    dispatch(setIsLoading(false))
+                }
+            }
         }),
         deleteHolding: builder.mutation({
             query: (id) => ({
