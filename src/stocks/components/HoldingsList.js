@@ -41,7 +41,7 @@ const columns = [
   {
     field: 'buyPrice',
     headerName: 'Buy Price',
-    width: 50,
+    width: 70,
   },
   {
     field: 'cost',
@@ -115,17 +115,17 @@ const columns = [
   {
     field: 'fiveYearDividendGrowth',
     headerName: '5 Year Growth Rate %',
-    width: 70,
+    width: 80,
   },
   {
     field: 'annualIncome',
-    headerName: 'AI',
-    width: 60,
+    headerName: 'Annual Income',
+    width: 70,
   },
   {
     field: 'annualIncomeAfterTax',
-    headerName: 'AIT',
-    width: 60,
+    headerName: 'Annual Income After Tax',
+    width: 70,
   },
 ];
 
