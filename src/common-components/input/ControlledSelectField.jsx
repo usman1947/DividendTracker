@@ -1,14 +1,13 @@
-import React from "react";
-import { Select, InputLabel, MenuItem, FormControl } from "@mui/material/";
+import React from 'react'
+import { Select, InputLabel, MenuItem, FormControl } from '@mui/material/'
 
 const ControlledTextField = (props) => {
+    const { id, input, setInput, label, options, ...rest } = props
 
-    const { id, input, setInput, label, options, ...rest } = props;
-
-    function onChange(e){
+    function onChange(e) {
         let value = e.target.value
-        let data = {...input};
-        data[props.id] = value;
+        let data = { ...input }
+        data[props.id] = value
         setInput(data)
     }
 
@@ -19,20 +18,18 @@ const ControlledTextField = (props) => {
                 id={id}
                 onChange={onChange}
                 value={input[id] ?? ''}
-                variant='standard'
-                size='small'
+                variant="standard"
+                size="small"
                 {...rest}
             >
-                {options.map(option => (
-                    <MenuItem 
-                    disabled={option.disabled} 
-                    value={option.value}>
+                {options.map((option) => (
+                    <MenuItem disabled={option.disabled} value={option.value}>
                         {option.label}
                     </MenuItem>
                 ))}
             </Select>
         </FormControl>
     )
-};
+}
 
 export default ControlledTextField

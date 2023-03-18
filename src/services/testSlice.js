@@ -7,10 +7,10 @@ export const testSlice = createSlice({
     initialState,
     reducers: {
         clear: () => [],
-        addName: ( state, action) => {
+        addName: (state, action) => {
             state.push(action.payload)
-        }
-    }
+        },
+    },
 })
 
 export const { clear, addName } = testSlice.actions

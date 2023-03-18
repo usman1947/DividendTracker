@@ -1,7 +1,7 @@
-import React from 'react';
-import {Redirect} from 'react-router';
-import { WebUrl } from 'util/Constants.js';
-import { Portfolio, Dashboard } from 'stocks';
+import React from 'react'
+import { Redirect } from 'react-router'
+import { WebUrl } from 'util/Constants.js'
+import { Portfolio, Dashboard } from 'stocks'
 
 export const _ROUTES = [
     {
@@ -23,5 +23,5 @@ export const _ROUTES = [
         component: () => <Dashboard />,
         authRequired: true,
         exact: true,
-    }
-];
+    },
+]

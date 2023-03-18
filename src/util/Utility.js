@@ -1,65 +1,73 @@
-import { isNil, isEmpty } from 'lodash';
+import { isNil, isEmpty } from 'lodash'
 import { DateTime } from 'luxon'
-import businessDays from "business-days-js";
+import businessDays from 'business-days-js'
 
-export function isNullOrEmpty(value){
-    if (typeof value === "number"){
-        return false;
+export function isNullOrEmpty(value) {
+    if (typeof value === 'number') {
+        return false
     }
     return isNil(value) || isEmpty(value)
 }
 
-export function updateObjectInArrayById(array, predicate, updatedObj){
+export function updateObjectInArrayById(array, predicate, updatedObj) {
     let tempArray = [...array]
-    let index = tempArray.findIndex(predicate);
-    tempArray[index] = updatedObj;
-    return tempArray;
+    let index = tempArray.findIndex(predicate)
+    tempArray[index] = updatedObj
+    return tempArray
 }
 
-export function updateObjectInMapByKey(map, key, updatedValue){
+export function updateObjectInMapByKey(map, key, updatedValue) {
     let newMap = new Map(map)
     newMap.set(key, updatedValue)
     return newMap
 }
 
-export function getLastBusinessDay(minusDay = -2){
-	const bDays = businessDays({state: "pa"});
-    const lastDay = DateTime.now().plus({days: minusDay})
-    if (bDays.check(lastDay)){
+export function getLastBusinessDay(minusDay = -2) {
+    const bDays = businessDays({ state: 'pa' })
+    const lastDay = DateTime.now().plus({ days: minusDay })
+    if (bDays.check(lastDay)) {
         return lastDay.toFormat('yyyy-MM-dd')
     } else {
         return getLastBusinessDay(minusDay - 2)
     }
 }
 
-export function getCurrentMonthAndYear(){
+export function getCurrentMonthAndYear() {
     return DateTime.now().toFormat('MM-yyyy')
 }
 
-export function getReturnPercentage(value, cost){
+export function getReturnPercentage(value, cost) {
     return formatPercentage((value - cost) / cost)
 }
 
-export function formatCurrencyNumber(number){
-    return new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'USD', currencyDisplay: 'narrowSymbol', maximumFractionDigits: 0 }).format(number)
+export function formatCurrencyNumber(number) {
+    return new Intl.NumberFormat('en-GB', {
+        style: 'currency',
+        currency: 'USD',
+        currencyDisplay: 'narrowSymbol',
+        maximumFractionDigits: 0,
+    }).format(number)
 }
 
-export function formatPercentage(percentage){
-    return new Intl.NumberFormat('en-GB', { style: 'percent', maximumFractionDigits: 2 }).format(percentage)
+export function formatPercentage(percentage) {
+    return new Intl.NumberFormat('en-GB', {
+        style: 'percent',
+        maximumFractionDigits: 2,
+    }).format(percentage)
 }
 
-export function unFormatNumber(inputString){
-    return parseFloat(inputString.replace(/[,%$]/g, ""));
+export function unFormatNumber(inputString) {
+    return parseFloat(inputString.replace(/[,%$]/g, ''))
 }
 
 export function generateRandomColor() {
-    return '#' + Math.floor(Math.random() * 16777215).toString(16);
+    return '#' + Math.floor(Math.random() * 16777215).toString(16)
 }
-  
+
 export function generateUniqueRandomColors(numColors) {
-    let colors = new Set();
+    let colors = new Set()
     while (colors.size < numColors) {
-        colors.add(generateRandomColor());
+        colors.add(generateRandomColor())
     }
-    return Array.from(colors);
+    return Array.from(colors)
 }

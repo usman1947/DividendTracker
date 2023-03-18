@@ -1,10 +1,17 @@
-import React from "react";
-import { Toolbar, List, ListItemButton, ListItem, ListItemIcon, ListItemText } from "@mui/material";
-import ShowChartIcon from '@mui/icons-material/ShowChart';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import WatchLaterIcon from '@mui/icons-material/WatchLater';
-import { WebUrl } from 'util/Constants.js';
-import { useHistory, useLocation } from 'react-router-dom';
+import React from 'react'
+import {
+    Toolbar,
+    List,
+    ListItemButton,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+} from '@mui/material'
+import ShowChartIcon from '@mui/icons-material/ShowChart'
+import DashboardIcon from '@mui/icons-material/Dashboard'
+import WatchLaterIcon from '@mui/icons-material/WatchLater'
+import { WebUrl } from 'util/Constants.js'
+import { useHistory, useLocation } from 'react-router-dom'
 
 const SideBarListItems = [
     {
@@ -15,34 +22,35 @@ const SideBarListItems = [
     {
         label: 'Portfolio',
         url: WebUrl._PORTFOLIO,
-        icon: ShowChartIcon
+        icon: ShowChartIcon,
     },
     {
         label: 'WatchList',
         url: 'watchList',
         icon: WatchLaterIcon,
-        disabled: true
-    }
+        disabled: true,
+    },
 ]
-const SideMenuListItems = ({setOpen=()=>{}}) => {
-    const _history = useHistory();
-    const location = useLocation();
+const SideMenuListItems = ({ setOpen = () => {} }) => {
+    const _history = useHistory()
+    const location = useLocation()
 
     return (
         <>
-            <Toolbar/>
+            <Toolbar />
             <List>
                 {SideBarListItems.map((item) => {
-                    const isSelected = location.pathname?.substring(1) === item.url
-                    return(
+                    const isSelected =
+                        location.pathname?.substring(1) === item.url
+                    return (
                         <ListItem key={item.label} disablePadding>
-                            <ListItemButton 
-                            onClick={() => {
-                                setOpen(false);
-                                _history.push(item.url)
-                            }} 
-                            selected={isSelected}
-                            disabled={item.disabled}
+                            <ListItemButton
+                                onClick={() => {
+                                    setOpen(false)
+                                    _history.push(item.url)
+                                }}
+                                selected={isSelected}
+                                disabled={item.disabled}
                             >
                                 <ListItemIcon>
                                     {item.icon && <item.icon />}
@@ -50,10 +58,11 @@ const SideMenuListItems = ({setOpen=()=>{}}) => {
                                 <ListItemText primary={item.label} />
                             </ListItemButton>
                         </ListItem>
-                )})}
+                    )
+                })}
             </List>
         </>
     )
 }
 
-export default SideMenuListItems;
+export default SideMenuListItems
