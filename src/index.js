@@ -7,21 +7,28 @@ import reportWebVitals from './reportWebVitals'
 import './index.css'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import { stylesTheme, colorsTheme } from 'styling'
-import { BrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { deepmerge } from '@mui/utils'
+import { _ROUTES } from 'config/page-route.jsx'
 
 const theme = createTheme(deepmerge(stylesTheme, colorsTheme))
 
 const container = document.getElementById('root')
 const root = createRoot(container)
-
-root.render(
-    <Provider store={store}>
-        <BrowserRouter>
+const router = createBrowserRouter([
+    {
+        path: '/',
+        element: (
             <ThemeProvider theme={theme}>
                 <App />
             </ThemeProvider>
-        </BrowserRouter>
+        ),
+        children: _ROUTES,
+    },
+])
+root.render(
+    <Provider store={store}>
+        <RouterProvider router={router} />
     </Provider>
 )
 
