@@ -11,7 +11,7 @@ import ShowChartIcon from '@mui/icons-material/ShowChart'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import WatchLaterIcon from '@mui/icons-material/WatchLater'
 import { WebUrl } from 'util/constants.js'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 const SideBarListItems = [
     {
@@ -32,7 +32,7 @@ const SideBarListItems = [
     },
 ]
 const SideMenuListItems = ({ setOpen = () => {} }) => {
-    const _history = useHistory()
+    const navigate = useNavigate()
     const location = useLocation()
 
     return (
@@ -47,7 +47,7 @@ const SideMenuListItems = ({ setOpen = () => {} }) => {
                             <ListItemButton
                                 onClick={() => {
                                     setOpen(false)
-                                    _history.push(item.url)
+                                    navigate(item.url)
                                 }}
                                 selected={isSelected}
                                 disabled={item.disabled}

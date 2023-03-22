@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Route, withRouter, Switch } from 'react-router-dom'
+import { Route, Routes, useLocation } from 'react-router-dom'
 import { _ROUTES } from 'config/page-route.jsx'
 import { PageSettings } from 'config/page-settings.js'
 import { Box, CircularProgress, Paper, Stack } from '@mui/material'
@@ -37,30 +37,18 @@ const setTitle = (path, routeArray) => {
     document.title = pageTitle
 }
 
-const PrivateRoute = (props) => {
-    let { component: Component, ...rest } = props
-    return (
-        <Route
-            {...rest}
-            render={(renderProps) => <Component {...renderProps} />}
-        />
-    )
-}
-
-const Content = ({ history }) => {
+const Content = () => {
     const [triggerGetStocksData, stocksApi] = useLazyGetStocksDataQuery()
     const holdingsApi = useGetAllHoldingsQuery()
     const dispatch = useDispatch()
     const isAppLoading = useSelector(isLoading)
+    const location = useLocation()
 
     useEffect(() => {
         var routes = _ROUTES
-        setTitle(history.location.pathname, routes)
-        return history.listen(() => {
-            setTitle(history.location.pathname, routes)
-        })
+        setTitle(location.pathname, routes)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [history.location.pathname])
+    }, [location.pathname])
 
     useEffect(() => {
         if (
@@ -100,16 +88,16 @@ const Content = ({ history }) => {
         <PageSettings.Consumer>
             {() => (
                 <Paper variant="content">
-                    <Switch>
+                    <Routes>
                         {_ROUTES.map((route, index) => (
-                            <PrivateRoute key={index} {...route} />
+                            <Route key={index} {...route} />
                         ))}
                         <Route path="" render={() => <Box>404</Box>} />
-                    </Switch>
+                    </Routes>
                 </Paper>
             )}
         </PageSettings.Consumer>
     )
 }
 
-export default withRouter(Content)
+export default Content
