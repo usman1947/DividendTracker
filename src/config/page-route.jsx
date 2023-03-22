@@ -17,6 +17,9 @@ export const _ROUTES = [
         Component: () => <Portfolio />,
         authRequired: true,
         exact: true,
+        handle: {
+            crumb: () => 'Portfolio',
+        },
     },
     {
         path: WebUrl._DASHBOARD,
@@ -24,5 +27,6 @@ export const _ROUTES = [
         Component: () => <Dashboard />,
         authRequired: true,
         exact: true,
+        crumb: () => 'Dashboard',
     },
 ]
