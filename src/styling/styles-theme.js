@@ -121,6 +121,12 @@ export const stylesTheme = createTheme({
                         borderRadius: 0,
                     },
                 },
+                {
+                    props: { variant: 'rounded' },
+                    style: {
+                        borderRadius: '16px',
+                    },
+                },
             ],
         },
         MuiAutocomplete: {

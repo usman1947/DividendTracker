@@ -27,6 +27,7 @@ const ChartWithListCard = (props) => {
     return (
         <Paper
             elevation={8}
+            variant="rounded"
             sx={{
                 width: width,
                 height: { xs: 'fit-content' },
