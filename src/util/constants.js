@@ -1,4 +1,6 @@
 export class WebUrl {
+    static _LOGIN = '/login'
+    static _REGISTER = '/register'
     static _PORTFOLIO = '/portfolio'
     static _DASHBOARD = '/dashboard'
 }

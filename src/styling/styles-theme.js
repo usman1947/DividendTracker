@@ -52,6 +52,9 @@ export const stylesTheme = createTheme({
                 root: {
                     fontFamily: "'Quicksand', sans-serif",
                     color: colorsTheme.palette.text.main,
+                    a: {
+                        color: colorsTheme.palette.primary.main,
+                    },
                 },
             },
             variants: [

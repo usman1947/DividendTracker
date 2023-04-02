@@ -9,7 +9,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles'
 import { stylesTheme, colorsTheme } from 'styling'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { deepmerge } from '@mui/utils'
-import { _ROUTES } from 'config/page-route.jsx'
+import { PUBLIC_ROUTES, PRIVATE_ROUTES } from 'config/page-route.jsx'
 
 const theme = createTheme(deepmerge(stylesTheme, colorsTheme))
 
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
                 <App />
             </ThemeProvider>
         ),
-        children: _ROUTES,
+        children: [...PUBLIC_ROUTES, ...PRIVATE_ROUTES],
     },
 ])
 root.render(
