@@ -1,14 +1,12 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
-import { _ROUTES } from 'config/page-route.jsx'
+import { PUBLIC_ROUTES, PRIVATE_ROUTES } from 'config/page-route.jsx'
 import { PageSettings } from 'config/page-settings.js'
-import { Box, CircularProgress, Paper, Stack } from '@mui/material'
-import { useLazyGetStocksDataQuery, useGetAllHoldingsQuery } from 'services/api'
-import { isNullOrEmpty } from 'util/utility'
-import { GenerateHoldingsData } from './services/helper-functions'
-import { addHoldingsData } from 'services/holding-slice'
-import { useDispatch, useSelector } from 'react-redux'
-import { isLoading, setIsLoading } from 'services/app-slice'
+import { Box, CircularProgress, Paper, Stack, Snackbar } from '@mui/material'
+import { useSelector } from 'react-redux'
+import { isLoading, errorMsg, setError } from 'services/app-slice'
+import PrivateRouteWrapper from './services/private-route-wrapper'
+import { useDispatch } from 'react-redux'
 
 const compareRoutes = (routePath, path) => {
     const splitRoutePath = routePath.split('/').slice(1)
@@ -38,42 +36,16 @@ const setTitle = (path, routeArray) => {
 }
 
 const Content = () => {
-    const [triggerGetStocksData, stocksApi] = useLazyGetStocksDataQuery()
-    const holdingsApi = useGetAllHoldingsQuery()
-    const dispatch = useDispatch()
     const isAppLoading = useSelector(isLoading)
+    const error = useSelector(errorMsg)
     const location = useLocation()
+    const dispatch = useDispatch()
 
     useEffect(() => {
-        var routes = _ROUTES
+        var routes = [...PUBLIC_ROUTES, ...PRIVATE_ROUTES]
         setTitle(location.pathname, routes)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname])
-
-    useEffect(() => {
-        if (
-            !isNullOrEmpty(holdingsApi.data) &&
-            holdingsApi.status !== 'pending'
-        ) {
-            const tickers = holdingsApi.data.map((r) => r.ticker).join(',')
-            triggerGetStocksData(tickers)
-        } else if (holdingsApi.status === 'fulfilled') {
-            dispatch(setIsLoading(false))
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [holdingsApi.status])
-
-    useEffect(() => {
-        if (
-            !isNullOrEmpty(stocksApi.data) &&
-            holdingsApi.data?.length === stocksApi.data?.length
-        ) {
-            dispatch(setIsLoading(false))
-            const data = GenerateHoldingsData(holdingsApi.data, stocksApi.data)
-            dispatch(addHoldingsData(data))
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [stocksApi.status, stocksApi.data, holdingsApi.data])
 
     return isAppLoading ? (
         <Stack
@@ -90,11 +62,32 @@ const Content = () => {
             {() => (
                 <Paper variant="content">
                     <Routes>
-                        {_ROUTES.map((route, index) => (
+                        {PUBLIC_ROUTES.map((route, index) => (
                             <Route key={index} {...route} />
+                        ))}
+                        {PRIVATE_ROUTES.map((route, index) => (
+                            <Route element={<PrivateRouteWrapper {...route} />}>
+                                <Route
+                                    key={index}
+                                    {...route}
+                                    element={(renderProps) => {
+                                        ;<route.Component {...renderProps} />
+                                    }}
+                                />
+                            </Route>
                         ))}
                         <Route path="" render={() => <Box>404</Box>} />
                     </Routes>
+                    <Snackbar
+                        open={error}
+                        autoHideDuration={3000}
+                        onClose={() => dispatch(setError(null))}
+                        message={error}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                    />
                 </Paper>
             )}
         </PageSettings.Consumer>
