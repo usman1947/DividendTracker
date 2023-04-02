@@ -3,6 +3,10 @@ import { Stack, Paper, Typography, Button } from '@mui/material'
 import { GetInputComponent } from 'components/input'
 import { InputTypesEnum } from 'util/constants'
 import { logo } from 'assets'
+import { Link, useNavigate } from 'react-router-dom'
+import { WebUrl } from 'util/constants.js'
+import { setError, setIsLoggedIn } from 'services/app-slice'
+import { useDispatch } from 'react-redux'
 
 const RegisterInputConfig = [
     {
@@ -36,9 +40,30 @@ const RegisterInputConfig = [
 
 const Register = () => {
     const [inputData, setInputData] = useState({})
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     async function onSubmit(e) {
         e.preventDefault()
-        console.log(inputData)
+        const response = await fetch(
+            `${process.env.REACT_APP_API_URL}/register`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(inputData),
+            }
+        )
+        var result = await response.json()
+        if (!result.success) {
+            dispatch(setError(result.message))
+        } else if (result.success) {
+            dispatch(setIsLoggedIn(true))
+            localStorage.setItem('isLoggedIn', true)
+            localStorage.setItem('userId', result.data.id)
+            navigate(WebUrl._DASHBOARD)
+        }
     }
     return (
         <Stack
@@ -83,6 +108,10 @@ const Register = () => {
                         >
                             Register
                         </Button>
+                        <Typography variant="body2">
+                            Already have an account?{' '}
+                            <Link to={WebUrl._LOGIN}>Login</Link>
+                        </Typography>
                     </Stack>
                 </form>
             </Paper>
