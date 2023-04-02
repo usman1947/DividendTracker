@@ -14,6 +14,7 @@ export class ApiKey {
 
 export class InputTypesEnum {
     static _TEXT = 'text'
+    static _PASSWORD = 'password'
     static _NUMBER = 'number'
     static _SELECT = 'select'
 }

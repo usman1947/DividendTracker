@@ -12,6 +12,7 @@ export const GetInputComponent = (props) => {
 
     switch (input.type) {
         case InputTypesEnum._TEXT:
+        case InputTypesEnum._PASSWORD:
             return (
                 <ControlledTextField
                     {...rest}
