@@ -5,9 +5,7 @@ const LabelValue = (props) => {
     const { label, value, sx } = props
     return (
         <Stack sx={{ textAlign: 'right', ...sx }}>
-            <Typography variant="subtitle3" color="secondary.main">
-                {label}
-            </Typography>
+            <Typography variant="subtitle3">{label}</Typography>
             <Typography variant="h6">{value}</Typography>
         </Stack>
     )

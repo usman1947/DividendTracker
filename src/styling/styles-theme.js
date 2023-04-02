@@ -9,10 +9,12 @@ export const stylesTheme = createTheme({
                     border: 'none',
                     outline: 'none',
                     padding: '0 16px 0 16px',
-                    backgroundColor: colorsTheme.palette.colors.white,
+                    backgroundColor: colorsTheme.palette.secondary.main,
+                    borderRadius: '16px',
+                    color: colorsTheme.palette.text.main,
                 },
                 cell: {
-                    borderBottom: `1px solid ${colorsTheme.palette.primary.shades['12p']}`,
+                    borderBottom: `1px solid ${colorsTheme.palette.primary.shades['4p']}`,
                     '&:focus': {
                         outline: 'none',
                     },
@@ -29,6 +31,19 @@ export const stylesTheme = createTheme({
                 },
                 footerContainer: {
                     border: 'none',
+                    color: colorsTheme.palette.text.main,
+                },
+            },
+        },
+        MuiTablePagination: {
+            styleOverrides: {
+                root: {
+                    color: colorsTheme.palette.text.main,
+                },
+                actions: {
+                    '.MuiButtonBase-root': {
+                        color: colorsTheme.palette.text.main,
+                    },
                 },
             },
         },
@@ -167,6 +182,21 @@ export const stylesTheme = createTheme({
                         backgroundColor: colorsTheme.palette.background.main,
                         color: colorsTheme.palette.text.main,
                     },
+                },
+            },
+        },
+        MuiDivider: {
+            styleOverrides: {
+                root: {
+                    border: `1px solid ${colorsTheme.palette.text.secondary}`,
+                    borderRadius: `8px`,
+                },
+            },
+        },
+        MuiIconButton: {
+            styleOverrides: {
+                root: {
+                    color: colorsTheme.palette.text.secondary,
                 },
             },
         },
