@@ -3,17 +3,9 @@ import { Stack, Paper, Typography, Button } from '@mui/material'
 import { GetInputComponent } from 'components/input'
 import { InputTypesEnum } from 'util/constants'
 import { logo } from 'assets'
+import { Link } from 'react-router-dom'
 
-const RegisterInputConfig = [
-    {
-        id: 'name',
-        required: true,
-        label: 'Name',
-        type: InputTypesEnum._TEXT,
-        sx: {
-            width: { xs: '100%', md: '300px' },
-        },
-    },
+const LoginInputConfig = [
     {
         id: 'email',
         required: true,
@@ -34,7 +26,7 @@ const RegisterInputConfig = [
     },
 ]
 
-const Register = () => {
+const Login = () => {
     const [inputData, setInputData] = useState({})
     async function onSubmit(e) {
         e.preventDefault()
@@ -65,8 +57,8 @@ const Register = () => {
                                 Dividend Tracker
                             </Typography>
                         </Stack>
-                        <Typography variant="h5">Sign Up</Typography>
-                        {RegisterInputConfig.map((input) => {
+                        <Typography variant="h5">Sign In</Typography>
+                        {LoginInputConfig.map((input) => {
                             return (
                                 <GetInputComponent
                                     key={`input-${input.id}`}
@@ -81,8 +73,12 @@ const Register = () => {
                             type="submit"
                             variant="contained"
                         >
-                            Register
+                            Login
                         </Button>
+                        <Typography variant="body2">
+                            Don't have an account?{' '}
+                            <Link href="/register">Register</Link>
+                        </Typography>
                     </Stack>
                 </form>
             </Paper>
@@ -90,4 +86,4 @@ const Register = () => {
     )
 }
 
-export default Register
+export default Login

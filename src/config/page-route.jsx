@@ -2,14 +2,14 @@ import React from 'react'
 import { WebUrl } from 'util/constants.js'
 import { Portfolio } from 'features/portfolio'
 import { Dashboard } from 'features/dashboard'
-import { Register } from 'features/account'
+import { Register, Login } from 'features/account'
 
 export const PUBLIC_ROUTES = [
     {
         path: '/login',
         title: 'Login',
         exact: true,
-        Component: () => <Dashboard />,
+        Component: () => <Login />,
         authRequired: false,
     },
     {
@@ -17,6 +17,13 @@ export const PUBLIC_ROUTES = [
         title: 'Register',
         exact: true,
         Component: () => <Register />,
+        authRequired: false,
+    },
+    {
+        path: '/login',
+        title: 'Login',
+        exact: true,
+        Component: () => <Login />,
         authRequired: false,
     },
 ]
