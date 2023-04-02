@@ -151,7 +151,6 @@ const AddHoldingDialog = () => {
                                         <Box display="flex">
                                             <Typography
                                                 variant="subtitle2"
-                                                color="secondary.main"
                                                 noWrap
                                             >
                                                 {stock.longname}
@@ -163,7 +162,6 @@ const AddHoldingDialog = () => {
                                             />
                                             <Typography
                                                 variant="subtitle2"
-                                                color="secondary.main"
                                                 noWrap
                                             >
                                                 {stock.sector}

@@ -85,7 +85,7 @@ const DashboardCards = () => {
             justifyContent="center"
             alignItems="center"
         >
-            <Paper elevation={8}>
+            <Paper elevation={8} variant="rounded">
                 <Stack direction={{ xs: 'column', md: 'row' }}>
                     <InfoCard
                         title="Income"

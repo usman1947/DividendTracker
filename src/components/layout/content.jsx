@@ -81,6 +81,7 @@ const Content = () => {
             height="100%"
             justifyContent="center"
             alignItems="center"
+            backgroundColor="background.main"
         >
             <CircularProgress />
         </Stack>

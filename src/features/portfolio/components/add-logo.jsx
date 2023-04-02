@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
     Button,
     Dialog,
@@ -12,6 +12,7 @@ import UploadIcon from '@mui/icons-material/Upload'
 import { GetInputComponent } from 'components/input'
 import { InputTypesEnum } from 'util/constants'
 import { useUpdateHoldingMutation, useGetAllHoldingsQuery } from 'services/api'
+import { removeImageBackground } from 'util/utility'
 
 const AddLogoInputConfig = [
     {
@@ -31,6 +32,15 @@ const AddLogo = (props) => {
     const [inputData, setInputData] = useState({})
     const [updateHoldingCall] = useUpdateHoldingMutation()
     const holdingsApi = useGetAllHoldingsQuery()
+    const [imageSrc, setImageSrc] = useState(logo)
+
+    useEffect(() => {
+        const getImage = async () => {
+            const result = await removeImageBackground(logo)
+            setImageSrc(result)
+        }
+        getImage()
+    }, [logo])
 
     function clearAndClose() {
         setOpen(false)
@@ -54,11 +64,12 @@ const AddLogo = (props) => {
                 {logo ? (
                     <img
                         alt="logo"
-                        src={logo}
+                        src={imageSrc}
                         style={{
                             objectFit: 'contain',
                             width: width,
                             height: '52px',
+                            mixBlendMode: 'multiply',
                         }}
                     />
                 ) : (

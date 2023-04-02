@@ -30,7 +30,7 @@ const OutdatedDataDisclaimer = ({ sx }) => {
             justifyContent="flex-end"
             sx={sx}
         >
-            <Typography variant="subtitle2" color="secondary.main">
+            <Typography variant="subtitle2">
                 {isXsDevices
                     ? 'Press here to refresh market data'
                     : '*Disclaimer* Market data is not updated periodically, To get latest market data please click refresh'}

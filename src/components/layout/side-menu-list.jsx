@@ -53,7 +53,11 @@ const SideMenuListItems = ({ setOpen = () => {} }) => {
                                 disabled={item.disabled}
                             >
                                 <ListItemIcon>
-                                    {item.icon && <item.icon />}
+                                    {item.icon && (
+                                        <item.icon
+                                            sx={{ color: 'text.main' }}
+                                        />
+                                    )}
                                 </ListItemIcon>
                                 <ListItemText primary={item.label} />
                             </ListItemButton>
