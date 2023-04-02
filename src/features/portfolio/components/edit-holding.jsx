@@ -203,7 +203,6 @@ const EditHoldingDialog = () => {
                                             <DeleteIcon disabled={isLoading} />
                                         </IconButton>
                                     </Stack>
-                                    <Divider key={`divider-${id}`} />
                                 </Box>
                             )
                         })}

@@ -73,6 +73,8 @@ export const stylesTheme = createTheme({
             styleOverrides: {
                 root: {
                     height: 'fit-content',
+                    borderRadius: '12px',
+                    fontFamily: "'Quicksand', sans-serif",
                 },
             },
         },
@@ -122,11 +124,17 @@ export const stylesTheme = createTheme({
             ],
         },
         MuiAutocomplete: {
+            styleOverrides: {
+                noOptions: {
+                    fontFamily: "'Quicksand', sans-serif",
+                    color: colorsTheme.palette.text.main,
+                },
+            },
             variants: [
                 {
                     props: { variant: 'search-stocks' },
                     style: {
-                        backgroundColor: colorsTheme.palette.colors.white,
+                        backgroundColor: colorsTheme.palette.secondary.main,
                         borderRadius: '4px',
                         [colorsTheme.breakpoints.down('sm')]: {
                             width: '100%',
@@ -136,6 +144,12 @@ export const stylesTheme = createTheme({
             ],
         },
         MuiInput: {
+            styleOverrides: {
+                root: {
+                    fontFamily: "'Quicksand', sans-serif",
+                    color: colorsTheme.palette.text.main,
+                },
+            },
             variants: [
                 {
                     props: { type: 'search-stocks' },
