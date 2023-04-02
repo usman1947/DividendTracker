@@ -12,16 +12,24 @@ function getShades(hex) {
 export const colorsTheme = createTheme({
     palette: {
         primary: {
-            main: '#333333',
-            shades: getShades('#333333'),
+            main: '#646cff',
+            shades: getShades('#646cff'),
         },
         secondary: {
-            main: '#757575',
-            shades: getShades('#757575'),
+            main: '#252529',
+            shades: getShades('#252529'),
         },
         info: {
-            main: '#4A6163',
-            shades: getShades('#4A6163'),
+            main: '#EBEBF599',
+            shades: getShades('#EBEBF599'),
+        },
+        background: {
+            main: '#1e1e20',
+        },
+        text: {
+            main: '#FFFFF5DB',
+            shades: getShades('#FFFFF5DB'),
+            secondary: '#FFFFFF',
         },
         colors: {
             white: '#FFFFFF',

@@ -35,7 +35,8 @@ export const stylesTheme = createTheme({
         MuiTypography: {
             styleOverrides: {
                 root: {
-                    fontFamily: '"Roboto","Helvetica","Arial",sans-serif;',
+                    fontFamily: "'Quicksand', sans-serif",
+                    color: colorsTheme.palette.text.main,
                 },
             },
             variants: [
@@ -65,6 +66,7 @@ export const stylesTheme = createTheme({
                 root: {
                     height: '64px',
                     zIndex: '20',
+                    backgroundColor: colorsTheme.palette.background.main,
                 },
             },
         },
@@ -77,11 +79,18 @@ export const stylesTheme = createTheme({
                         display: 'flex',
                         width: '100%',
                         justifyContent: 'space-between',
+                        backgroundColor: colorsTheme.palette.background.main,
+                        color: colorsTheme.palette.text.main,
                     },
                 },
             ],
         },
         MuiPaper: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: colorsTheme.palette.secondary.main,
+                },
+            },
             variants: [
                 {
                     props: { variant: 'content' },
@@ -91,8 +100,7 @@ export const stylesTheme = createTheme({
                         flex: 1,
                         padding: '16px',
                         boxSizing: 'border-box',
-                        backgroundColor:
-                            colorsTheme.palette.primary.shades['4p'],
+                        backgroundColor: colorsTheme.palette.background.main,
                         borderRadius: 0,
                     },
                 },
@@ -151,6 +159,16 @@ export const stylesTheme = createTheme({
                     },
                 },
             ],
+        },
+        MuiDrawer: {
+            styleOverrides: {
+                root: {
+                    '& .MuiDrawer-paper': {
+                        backgroundColor: colorsTheme.palette.background.main,
+                        color: colorsTheme.palette.text.main,
+                    },
+                },
+            },
         },
     },
 })
