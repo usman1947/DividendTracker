@@ -6,7 +6,7 @@ import { Register, Login } from 'features/account'
 
 export const PUBLIC_ROUTES = [
     {
-        path: WebUrl._LOGIN,
+        path: '/',
         title: 'Login',
         exact: true,
         Component: () => <Login />,
