@@ -9,6 +9,7 @@ export const api = createApi({
     tagTypes: ['StocksData', 'Holdings'],
     baseQuery: fetchBaseQuery({
         baseUrl: '',
+        credentials: 'include',
     }),
     endpoints: (builder) => ({
         getSearchStock: builder.query({
