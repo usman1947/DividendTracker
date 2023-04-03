@@ -5,13 +5,16 @@ import { isNullOrEmpty } from 'util/utility'
 import { GenerateHoldingsData } from './helper-functions'
 import { addHoldingsData } from 'services/holding-slice'
 import { useDispatch } from 'react-redux'
-import { setIsLoading } from 'services/app-slice'
+import { setIsLoading, isLoading } from 'services/app-slice'
+import { CircularProgress, Stack } from '@mui/material'
+import { useSelector } from 'react-redux'
 
 export const PrivateRouteWrapper = () => {
     const isLoggedIn = localStorage.getItem('isLoggedIn')
     const [triggerGetStocksData, stocksApi] = useLazyGetStocksDataQuery()
     const holdingsApi = useGetAllHoldingsQuery(localStorage.getItem('userId'))
     const dispatch = useDispatch()
+    const isAppLoading = useSelector(isLoading)
 
     useEffect(() => {
         if (
@@ -39,7 +42,19 @@ export const PrivateRouteWrapper = () => {
     }, [stocksApi.status, stocksApi.data, holdingsApi.data])
 
     const renderPrivate = () => {
-        if (isLoggedIn) {
+        if (isAppLoading) {
+            return (
+                <Stack
+                    width="100%"
+                    height="100%"
+                    justifyContent="center"
+                    alignItems="center"
+                    backgroundColor="background.main"
+                >
+                    <CircularProgress />
+                </Stack>
+            )
+        } else if (isLoggedIn) {
             return <Outlet />
         } else {
             return <Navigate to={'/login'} />

@@ -2,9 +2,9 @@ import { useEffect } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import { PUBLIC_ROUTES, PRIVATE_ROUTES } from 'config/page-route.jsx'
 import { PageSettings } from 'config/page-settings.js'
-import { Box, CircularProgress, Paper, Stack, Snackbar } from '@mui/material'
+import { Box, Paper, Snackbar } from '@mui/material'
 import { useSelector } from 'react-redux'
-import { isLoading, errorMsg, setError } from 'services/app-slice'
+import { errorMsg, setError } from 'services/app-slice'
 import PrivateRouteWrapper from './services/private-route-wrapper'
 import { useDispatch } from 'react-redux'
 
@@ -36,7 +36,6 @@ const setTitle = (path, routeArray) => {
 }
 
 const Content = () => {
-    const isAppLoading = useSelector(isLoading)
     const error = useSelector(errorMsg)
     const location = useLocation()
     const dispatch = useDispatch()
@@ -47,17 +46,7 @@ const Content = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname])
 
-    return isAppLoading ? (
-        <Stack
-            width="100%"
-            height="100%"
-            justifyContent="center"
-            alignItems="center"
-            backgroundColor="background.main"
-        >
-            <CircularProgress />
-        </Stack>
-    ) : (
+    return (
         <PageSettings.Consumer>
             {() => (
                 <Paper variant="content">

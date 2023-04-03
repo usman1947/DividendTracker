@@ -42,8 +42,11 @@ const Register = () => {
     const [inputData, setInputData] = useState({})
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
+
     async function onSubmit(e) {
         e.preventDefault()
+        setLoading(true)
         const response = await fetch(
             `${process.env.REACT_APP_API_URL}/register`,
             {
@@ -54,7 +57,7 @@ const Register = () => {
                 credentials: 'include',
                 body: JSON.stringify(inputData),
             }
-        )
+        ).finally(() => setLoading(false))
         var result = await response.json()
         if (!result.success) {
             dispatch(setError(result.message))
@@ -105,6 +108,7 @@ const Register = () => {
                             form="register-form"
                             type="submit"
                             variant="contained"
+                            disabled={loading}
                         >
                             Register
                         </Button>
