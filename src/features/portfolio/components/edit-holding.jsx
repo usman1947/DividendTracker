@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import {
     Button,
     Dialog,
@@ -9,7 +9,6 @@ import {
     IconButton,
     Box,
     Typography,
-    Divider,
 } from '@mui/material'
 import { GetInputComponent } from 'components/input'
 import { InputTypesEnum } from 'util/constants'
