@@ -1,6 +1,4 @@
 export class WebUrl {
-    static _LOGIN = '/login'
-    static _REGISTER = '/register'
     static _PORTFOLIO = '/portfolio'
     static _DASHBOARD = '/dashboard'
 }
@@ -16,7 +14,6 @@ export class ApiKey {
 
 export class InputTypesEnum {
     static _TEXT = 'text'
-    static _PASSWORD = 'password'
     static _NUMBER = 'number'
     static _SELECT = 'select'
 }
