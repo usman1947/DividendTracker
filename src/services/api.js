@@ -32,10 +32,13 @@ export const api = createApi({
         getAllHoldings: builder.query({
             query: () => `${API_URL}/holdings`,
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
+                dispatch(setIsLoading(true))
                 try {
                     await queryFulfilled
                 } catch (e) {
                     dispatch(setError(e.error.data.error))
+                } finally {
+                    dispatch(setIsLoading(false))
                 }
             },
             providesTags: ['Holdings'],
