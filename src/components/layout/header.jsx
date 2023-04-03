@@ -13,6 +13,7 @@ import { SearchStocks } from 'components/search'
 import MenuIcon from '@mui/icons-material/Menu'
 import SideMenuListItems from './side-menu-list'
 import { logo } from 'assets'
+import Logout from './components/logout'
 
 const Header = () => {
     const theme = useTheme()
@@ -52,6 +53,7 @@ const Header = () => {
                         onClose={() => setOpen(false)}
                     >
                         <SideMenuListItems setOpen={setOpen} />
+                        <Logout />
                     </SwipeableDrawer>
                 )}
             </Toolbar>
