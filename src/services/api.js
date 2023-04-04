@@ -4,7 +4,7 @@ import { setIsLoading, setError } from 'services/app-slice'
 
 const API_URL = process.env.REACT_APP_API_URL
 const token = localStorage.getItem('jwtToken')
-const headers = { Authorization: token }
+const headers = { Authorization: `Bearer ${token}` }
 
 export const api = createApi({
     reducerPath: 'api',
