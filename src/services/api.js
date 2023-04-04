@@ -32,6 +32,16 @@ export const api = createApi({
                 providesTags: ['StocksData'],
             }),
             transformResponse: (response) => response.quoteResponse.result,
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
+                dispatch(setIsLoading(true))
+                try {
+                    await queryFulfilled
+                } catch (e) {
+                    dispatch(setError('Failed to get stocks data'))
+                } finally {
+                    dispatch(setIsLoading(false))
+                }
+            },
         }),
         getAllHoldings: builder.query({
             query: () => ({
@@ -63,7 +73,7 @@ export const api = createApi({
                 try {
                     await queryFulfilled
                 } catch (error) {
-                    console.log(error)
+                    dispatch(setError('Something went wrong'))
                 } finally {
                     dispatch(setIsLoading(false))
                 }
@@ -101,7 +111,11 @@ export const api = createApi({
                 body: body,
                 headers: getHeaders(),
             }),
-            async onQueryStarted({ id }, { dispatch, queryFulfilled }) {
+            async onQueryStarted(
+                { id, showLoading },
+                { dispatch, queryFulfilled }
+            ) {
+                showLoading && dispatch(setIsLoading(true))
                 try {
                     const response = await queryFulfilled
                     dispatch(
@@ -115,7 +129,9 @@ export const api = createApi({
                         )
                     )
                 } catch {
-                    //TODO error management
+                    dispatch(setError('Something went wrong'))
+                } finally {
+                    showLoading && dispatch(setIsLoading(false))
                 }
             },
         }),

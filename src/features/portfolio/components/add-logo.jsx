@@ -54,7 +54,7 @@ const AddLogo = (props) => {
             ...holding,
             logo: inputData.logo,
         }
-        updateHoldingCall({ id, body: holding })
+        updateHoldingCall({ id, body: holding, showLoading: true })
         setOpen(false)
     }
 
