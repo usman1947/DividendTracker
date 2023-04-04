@@ -132,12 +132,12 @@ const columns = [
     {
         field: 'annualIncome',
         headerName: 'Annual Income',
-        width: 70,
+        width: 95,
     },
     {
         field: 'annualIncomeAfterTax',
         headerName: 'Annual Income After Tax',
-        width: 70,
+        width: 120,
     },
 ]
 
