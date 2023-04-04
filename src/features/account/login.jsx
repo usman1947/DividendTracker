@@ -52,7 +52,7 @@ const Login = () => {
         } else if (result.success) {
             dispatch(setIsLoggedIn(true))
             localStorage.setItem('isLoggedIn', true)
-            localStorage.setItem('userId', result.data.id)
+            localStorage.setItem('jwtToken', result.token)
             navigate(WebUrl._DASHBOARD)
         }
     }

@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux'
 export const PrivateRouteWrapper = () => {
     const isLoggedIn = localStorage.getItem('isLoggedIn')
     const [triggerGetStocksData, stocksApi] = useLazyGetStocksDataQuery()
-    const holdingsApi = useGetAllHoldingsQuery(localStorage.getItem('userId'))
+    const holdingsApi = useGetAllHoldingsQuery()
     const dispatch = useDispatch()
     const isAppLoading = useSelector(isLoading)
 
