@@ -69,7 +69,7 @@ const Content = () => {
                     </Routes>
                     <Snackbar
                         open={error}
-                        autoHideDuration={3000}
+                        autoHideDuration={2000}
                         onClose={() => dispatch(setError(null))}
                         message={error}
                         anchorOrigin={{

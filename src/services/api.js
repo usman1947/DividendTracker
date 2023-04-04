@@ -3,6 +3,8 @@ import { findIndex } from 'lodash'
 import { setIsLoading, setError } from 'services/app-slice'
 
 const API_URL = process.env.REACT_APP_API_URL
+const token = localStorage.getItem('jwtToken')
+const headers = { Authorization: token }
 
 export const api = createApi({
     reducerPath: 'api',
@@ -15,6 +17,7 @@ export const api = createApi({
         getSearchStock: builder.query({
             query: (searchString) => ({
                 url: `${API_URL}/search?symbol=${searchString}`,
+                headers: headers,
             }),
             providesTags: ['Stocks'],
             transformResponse: (response) => response.quotes,
@@ -30,7 +33,7 @@ export const api = createApi({
             transformResponse: (response) => response.quoteResponse.result,
         }),
         getAllHoldings: builder.query({
-            query: () => `${API_URL}/holdings`,
+            query: () => ({ url: `${API_URL}/holdings`, headers: headers }),
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 dispatch(setIsLoading(true))
                 try {
@@ -48,6 +51,7 @@ export const api = createApi({
                 url: `${API_URL}/addHoldings`,
                 method: 'POST',
                 body: stocks,
+                headers: headers,
             }),
             invalidatesTags: ['Holdings'],
             async onQueryStarted(query, { dispatch, queryFulfilled }) {
@@ -65,6 +69,7 @@ export const api = createApi({
             query: (id) => ({
                 url: `${API_URL}/holding/${id}`,
                 method: 'DELETE',
+                headers: headers,
             }),
             invalidatesTags: ['Holdings'],
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
@@ -90,6 +95,7 @@ export const api = createApi({
                 url: `${API_URL}/holding/${id}`,
                 method: 'PUT',
                 body: body,
+                headers: headers,
             }),
             async onQueryStarted({ id }, { dispatch, queryFulfilled }) {
                 try {
