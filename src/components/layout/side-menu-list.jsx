@@ -34,14 +34,12 @@ const SideBarListItems = [
 const SideMenuListItems = ({ setOpen = () => {} }) => {
     const navigate = useNavigate()
     const location = useLocation()
-
     return (
         <>
             <Toolbar />
             <List>
                 {SideBarListItems.map((item) => {
-                    const isSelected =
-                        location.pathname?.substring(1) === item.url
+                    const isSelected = location.pathname === item.url
                     return (
                         <ListItem key={item.label} disablePadding>
                             <ListItemButton
