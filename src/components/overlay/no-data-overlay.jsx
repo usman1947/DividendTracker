@@ -11,7 +11,7 @@ export const NoDataOverlay = ({ imgStyle, msg }) => {
             justifyContent="center"
         >
             <img src={NoRecordsImage} alt="" style={imgStyle} />
-            <Typography variant="subtitle1">
+            <Typography variant="subtitle1" sx={{ textAlign: 'center' }}>
                 {msg ?? 'No holdings added, Please click +ADD to add holdings'}
             </Typography>
         </Stack>
