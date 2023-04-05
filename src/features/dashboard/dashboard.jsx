@@ -41,7 +41,7 @@ const Dashboard = () => {
                     title="Top Holdings By Value"
                     width={dashboardWidth}
                     data={data}
-                    dataValueKey="unformattedValue"
+                    dataValueKey="value"
                 />
             )}
             {data && (
@@ -49,7 +49,7 @@ const Dashboard = () => {
                     title="Top Dividend Payers"
                     width={dashboardWidth}
                     data={data}
-                    dataValueKey="annualIncomeAfterTaxUnformatted"
+                    dataValueKey="annualIncomeAfterTax"
                 />
             )}
         </Stack>

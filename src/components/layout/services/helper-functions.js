@@ -1,7 +1,6 @@
 import {
     getReturnPercentage,
     formatCurrencyNumber,
-    formatPercentage,
     unFormatNumber,
 } from 'util/utility'
 import { TaxRate } from 'util/constants'
@@ -37,7 +36,6 @@ export function GenerateHoldingsData(holdings, stocksData) {
             ...stockDetailData,
             cost: cost,
             price: price,
-            unformattedValue: value,
             value: value,
             returnPercentage: unFormatNumber(getReturnPercentage(value, cost)),
             return: value - cost,
@@ -45,21 +43,17 @@ export function GenerateHoldingsData(holdings, stocksData) {
             annualIncome: annualIncome,
             yoc: yieldOnCost,
             annualIncomeAfterTax: annualIncomeAfterTax,
-            annualIncomeAfterTaxUnformatted: annualIncomeAfterTax,
             fiveYearDividendGrowth: fiveYearDividendGrowth,
-            fiveYearDividendGrowthUnformatted: fiveYearDividendGrowth,
             sector: sector,
             buyPrice: buyPrice,
             fiftyTwoWeekHigh: fiftyTwoWeekHigh,
             fiftyTwoWeekLow: fiftyTwoWeekLow,
-            priceUnformatted: price,
         }
     })
 
     //push after mapping values
     rowsData?.forEach((r) => {
-        r.weight = r.unformattedValue / totalValue
-        r.weightUnformatted = r.unformattedValue / totalValue
+        r.weight = r.value / totalValue
     })
 
     return {
@@ -84,9 +78,9 @@ function weightedDividendCAGR(stocks) {
     let weightedSum = 0
 
     stocks.forEach((stock) => {
-        const weight = stock.weightUnformatted
+        const weight = stock.weight
         totalWeight += weight
-        weightedSum += stock.fiveYearDividendGrowthUnformatted * weight
+        weightedSum += stock.fiveYearDividendGrowth * weight
     })
     return weightedSum / totalWeight
 }

@@ -67,7 +67,7 @@ const columns = [
         renderCell: (params) => {
             const fiftyTwoWeekHigh = params.row.fiftyTwoWeekHigh
             const fiftyTwoWeekLow = params.row.fiftyTwoWeekLow
-            const price = params.row.priceUnformatted
+            const price = params.row.price
             return (
                 <Price52WeeksRange
                     low={fiftyTwoWeekLow}
