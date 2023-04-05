@@ -2,6 +2,7 @@ import {
     getReturnPercentage,
     formatCurrencyNumber,
     formatPercentage,
+    unFormatNumber,
 } from 'util/utility'
 import { TaxRate } from 'util/constants'
 
@@ -34,18 +35,18 @@ export function GenerateHoldingsData(holdings, stocksData) {
         return {
             ...holding,
             ...stockDetailData,
-            cost: formatCurrencyNumber(cost),
-            price: formatCurrencyNumber(price),
+            cost: cost,
+            price: price,
             unformattedValue: value,
-            value: formatCurrencyNumber(value),
-            returnPercentage: getReturnPercentage(value, cost),
-            return: formatCurrencyNumber(value - cost),
-            yield: formatPercentage(annualYield),
-            annualIncome: formatCurrencyNumber(annualIncome),
-            yoc: formatPercentage(yieldOnCost),
-            annualIncomeAfterTax: formatCurrencyNumber(annualIncomeAfterTax),
+            value: value,
+            returnPercentage: unFormatNumber(getReturnPercentage(value, cost)),
+            return: value - cost,
+            yield: annualYield,
+            annualIncome: annualIncome,
+            yoc: yieldOnCost,
+            annualIncomeAfterTax: annualIncomeAfterTax,
             annualIncomeAfterTaxUnformatted: annualIncomeAfterTax,
-            fiveYearDividendGrowth: formatPercentage(fiveYearDividendGrowth),
+            fiveYearDividendGrowth: fiveYearDividendGrowth,
             fiveYearDividendGrowthUnformatted: fiveYearDividendGrowth,
             sector: sector,
             buyPrice: buyPrice,
@@ -57,7 +58,7 @@ export function GenerateHoldingsData(holdings, stocksData) {
 
     //push after mapping values
     rowsData?.forEach((r) => {
-        r.weight = formatPercentage(r.unformattedValue / totalValue)
+        r.weight = r.unformattedValue / totalValue
         r.weightUnformatted = r.unformattedValue / totalValue
     })
 

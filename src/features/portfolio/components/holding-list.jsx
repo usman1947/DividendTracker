@@ -2,7 +2,11 @@ import React from 'react'
 import { DataGrid } from '@mui/x-data-grid'
 import { Typography } from '@mui/material'
 import { useGetAllHoldingsQuery } from 'services/api'
-import { unFormatNumber } from 'util/utility'
+import {
+    unFormatNumber,
+    formatCurrencyNumber,
+    formatPercentage,
+} from 'util/utility'
 import Price52WeeksRange from './price-52-weeks-range'
 import AddLogo from './add-logo'
 import { NoDataOverlay } from 'components/overlay'
@@ -17,6 +21,8 @@ const columns = [
                 <AddLogo logo={params.value} id={params.row._id} width={50} />
             )
         },
+        sortable: false,
+        filterable: false,
     },
     {
         field: 'ticker',
@@ -44,16 +50,20 @@ const columns = [
         field: 'buyPrice',
         headerName: 'Buy Price',
         width: 70,
+        sortable: false,
+        filterable: false,
     },
     {
         field: 'cost',
         headerName: 'Cost',
         width: 70,
+        renderCell: (params) => formatCurrencyNumber(params.value),
     },
     {
         field: 'price',
         headerName: 'Price',
         width: 80,
+        renderCell: (params) => formatCurrencyNumber(params.value),
     },
     {
         field: 'range',
@@ -71,24 +81,27 @@ const columns = [
                 />
             )
         },
+        sortable: false,
+        filterable: false,
     },
     {
         field: 'value',
         headerName: 'Value',
         width: 80,
+        renderCell: (params) => formatCurrencyNumber(params.value),
     },
     {
         field: 'returnPercentage',
         headerName: 'Return %',
         width: 70,
         renderCell: (params) => {
-            const value = unFormatNumber(params.value)
+            const value = params.value
             return (
                 <Typography
                     variant="subtitle2"
                     sx={{ color: value < 0 ? 'colors.red' : 'colors.green' }}
                 >
-                    {params.value}
+                    {formatPercentage(params.value / 100)}
                 </Typography>
             )
         },
@@ -98,13 +111,13 @@ const columns = [
         headerName: 'Return',
         width: 60,
         renderCell: (params) => {
-            const value = unFormatNumber(params.value)
+            const value = params.value
             return (
                 <Typography
                     variant="subtitle2"
                     sx={{ color: value < 0 ? 'colors.red' : 'colors.green' }}
                 >
-                    {params.value}
+                    {formatCurrencyNumber(value)}
                 </Typography>
             )
         },
@@ -113,31 +126,37 @@ const columns = [
         field: 'weight',
         headerName: 'Weight',
         width: 70,
+        renderCell: (params) => formatPercentage(params.value),
     },
     {
         field: 'yoc',
         headerName: 'YOC',
         width: 70,
+        renderCell: (params) => formatPercentage(params.value),
     },
     {
         field: 'yield',
         headerName: 'Yield',
         width: 70,
+        renderCell: (params) => formatPercentage(params.value),
     },
     {
         field: 'fiveYearDividendGrowth',
         headerName: '5 Year Growth Rate %',
         width: 80,
+        renderCell: (params) => formatPercentage(params.value),
     },
     {
         field: 'annualIncome',
         headerName: 'Annual Income',
         width: 95,
+        renderCell: (params) => formatCurrencyNumber(params.value),
     },
     {
         field: 'annualIncomeAfterTax',
         headerName: 'Annual Income After Tax',
         width: 120,
+        renderCell: (params) => formatCurrencyNumber(params.value),
     },
 ]
 
