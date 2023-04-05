@@ -1,12 +1,7 @@
-import React from 'react'
 import { DataGrid } from '@mui/x-data-grid'
 import { Typography } from '@mui/material'
 import { useGetAllHoldingsQuery } from 'services/api'
-import {
-    unFormatNumber,
-    formatCurrencyNumber,
-    formatPercentage,
-} from 'util/utility'
+import { formatCurrencyNumber, formatPercentage } from 'util/utility'
 import Price52WeeksRange from './price-52-weeks-range'
 import AddLogo from './add-logo'
 import { NoDataOverlay } from 'components/overlay'
