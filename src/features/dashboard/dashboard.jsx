@@ -225,15 +225,26 @@ const InfoCard = ({ title, description, value, content, icon }) => {
 
 const ThisMonthDividendText = ({ stocks }) => {
     if (stocks.length === 0) {
-        return 'None of your stocks will pay dividend this month :('
+        return (
+            <Typography variant="body2">
+                None of your stocks will pay dividend this month :(
+            </Typography>
+        )
     } else if (stocks.length <= 2) {
-        return `${stocks.join(
-            ', '
-        )} in your portfolio will pay their dividends this month`
+        return (
+            <Typography variant="body2">
+                {`${stocks.join(', ')} will pay their dividends
+                this month`}
+            </Typography>
+        )
     } else {
-        return `${stocks.slice(0, 2).join(', ')} and ${
-            stocks.slice(2).length
-        } other in your portfolio will pay their dividends this month`
+        return (
+            <Typography variant="body2">
+                {`${stocks.slice(0, 2).join(', ')} and ${
+                    stocks.slice(2).length
+                } others will pay their dividends this month`}
+            </Typography>
+        )
     }
 }
 
