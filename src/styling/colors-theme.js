@@ -38,4 +38,13 @@ export const colorsTheme = createTheme({
             red: 'red',
         },
     },
+    breakpoints: {
+        values: {
+            xs: 0,
+            sm: 478,
+            md: 991,
+            lg: 1440,
+            xl: 1920,
+        },
+    },
 })

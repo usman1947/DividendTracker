@@ -2,7 +2,7 @@ import React from 'react'
 import { Stack, Typography } from '@mui/material'
 import { NoRecordsImage } from 'assets'
 
-export const NoDataOverlay = () => {
+export const NoDataOverlay = ({ imgStyle, msg }) => {
     return (
         <Stack
             with="100%"
@@ -10,9 +10,9 @@ export const NoDataOverlay = () => {
             alignItems="center"
             justifyContent="center"
         >
-            <img src={NoRecordsImage} alt="" />
+            <img src={NoRecordsImage} alt="" style={imgStyle} />
             <Typography variant="subtitle1">
-                No holdings added, Please click +ADD to add holdings
+                {msg ?? 'No holdings added, Please click +ADD to add holdings'}
             </Typography>
         </Stack>
     )
