@@ -1,4 +1,3 @@
-import React from 'react'
 import {
     useTheme,
     Stack,
@@ -25,14 +24,18 @@ const dashboardWidth = { xs: '100%', md: '942px' }
 const Dashboard = () => {
     const holdingsData = useSelector(selectHoldingData)
     const { data } = holdingsData || {}
-    const theme = useTheme()
-    const isSmDevices = useMediaQuery(theme.breakpoints.down('sm'))
 
     return isNullOrEmpty(data) ? (
-        <NoDataOverlay
-            msg="No holdings added, Please click +ADD in portfolio tab to add holdings"
-            imgStyle={isSmDevices ? { width: '100vw', height: '30vh' } : {}}
-        />
+        <Stack
+            width="100%"
+            justifyContent="center"
+            height={{ xs: '100%', md: '100%' }}
+        >
+            <NoDataOverlay
+                msg="No holdings added, Please click +ADD in portfolio tab to add holdings"
+                imgStyle={{ width: '80%', height: { xs: 'unset', md: '80%' } }}
+            />
+        </Stack>
     ) : (
         <Stack
             width="100%"
