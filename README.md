@@ -11,6 +11,13 @@ App is currently deployed at
 ```bash
 https://dividend-tracker-three.vercel.app/dashboard
 ```
+You can use the following demo account to access the App or register a new account,
+```bash
+test@test.com
+```
+```bash
+test123
+```
 
 <hr>
 
@@ -41,11 +48,11 @@ npm start
 
 ## Upcoming Features
 
-<li> User Accounts </li>
-<li> Purchase Planner </li>
-<li> Stock Profile </li>
-<li> WatchList with Dashboard Notifications </li>
-<li> Dividend Calender </li>
-<li> Monthly Dividends Received Tracking </li>
-<li> Account Settings </li>
-<li> Growth Projection </li>
+- [x] User Accounts
+- [ ] Purchase Planner
+- [ ] Stock Profile 
+- [ ] WatchList with Dashboard Notifications
+- [ ] Dividend Calender
+- [ ] Monthly Dividends Received Tracking 
+- [ ] Account Settings (Tax configuration etc)
+- [ ] Growth Projection
