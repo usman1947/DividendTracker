@@ -3,8 +3,9 @@ import { findIndex } from 'lodash'
 import { setIsLoading, setError } from 'services/app-slice'
 
 const API_URL = process.env.REACT_APP_API_URL
-const token = localStorage.getItem('jwtToken')
-const headers = { Authorization: `Bearer ${token}` }
+function getHeaders() {
+    return { Authorization: `Bearer ${localStorage.getItem('jwtToken')}` }
+}
 
 export const api = createApi({
     reducerPath: 'api',
@@ -17,7 +18,7 @@ export const api = createApi({
         getSearchStock: builder.query({
             query: (searchString) => ({
                 url: `${API_URL}/search?symbol=${searchString}`,
-                headers: headers,
+                headers: getHeaders(),
             }),
             providesTags: ['Stocks'],
             transformResponse: (response) => response.quotes,
@@ -31,9 +32,22 @@ export const api = createApi({
                 providesTags: ['StocksData'],
             }),
             transformResponse: (response) => response.quoteResponse.result,
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
+                dispatch(setIsLoading(true))
+                try {
+                    await queryFulfilled
+                } catch (e) {
+                    dispatch(setError('Failed to get stocks data'))
+                } finally {
+                    dispatch(setIsLoading(false))
+                }
+            },
         }),
         getAllHoldings: builder.query({
-            query: () => ({ url: `${API_URL}/holdings`, headers: headers }),
+            query: () => ({
+                url: `${API_URL}/holdings`,
+                headers: getHeaders(),
+            }),
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 dispatch(setIsLoading(true))
                 try {
@@ -51,7 +65,7 @@ export const api = createApi({
                 url: `${API_URL}/addHoldings`,
                 method: 'POST',
                 body: stocks,
-                headers: headers,
+                headers: getHeaders(),
             }),
             invalidatesTags: ['Holdings'],
             async onQueryStarted(query, { dispatch, queryFulfilled }) {
@@ -59,7 +73,7 @@ export const api = createApi({
                 try {
                     await queryFulfilled
                 } catch (error) {
-                    console.log(error)
+                    dispatch(setError('Something went wrong'))
                 } finally {
                     dispatch(setIsLoading(false))
                 }
@@ -69,7 +83,7 @@ export const api = createApi({
             query: (id) => ({
                 url: `${API_URL}/holding/${id}`,
                 method: 'DELETE',
-                headers: headers,
+                headers: getHeaders(),
             }),
             invalidatesTags: ['Holdings'],
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
@@ -95,9 +109,13 @@ export const api = createApi({
                 url: `${API_URL}/holding/${id}`,
                 method: 'PUT',
                 body: body,
-                headers: headers,
+                headers: getHeaders(),
             }),
-            async onQueryStarted({ id }, { dispatch, queryFulfilled }) {
+            async onQueryStarted(
+                { id, showLoading },
+                { dispatch, queryFulfilled }
+            ) {
+                showLoading && dispatch(setIsLoading(true))
                 try {
                     const response = await queryFulfilled
                     dispatch(
@@ -111,7 +129,9 @@ export const api = createApi({
                         )
                     )
                 } catch {
-                    //TODO error management
+                    dispatch(setError('Something went wrong'))
+                } finally {
+                    showLoading && dispatch(setIsLoading(false))
                 }
             },
         }),

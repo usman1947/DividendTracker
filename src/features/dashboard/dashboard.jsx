@@ -25,9 +25,14 @@ const dashboardWidth = { xs: '100%', md: '942px' }
 const Dashboard = () => {
     const holdingsData = useSelector(selectHoldingData)
     const { data } = holdingsData || {}
+    const theme = useTheme()
+    const isSmDevices = useMediaQuery(theme.breakpoints.down('sm'))
 
     return isNullOrEmpty(data) ? (
-        <NoDataOverlay />
+        <NoDataOverlay
+            msg="No holdings added, Please click +ADD in portfolio tab to add holdings"
+            imgStyle={isSmDevices ? { width: '100vw', height: '30vh' } : {}}
+        />
     ) : (
         <Stack
             width="100%"
@@ -41,7 +46,7 @@ const Dashboard = () => {
                     title="Top Holdings By Value"
                     width={dashboardWidth}
                     data={data}
-                    dataValueKey="unformattedValue"
+                    dataValueKey="value"
                 />
             )}
             {data && (
@@ -49,7 +54,7 @@ const Dashboard = () => {
                     title="Top Dividend Payers"
                     width={dashboardWidth}
                     data={data}
-                    dataValueKey="annualIncomeAfterTaxUnformatted"
+                    dataValueKey="annualIncomeAfterTax"
                 />
             )}
         </Stack>
@@ -225,15 +230,26 @@ const InfoCard = ({ title, description, value, content, icon }) => {
 
 const ThisMonthDividendText = ({ stocks }) => {
     if (stocks.length === 0) {
-        return 'None of your stocks will pay dividend this month :('
+        return (
+            <Typography variant="body2">
+                None of your stocks will pay dividend this month :(
+            </Typography>
+        )
     } else if (stocks.length <= 2) {
-        return `${stocks.join(
-            ', '
-        )} in your portfolio will pay their dividends this month`
+        return (
+            <Typography variant="body2">
+                {`${stocks.join(', ')} will pay their dividends
+                this month`}
+            </Typography>
+        )
     } else {
-        return `${stocks.slice(0, 2).join(', ')} and ${
-            stocks.slice(2).length
-        } other in your portfolio will pay their dividends this month`
+        return (
+            <Typography variant="body2">
+                {`${stocks.slice(0, 2).join(', ')} and ${
+                    stocks.slice(2).length
+                } others will pay their dividends this month`}
+            </Typography>
+        )
     }
 }
 

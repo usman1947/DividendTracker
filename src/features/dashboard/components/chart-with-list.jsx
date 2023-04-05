@@ -46,7 +46,7 @@ const ChartWithListCard = (props) => {
                     {title}
                 </Typography>
                 <List>
-                    {data.map(
+                    {sortedDataByDataKeyValue.map(
                         (stock, i) =>
                             i < 8 && (
                                 <Stack
