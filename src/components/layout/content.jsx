@@ -5,7 +5,7 @@ import { PageSettings } from 'config/page-settings.js'
 import { Box, Paper, Snackbar } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { errorMsg, setError } from 'services/app-slice'
-import PrivateRouteWrapper from './services/private-route-wrapper'
+import { PrivateRouteWrapper, PublicRouteWrapper } from './services'
 import { useDispatch } from 'react-redux'
 
 const compareRoutes = (routePath, path) => {
@@ -52,7 +52,15 @@ const Content = () => {
                 <Paper variant="content">
                     <Routes>
                         {PUBLIC_ROUTES.map((route, index) => (
-                            <Route key={index} {...route} />
+                            <Route element={<PublicRouteWrapper {...route} />}>
+                                <Route
+                                    key={index}
+                                    {...route}
+                                    element={(renderProps) => {
+                                        ;<route.Component {...renderProps} />
+                                    }}
+                                />
+                            </Route>
                         ))}
                         {PRIVATE_ROUTES.map((route, index) => (
                             <Route element={<PrivateRouteWrapper {...route} />}>

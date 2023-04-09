@@ -10,6 +10,8 @@ import { stylesTheme, colorsTheme } from 'styling'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { deepmerge } from '@mui/utils'
 import { PUBLIC_ROUTES, PRIVATE_ROUTES } from 'config/page-route.jsx'
+import { ConfigProvider } from 'antd'
+import { theme as AntTheme } from 'styling/ant-design'
 
 const theme = createTheme(deepmerge(stylesTheme, colorsTheme))
 
@@ -19,9 +21,11 @@ const router = createBrowserRouter([
     {
         path: '/',
         element: (
-            <ThemeProvider theme={theme}>
-                <App />
-            </ThemeProvider>
+            <ConfigProvider theme={AntTheme}>
+                <ThemeProvider theme={theme}>
+                    <App />
+                </ThemeProvider>
+            </ConfigProvider>
         ),
         children: [...PUBLIC_ROUTES, ...PRIVATE_ROUTES],
     },
