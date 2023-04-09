@@ -44,6 +44,7 @@ npm start
 <li> Nodejs for backend server with MongoDb</li>
 <li> yahoo-finance-2 package for stock research </li>
 <li> Yahoo Finance Api for getting market data </li>
+<li> Ant Design for some components </li>
 <hr>
 
 ## Upcoming Features
@@ -52,7 +53,7 @@ npm start
 - [ ] Purchase Planner
 - [ ] Stock Profile 
 - [ ] WatchList with Dashboard Notifications
-- [ ] Dividend Calender
+- [x] Dividend Calender
 - [ ] Monthly Dividends Received Tracking 
 - [ ] Account Settings (Tax configuration etc)
 - [ ] Growth Projection
