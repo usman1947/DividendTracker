@@ -3,10 +3,11 @@ import { selectHoldingData } from 'services/holding-slice'
 import { useSelector } from 'react-redux'
 import { useMemo } from 'react'
 import { formatCurrencyNumber } from 'util/utility'
-import { Stack } from '@mui/material'
+import { Stack, Typography, useMediaQuery, useTheme } from '@mui/material'
 
 const DividendCalender = () => {
     const holdingsData = useSelector(selectHoldingData)
+
     const dividendDates = useMemo(
         () =>
             holdingsData.data?.map((stock) => {
@@ -30,17 +31,7 @@ const DividendCalender = () => {
             }
             return false
         })
-
-        return monthlyStocks.map((stock) => (
-            <Stack>
-                <Badge
-                    status={'success'}
-                    text={`${stock.ticker} ${formatCurrencyNumber(
-                        stock.amount
-                    )}`}
-                />
-            </Stack>
-        ))
+        return monthlyStocks.map((stock) => <DividendAmount stock={stock} />)
     }
 
     const getListData = (value) => {
@@ -64,16 +55,7 @@ const DividendCalender = () => {
 
     const dateCellRender = (value) => {
         const listData = getListData(value)
-        return listData.map((stock) => (
-            <Stack>
-                <Badge
-                    status={'success'}
-                    text={`${stock.ticker} ${formatCurrencyNumber(
-                        stock.amount
-                    )}`}
-                />
-            </Stack>
-        ))
+        return listData.map((stock) => <DividendAmount stock={stock} />)
     }
 
     const cellRender = (current, info) => {
@@ -83,6 +65,22 @@ const DividendCalender = () => {
     }
 
     return <Calendar cellRender={cellRender} />
+}
+
+const DividendAmount = ({ stock }) => {
+    const theme = useTheme()
+    const isMdDevice = useMediaQuery(theme.breakpoints.up('md'))
+    return (
+        <Stack direction={{ md: 'row' }}>
+            {isMdDevice && <Badge status={'success'} text={' '} />}
+            <Stack direction={{ md: 'row' }} spacing={'4px'}>
+                <Typography variant="subtitle2">{stock.ticker}</Typography>
+                <Typography variant="subtitle2">
+                    {formatCurrencyNumber(stock.amount)}
+                </Typography>
+            </Stack>
+        </Stack>
+    )
 }
 
 export default DividendCalender
