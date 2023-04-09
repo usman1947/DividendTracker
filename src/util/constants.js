@@ -3,6 +3,7 @@ export class WebUrl {
     static _REGISTER = '/register'
     static _PORTFOLIO = '/portfolio'
     static _DASHBOARD = '/dashboard'
+    static _DIVIDEND_CALENDER = '/dividend-calender'
 }
 
 export class ApiUrl {}

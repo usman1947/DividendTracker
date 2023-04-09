@@ -2,7 +2,7 @@ import { Drawer } from '@mui/material'
 import SideMenuListItems from './side-menu-list'
 import Logout from './components/logout'
 
-const drawerWidth = 220
+const drawerWidth = 240
 
 const SideBar = () => {
     return (

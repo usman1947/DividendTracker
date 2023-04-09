@@ -10,6 +10,7 @@ import {
 import ShowChartIcon from '@mui/icons-material/ShowChart'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import WatchLaterIcon from '@mui/icons-material/WatchLater'
+import EventIcon from '@mui/icons-material/EventRounded'
 import { WebUrl } from 'util/constants.js'
 import { useNavigate, useLocation } from 'react-router-dom'
 
@@ -23,6 +24,11 @@ const SideBarListItems = [
         label: 'Portfolio',
         url: WebUrl._PORTFOLIO,
         icon: ShowChartIcon,
+    },
+    {
+        label: 'Dividend Calender',
+        url: WebUrl._DIVIDEND_CALENDER,
+        icon: EventIcon,
     },
     {
         label: 'WatchList',

@@ -3,6 +3,7 @@ import { WebUrl } from 'util/constants.js'
 import { Portfolio } from 'features/portfolio'
 import { Dashboard } from 'features/dashboard'
 import { Register, Login } from 'features/account'
+import { DividendCalender } from 'features/dividend-calender'
 
 export const PUBLIC_ROUTES = [
     {
@@ -35,9 +36,6 @@ export const PRIVATE_ROUTES = [
         Component: () => <Portfolio />,
         authRequired: true,
         exact: true,
-        handle: {
-            crumb: () => 'Portfolio',
-        },
     },
     {
         path: WebUrl._DASHBOARD,
@@ -45,6 +43,12 @@ export const PRIVATE_ROUTES = [
         Component: () => <Dashboard />,
         authRequired: true,
         exact: true,
-        crumb: () => 'Dashboard',
+    },
+    {
+        path: WebUrl._DIVIDEND_CALENDER,
+        title: 'Dividend Calender',
+        Component: () => <DividendCalender />,
+        authRequired: true,
+        exact: true,
     },
 ]
